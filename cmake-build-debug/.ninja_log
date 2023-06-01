@@ -1,0 +1,6 @@
+# ninja log v5
+21	483	7073622471314748	CMakeFiles/enigma.dir/RotorBox.cpp.obj	3cbdf967ce4537c8
+36	578	7073622472252194	CMakeFiles/enigma.dir/RotorMappingBuilder.cpp.obj	d66aebcf0d5fd3a7
+0	784	7073622474335634	CMakeFiles/enigma.dir/main.cpp.obj	c8636ef6192a484
+11	910	7073622475590277	CMakeFiles/enigma.dir/Rotor.cpp.obj	b0b752d816e343ea
+910	1090	7073622477264355	enigma.exe	3563ddd69b5712ab
