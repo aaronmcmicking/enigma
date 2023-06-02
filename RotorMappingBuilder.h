@@ -9,7 +9,7 @@
 class RotorMappingBuilder {
 public:
     static bool init;
-    static std::map<int, int>* mappings;
+    static std::map<int, int>* rotor_mappings;
 
     static std::map<int, int> get_rotor_mapping(int rotor_number);
 
@@ -19,12 +19,15 @@ public:
 
     static void nullify_mappings();
 
+    static std::map<int, int> get_reflector_mapping();
+
 private:
     static std::pair<int, int> pair(int k, int v);
 
     static void map_insert(std::map<int, int>& map, int k, char v);
 
     static std::map<int, int> *construct_rotor_mappings();
+
 };
 
 #endif //ENIGMA_ROTORMAPPINGBUILDER_H

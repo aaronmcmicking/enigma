@@ -37,7 +37,7 @@ public:
 
     void set_mappings(std::map<int, int> const& new_mappings);
 
-    int next(bool forward, int input_position);
+    int next(int normalized_input, bool forward, bool should_rotate);
 
     [[nodiscard]] bool next_should_turn() const;
 

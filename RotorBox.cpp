@@ -2,6 +2,7 @@
 // Created by aaron on 2023-06-01.
 //
 
+#include <iostream>
 #include "RotorBox.h"
 #include "RotorMappingBuilder.h"
 
@@ -41,6 +42,14 @@ RotorBox::RotorBox(): rotors_in_place {new Rotor[] {RotorI, RotorII, RotorIII}}{
     RotorVIII.set_turnover_position( RotorMappingBuilder::ctoi('a') );
 }
 
+int RotorBox::ctoi(char c) {
+    return static_cast<int>(c - 'a' + 1);
+}
+
+char RotorBox::itoc(int i){
+    return static_cast<char>(i + 'a' - 1);
+}
+
 Rotor RotorBox::get_rotor(int rotor_number){
     Rotor rotors[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI,RotorVII, RotorVIII};
     return rotors[rotor_number-1];
@@ -52,4 +61,41 @@ Rotor* RotorBox::get_all_rotors(){
 
 void RotorBox::set_placed_rotor(int rotor_number, int position){
     rotors_in_place[position-1] = get_rotor(rotor_number);
+}
+
+Rotor* RotorBox::get_rotors_in_place() {
+    return new Rotor[] {rotors_in_place[0], rotors_in_place[1], rotors_in_place[2]};
+}
+
+char RotorBox::convert_char_through_rotors(char c) {
+    bool rotate {true};
+    int next_input;
+
+    if(rotors_in_place == nullptr){
+        std::cout << "rotor array is null" << std::endl;
+        return -1;
+    }
+
+    next_input = rotors_in_place[0].next(ctoi(c), true, rotate);
+    rotate = rotors_in_place[0].next_should_turn();
+    rotors_in_place[0].reset_turnover_flag();
+
+    next_input = rotors_in_place[1].next(next_input, true, rotate);
+    rotate = rotors_in_place[1].next_should_turn();
+    rotors_in_place[1].reset_turnover_flag();
+
+    next_input = rotors_in_place[2].next(next_input, true, rotate);
+    rotors_in_place[2].reset_turnover_flag();
+
+    reflect(next_input);
+
+    next_input = rotors_in_place[2].next(next_input, false, false);
+    next_input = rotors_in_place[1].next(next_input, false, false);
+    next_input = rotors_in_place[0].next(next_input, false, false);
+
+    return itoc(next_input);
+}
+
+int RotorBox::reflect(int input){
+    return RotorMappingBuilder::get_reflector_mapping().at(input);
 }

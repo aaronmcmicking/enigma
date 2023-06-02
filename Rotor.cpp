@@ -43,7 +43,8 @@ void Rotor::set_mappings(std::map<int, int> const& new_mappings){
     mappings = new_mappings;
 }
 
-int Rotor::next(bool forward, int input_position){
+// forward is true if the current is coming from the keys, false if coming from the reflector
+int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     /*
      * Assume input position is normalized
      *
@@ -51,38 +52,45 @@ int Rotor::next(bool forward, int input_position){
      *
      * offset = current position
      *
-     *
      */
-    position++; // the rotors should turn before the signal is passes
 
-    // turn the next rotors if needed
-    if(position-1 == turnover_position){
-        turnover_flag = true;
+    // the rotors should turn before the signal passes
+    if(should_rotate) {
+        // turn the next rotors if needed
+        if(position == turnover_position){
+            turnover_flag = true;
+        }
+        if(position == 26){
+            position = 1;
+        }else{
+            position++;
+        }
     }
 
     int offset = position;
-    int effective_input = offset + input_position;
-    if(effective_input != 26){
-        effective_input %= 26;
+    int relative_input = offset + normalized_input;
+    if(relative_input % 26 != 0){
+        relative_input %= 26;
+    }else{
+        relative_input = 26;
     }
-    int to_return;
+    int normalized_output;
     if(forward) {
-        to_return = mappings.at(effective_input);
+        normalized_output = mappings.at(relative_input);
     }else{ // when coming back from reflector
         int i {1};
         while(i <= 26){
-            if(mappings.at(i) == effective_input){
-                to_return = i;
+            if(mappings.at(i) == relative_input){
+                normalized_output = i;
                 break;
             }
             i++;
         }
-        if(i > 26){
+        if(i > 26){ // searched through all rotor positions without finding a match (should not be possible)
             throw std::exception {};
         }
     }
-
-    return to_return;
+    return normalized_output;
 }
 
 [[nodiscard]] bool Rotor::next_should_turn() const{
@@ -94,7 +102,7 @@ void Rotor::reset_turnover_flag(){
 }
 
 void Rotor::print_rotor_mappings() const{
-    std::cout << "mappings:" << std::endl;
+    std::cout << "rotor_mappings:" << std::endl;
     for(int i = 1; i <= max_position; i++) {
         std::cout << "   " << i << " -> ";
         try {
