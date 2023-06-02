@@ -71,6 +71,24 @@ Rotor* RotorBox::get_rotors_in_place() {
     return new Rotor[] {rotors_in_place[0], rotors_in_place[1], rotors_in_place[2]};
 }
 
+// rotor_pos = 1st, 2nd, or 3rd rotor, and 1 <= pos <= 26
+Rotor* RotorBox::set_rotor_pos(int rotor_pos, int pos) {
+    if(rotor_pos < 1 || rotor_pos > 3 || pos < 1 || pos > 26){ // bounds checking
+        throw std::exception {};
+    }
+    rotors_in_place[rotor_pos].set_position(pos);
+    return rotors_in_place;
+}
+
+Rotor* RotorBox::set_rotor_pos(int pos[3]){
+    for(int i = 0; i < 3; i++){
+        if(pos[i] < 1 || pos[i] > 26){ // bounds checking
+            throw std::exception {};
+        }
+        rotors_in_place[i].set_position(pos[i]);
+    }
+}
+
 char RotorBox::convert_char(char c) {
     bool rotate {true};
     int next_input;

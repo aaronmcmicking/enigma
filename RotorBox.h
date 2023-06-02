@@ -34,13 +34,21 @@ public:
 
     char convert_char(char c);
 
+    int reflect(int input);
+
     [[nodiscard]] Rotor* get_rotors_in_place();
+
+    // returns pointer to the rotor array (rotors are stored by value)
+    Rotor* set_rotor_pos(int rotor_pos, int pos);
+
+    // returns pointer to the rotor array (rotors are stored by value)
+    Rotor* set_rotor_pos(int pos[3]);
 
     static int ctoi(char c);
 
     static char itoc(int i);
 
-    static int reflect(int input);
+
 };
 
 #endif //ENIGMA_ROTORBOX_H
