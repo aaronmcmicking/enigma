@@ -80,22 +80,21 @@ char RotorBox::convert_char(char c) {
         return -1;
     }
 
-    next_input = rotors_in_place[0].next(ctoi(c), true, rotate);
-    rotate = rotors_in_place[0].next_should_turn();
-    rotors_in_place[0].reset_turnover_flag();
+    // iterate through rotors moving towards the reflector
+    next_input = ctoi(c);
+    for(int i {0}; i < 3; i++){
+        next_input = rotors_in_place[i].next(next_input, true, rotate);
+        rotate = rotors_in_place[i].next_should_turn();
+        rotors_in_place[i].reset_turnover_flag();
+    }
 
-    next_input = rotors_in_place[1].next(next_input, true, rotate);
-    rotate = rotors_in_place[1].next_should_turn();
-    rotors_in_place[1].reset_turnover_flag();
-
-    next_input = rotors_in_place[2].next(next_input, true, rotate);
-    rotors_in_place[2].reset_turnover_flag();
-
+    // reflect
     next_input = reflect(next_input);
 
-    next_input = rotors_in_place[2].next(next_input, false, false);
-    next_input = rotors_in_place[1].next(next_input, false, false);
-    next_input = rotors_in_place[0].next(next_input, false, false);
+    // iterate through the rotors coming back from the reflector
+    for(int i {2}; i >= 0; i--){
+        next_input = rotors_in_place[i].next(next_input, false, false);
+    }
 
     return itoc(next_input);
 }

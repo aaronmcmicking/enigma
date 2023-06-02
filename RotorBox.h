@@ -21,7 +21,7 @@ private:
     Rotor RotorVII {};
     Rotor RotorVIII {};
 
-    Rotor* rotors_in_place {nullptr};
+    Rotor* rotors_in_place {new Rotor[3]{}};
 
 public:
     RotorBox();
