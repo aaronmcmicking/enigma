@@ -6,7 +6,7 @@
 #include "RotorBox.h"
 #include "RotorMappingBuilder.h"
 
-RotorBox::RotorBox(): rotors_in_place {new Rotor[] {RotorI, RotorII, RotorIII}}{
+RotorBox::RotorBox(){
     RotorMappingBuilder::set_init(false);
     RotorMappingBuilder::nullify_mappings();
     std::map<int, int> mapI = RotorMappingBuilder::get_rotor_mapping(1);
@@ -40,6 +40,8 @@ RotorBox::RotorBox(): rotors_in_place {new Rotor[] {RotorI, RotorII, RotorIII}}{
     RotorVI.set_turnover_position( RotorMappingBuilder::ctoi('a') );
     RotorVII.set_turnover_position( RotorMappingBuilder::ctoi('a') );
     RotorVIII.set_turnover_position( RotorMappingBuilder::ctoi('a') );
+
+    rotors_in_place =  new Rotor[] {RotorI, RotorII, RotorIII};
 }
 
 int RotorBox::ctoi(char c) {
@@ -60,14 +62,16 @@ Rotor* RotorBox::get_all_rotors(){
 }
 
 void RotorBox::set_placed_rotor(int rotor_number, int position){
+    if(rotors_in_place == nullptr) throw std::exception {};
     rotors_in_place[position-1] = get_rotor(rotor_number);
 }
 
 Rotor* RotorBox::get_rotors_in_place() {
+    if(rotors_in_place == nullptr) throw std::exception {};
     return new Rotor[] {rotors_in_place[0], rotors_in_place[1], rotors_in_place[2]};
 }
 
-char RotorBox::convert_char_through_rotors(char c) {
+char RotorBox::convert_char(char c) {
     bool rotate {true};
     int next_input;
 
@@ -87,7 +91,7 @@ char RotorBox::convert_char_through_rotors(char c) {
     next_input = rotors_in_place[2].next(next_input, true, rotate);
     rotors_in_place[2].reset_turnover_flag();
 
-    reflect(next_input);
+    next_input = reflect(next_input);
 
     next_input = rotors_in_place[2].next(next_input, false, false);
     next_input = rotors_in_place[1].next(next_input, false, false);

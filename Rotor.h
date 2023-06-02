@@ -44,6 +44,8 @@ public:
     void reset_turnover_flag();
 
     void print_rotor_mappings() const;
+
+    static bool is_in_range(int num, int min, int max);
 };
 
 

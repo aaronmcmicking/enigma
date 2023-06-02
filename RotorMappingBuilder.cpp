@@ -75,20 +75,20 @@ std::map<int, int> RotorMappingBuilder::get_reflector_mapping() {
 std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
     // I
     std::map<int, int> mapI{};
-    map_insert(mapI, 1, 'e');
-    map_insert(mapI, 2, 'k');
-    map_insert(mapI, 3, 'm');
-    map_insert(mapI, 4, 'f');
-    map_insert(mapI, 5, 'l');
-    map_insert(mapI, 6, 'g');
-    map_insert(mapI, 7, 'd');
-    map_insert(mapI, 8, 'q');
-    map_insert(mapI, 9, 'v');
+    map_insert(mapI, 1,  'e');
+    map_insert(mapI, 2,  'k');
+    map_insert(mapI, 3,  'm');
+    map_insert(mapI, 4,  'f');
+    map_insert(mapI, 5,  'l');
+    map_insert(mapI, 6,  'g');
+    map_insert(mapI, 7,  'd');
+    map_insert(mapI, 8,  'q');
+    map_insert(mapI, 9,  'v');
     map_insert(mapI, 10, 'z');
     map_insert(mapI, 11, 'n');
     map_insert(mapI, 12, 't');
-    map_insert(mapI, 13, 'w');
-    map_insert(mapI, 14, 'o');
+    map_insert(mapI, 13, 'o');
+    map_insert(mapI, 14, 'w');
     map_insert(mapI, 15, 'y');
     map_insert(mapI, 16, 'h');
     map_insert(mapI, 17, 'x');
@@ -104,15 +104,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // II
     std::map<int, int> mapII{};
-    map_insert(mapII, 1, 'a');
-    map_insert(mapII, 2, 'j');
-    map_insert(mapII, 3, 'd');
-    map_insert(mapII, 4, 'k');
-    map_insert(mapII, 5, 's');
-    map_insert(mapII, 6, 'i');
-    map_insert(mapII, 7, 'r');
-    map_insert(mapII, 8, 'u');
-    map_insert(mapII, 9, 'x');
+    map_insert(mapII, 1,  'a');
+    map_insert(mapII, 2,  'j');
+    map_insert(mapII, 3,  'd');
+    map_insert(mapII, 4,  'k');
+    map_insert(mapII, 5,  's');
+    map_insert(mapII, 6,  'i');
+    map_insert(mapII, 7,  'r');
+    map_insert(mapII, 8,  'u');
+    map_insert(mapII, 9,  'x');
     map_insert(mapII, 10, 'b');
     map_insert(mapII, 11, 'l');
     map_insert(mapII, 12, 'h');
@@ -133,15 +133,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // III
     std::map<int, int> mapIII{};
-    map_insert(mapIII, 1, 'b');
-    map_insert(mapIII, 2, 'd');
-    map_insert(mapIII, 3, 'f');
-    map_insert(mapIII, 4, 'h');
-    map_insert(mapIII, 5, 'j');
-    map_insert(mapIII, 6, 'l');
-    map_insert(mapIII, 7, 'c');
-    map_insert(mapIII, 8, 'p');
-    map_insert(mapIII, 9, 'r');
+    map_insert(mapIII, 1,  'b');
+    map_insert(mapIII, 2,  'd');
+    map_insert(mapIII, 3,  'f');
+    map_insert(mapIII, 4,  'h');
+    map_insert(mapIII, 5,  'j');
+    map_insert(mapIII, 6,  'l');
+    map_insert(mapIII, 7,  'c');
+    map_insert(mapIII, 8,  'p');
+    map_insert(mapIII, 9,  'r');
     map_insert(mapIII, 10, 't');
     map_insert(mapIII, 11, 'x');
     map_insert(mapIII, 12, 'v');
@@ -162,15 +162,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // IV
     std::map<int, int> mapIV{};
-    map_insert(mapIV, 1, 'e');
-    map_insert(mapIV, 2, 's');
-    map_insert(mapIV, 3, 'o');
-    map_insert(mapIV, 4, 'v');
-    map_insert(mapIV, 5, 'p');
-    map_insert(mapIV, 6, 'z');
-    map_insert(mapIV, 7, 'j');
-    map_insert(mapIV, 8, 'a');
-    map_insert(mapIV, 9, 'y');
+    map_insert(mapIV, 1,  'e');
+    map_insert(mapIV, 2,  's');
+    map_insert(mapIV, 3,  'o');
+    map_insert(mapIV, 4,  'v');
+    map_insert(mapIV, 5,  'p');
+    map_insert(mapIV, 6,  'z');
+    map_insert(mapIV, 7,  'j');
+    map_insert(mapIV, 8,  'a');
+    map_insert(mapIV, 9,  'y');
     map_insert(mapIV, 10, 'q');
     map_insert(mapIV, 11, 'u');
     map_insert(mapIV, 12, 'i');
@@ -191,15 +191,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // V
     std::map<int, int> mapV{};
-    map_insert(mapV, 1, 'v');
-    map_insert(mapV, 2, 'z');
-    map_insert(mapV, 3, 'b');
-    map_insert(mapV, 4, 'r');
-    map_insert(mapV, 5, 'g');
-    map_insert(mapV, 6, 'i');
-    map_insert(mapV, 7, 't');
-    map_insert(mapV, 8, 'y');
-    map_insert(mapV, 9, 'u');
+    map_insert(mapV, 1,  'v');
+    map_insert(mapV, 2,  'z');
+    map_insert(mapV, 3,  'b');
+    map_insert(mapV, 4,  'r');
+    map_insert(mapV, 5,  'g');
+    map_insert(mapV, 6,  'i');
+    map_insert(mapV, 7,  't');
+    map_insert(mapV, 8,  'y');
+    map_insert(mapV, 9,  'u');
     map_insert(mapV, 10, 'p');
     map_insert(mapV, 11, 's');
     map_insert(mapV, 12, 'd');
@@ -220,15 +220,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // VI
     std::map<int, int> mapVI{};
-    map_insert(mapVI, 1, 'j');
-    map_insert(mapVI, 2, 'p');
-    map_insert(mapVI, 3, 'g');
-    map_insert(mapVI, 4, 'v');
-    map_insert(mapVI, 5, 'o');
-    map_insert(mapVI, 6, 'u');
-    map_insert(mapVI, 7, 'm');
-    map_insert(mapVI, 8, 'f');
-    map_insert(mapVI, 9, 'y');
+    map_insert(mapVI, 1,  'j');
+    map_insert(mapVI, 2,  'p');
+    map_insert(mapVI, 3,  'g');
+    map_insert(mapVI, 4,  'v');
+    map_insert(mapVI, 5,  'o');
+    map_insert(mapVI, 6,  'u');
+    map_insert(mapVI, 7,  'm');
+    map_insert(mapVI, 8,  'f');
+    map_insert(mapVI, 9,  'y');
     map_insert(mapVI, 10, 'q');
     map_insert(mapVI, 11, 'b');
     map_insert(mapVI, 12, 'e');
@@ -249,15 +249,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // VII
     std::map<int, int> mapVII{};
-    map_insert(mapVII, 1, 'n');
-    map_insert(mapVII, 2, 'z');
-    map_insert(mapVII, 3, 'j');
-    map_insert(mapVII, 4, 'h');
-    map_insert(mapVII, 5, 'g');
-    map_insert(mapVII, 6, 'r');
-    map_insert(mapVII, 7, 'c');
-    map_insert(mapVII, 8, 'x');
-    map_insert(mapVII, 9, 'm');
+    map_insert(mapVII, 1,  'n');
+    map_insert(mapVII, 2,  'z');
+    map_insert(mapVII, 3,  'j');
+    map_insert(mapVII, 4,  'h');
+    map_insert(mapVII, 5,  'g');
+    map_insert(mapVII, 6,  'r');
+    map_insert(mapVII, 7,  'c');
+    map_insert(mapVII, 8,  'x');
+    map_insert(mapVII, 9,  'm');
     map_insert(mapVII, 10, 'y');
     map_insert(mapVII, 11, 's');
     map_insert(mapVII, 12, 'w');
@@ -278,15 +278,15 @@ std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
 
     // VIII
     std::map<int, int> mapVIII{};
-    map_insert(mapVIII, 1, 'f');
-    map_insert(mapVIII, 2, 'k');
-    map_insert(mapVIII, 3, 'q');
-    map_insert(mapVIII, 4, 'h');
-    map_insert(mapVIII, 5, 't');
-    map_insert(mapVIII, 6, 'l');
-    map_insert(mapVIII, 7, 'x');
-    map_insert(mapVIII, 8, 'o');
-    map_insert(mapVIII, 9, 'c');
+    map_insert(mapVIII, 1,  'f');
+    map_insert(mapVIII, 2,  'k');
+    map_insert(mapVIII, 3,  'q');
+    map_insert(mapVIII, 4,  'h');
+    map_insert(mapVIII, 5,  't');
+    map_insert(mapVIII, 6,  'l');
+    map_insert(mapVIII, 7,  'x');
+    map_insert(mapVIII, 8,  'o');
+    map_insert(mapVIII, 9,  'c');
     map_insert(mapVIII, 10, 'b');
     map_insert(mapVIII, 11, 'j');
     map_insert(mapVIII, 12, 's');

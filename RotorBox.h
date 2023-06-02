@@ -32,7 +32,7 @@ public:
 
     void set_placed_rotor(int rotor_number, int position);
 
-    char convert_char_through_rotors(char c);
+    char convert_char(char c);
 
     [[nodiscard]] Rotor* get_rotors_in_place();
 
