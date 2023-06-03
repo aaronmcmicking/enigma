@@ -5,7 +5,7 @@
 
 #define MAX_INPUT_STRING_LENGTH 10000
 
-
+// return true if no dups found, false otherwise (true is desired generally)
 bool check_char_duping(std::string s1, std::string s2){
     int i {};
     unsigned long long const s1_l {s1.length()};
@@ -13,6 +13,30 @@ bool check_char_duping(std::string s1, std::string s2){
 
     while(i < s1_l && i < s2_l){
         if(s1.at(i) == s2.at(i)){
+            return false;
+        }
+        i++;
+    }
+    return true;
+}
+
+bool fcheck_char_duping(const std::string& file1_n, const std::string& file2_n){
+    char buf1[MAX_INPUT_STRING_LENGTH] {};
+    char buf2[MAX_INPUT_STRING_LENGTH] {};
+
+    std::ifstream file1 {file1_n};
+    file1.read(buf1, MAX_INPUT_STRING_LENGTH);
+
+    std::ifstream file2 {file2_n};
+    file2.read(buf2, MAX_INPUT_STRING_LENGTH);
+
+    std::string sbuf1 {buf1};
+    std::string sbuf2 {buf2};
+
+    unsigned long long length = sbuf1.length() < sbuf2.length() ? sbuf1.length() : sbuf2.length(); // get min length
+    int i {0};
+    while(i < length){
+        if(sbuf1.at(i) == sbuf2.at(i)){
             return false;
         }
         i++;
@@ -63,7 +87,7 @@ int main(){
 //    std::string str1 {};
 //    str = strip_text(str);
 
-//    std::cout << (check_char_duping(str, str1) ? "true" : "false") << std::endl;
+    std::cout << (fcheck_char_duping("input.txt", "output_1.txt") ? "true" : "false") << std::endl;
 
 
 //    std::cout << "rotors: {" << rs[0].get_position() << ", " << rs[1].get_position() << ", " << rs[2].get_position() << "}" << std::endl;

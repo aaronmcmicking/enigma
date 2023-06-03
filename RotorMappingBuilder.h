@@ -25,7 +25,7 @@ private:
 
     static void map_insert(std::map<int, int>& map, int k, char v);
 
-    static void map_fill(std::map<int, int>& map, char* vals);
+    static void map_fill(std::map<int, int>& map, std::string vals);
 
     static std::map<int, int>* construct_rotor_mappings();
 
