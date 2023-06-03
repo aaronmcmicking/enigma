@@ -2,6 +2,7 @@
 // Created by aaron on 2023-06-02.
 //
 
+#include <iostream>
 #include <string>
 #include "Reflector.h"
 
@@ -15,11 +16,11 @@ void Reflector::set_reflector(char c) {
 }
 
 int Reflector::reflect(int in) {
-    return mapping.at(in);
+    return mapping[in];
 }
 
-std::map<int, int> Reflector::get_mapping(char which) {
-    std::map<int, int> map {};
+int* Reflector::get_mapping(char which) {
+    static int map[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string reflection;
 
     switch(tolower(which)){
@@ -33,12 +34,14 @@ std::map<int, int> Reflector::get_mapping(char which) {
             reflection = "FVPJIAOYEDRZXWGCTKUQSBNMHL";
             break;
         default:
+            std::cout << "invalid reflector code" << std::endl;
             throw std::exception {};
             break;
     }
 
-    for(int i {1}; i <= 26; i++){
-        Operations::map_insert(map, i, static_cast<char>(tolower(reflection[i - 1])));
+    for(int i {Rotor::min_position}; i <= Rotor::max_position; i++){
+        map[i] = Operations::ctoi(static_cast<char>(tolower(reflection.at(i-1))));
+//        Operations::map_insert(map, i, static_cast<char>(tolower(reflection[i - 1])));
     }
 
     return map;

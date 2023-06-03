@@ -13,13 +13,13 @@ char Operations::itoc(int i) {
     return static_cast<char>(i + 'a' - 1);
 }
 
-std::pair<int, int> Operations::pair(int k, int v) {
-    return std::pair<int, int>{k, v};
-}
+//std::pair<int, int> Operations::pair(int k, int v) {
+//    return std::pair<int, int>{k, v};
+//}
 
-void Operations::map_insert(std::map<int, int> &map, int k, char v) {
-    map.insert(pair(k, ctoi(v)));
-}
+//void Operations::map_insert(std::map<int, int> &map, int k, char v) {
+//    map.insert(pair(k, ctoi(v)));
+//}
 
 std::string Operations::strip_text(const std::string& str){
     std::string dest {};

@@ -6,8 +6,8 @@
 #define ENIGMA_REFLECTOR_H
 
 
-#include <map>
 #include "Operations.h"
+#include "Rotor.h"
 
 class Reflector {
 public:
@@ -20,9 +20,9 @@ public:
     int reflect(int in);
 
 private:
-    std::map<int, int> mapping;
+    int* mapping;
 
-    static std::map<int, int> get_mapping(char c);
+    static int* get_mapping(char c);
 };
 
 

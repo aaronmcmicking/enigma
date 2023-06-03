@@ -5,8 +5,7 @@
 #ifndef ENIGMA_ROTOR_H
 #define ENIGMA_ROTOR_H
 
-
-#include <map>
+#define CONVERSION_MAP_ARRAY_SIZE 27
 
 class Rotor {
 private:
@@ -19,13 +18,14 @@ public:
     static const int min_position {1};
     int turnover_position;
     bool turnover_flag {false}; // true if the next rotor should turn, false otherwise
-    std::map<int, int> mappings;
+//    std::map<int, int> mappings;
+    int mappings[CONVERSION_MAP_ARRAY_SIZE]; // 1-indexed (ignore position 0)
 
     Rotor();
 
     Rotor(int initial_position, int turnover_pos);
 
-    Rotor(int initial_position, int turnover_pos, std::map<int, int>& map);
+    Rotor(int initial_position, int turnover_pos, const int map[CONVERSION_MAP_ARRAY_SIZE]);
 
     [[nodiscard]] int get_position() const;
 
@@ -35,7 +35,7 @@ public:
 
     void set_position(int new_pos);
 
-    void set_mappings(std::map<int, int> const& new_mappings);
+    void set_mappings(const int new_mappings[CONVERSION_MAP_ARRAY_SIZE]);
 
     int next(int normalized_input, bool forward, bool should_rotate);
 

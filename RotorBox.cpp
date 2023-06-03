@@ -9,14 +9,16 @@
 RotorBox::RotorBox(): reflector {Reflector()} {
     RotorMappingBuilder::set_init(false);
     RotorMappingBuilder::nullify_mappings();
-    std::map<int, int> mapI = RotorMappingBuilder::get_rotor_mapping(1);
-    std::map<int, int> mapII = RotorMappingBuilder::get_rotor_mapping(2);
-    std::map<int, int> mapIII = RotorMappingBuilder::get_rotor_mapping(3);
-    std::map<int, int> mapIV = RotorMappingBuilder::get_rotor_mapping(4);
-    std::map<int, int> mapV = RotorMappingBuilder::get_rotor_mapping(5);
-    std::map<int, int> mapVI = RotorMappingBuilder::get_rotor_mapping(6);
-    std::map<int, int> mapVII = RotorMappingBuilder::get_rotor_mapping(7);
-    std::map<int, int> mapVIII = RotorMappingBuilder::get_rotor_mapping(8);
+
+    // all below have size Rotor::CONVERSION_MAP_ARRAY_SIZE and are 1-indexed
+    int* mapI = RotorMappingBuilder::get_rotor_mapping(1);
+    int* mapII = RotorMappingBuilder::get_rotor_mapping(2);
+    int* mapIII = RotorMappingBuilder::get_rotor_mapping(3);
+    int* mapIV = RotorMappingBuilder::get_rotor_mapping(4);
+    int* mapV = RotorMappingBuilder::get_rotor_mapping(5);
+    int* mapVI = RotorMappingBuilder::get_rotor_mapping(6);
+    int* mapVII = RotorMappingBuilder::get_rotor_mapping(7);
+    int* mapVIII = RotorMappingBuilder::get_rotor_mapping(8);
 
     RotorI.set_mappings(mapI);
     RotorI.set_turnover_position(Operations::ctoi('r'));

@@ -7,22 +7,26 @@
 #include "Operations.h"
 
 void Rotor::fill_default_mappings(){
-    for(int i = min_position; i <= max_position; i++){
-        mappings.insert(std::pair<int, int>{i, i});
+    for(int i {min_position}; i <= max_position; i++){
+        mappings[i] = i;
     }
 }
 
-Rotor::Rotor(): position {min_position}, turnover_position {max_position} {
+Rotor::Rotor(): mappings {}, position {min_position}, turnover_position {max_position} {
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int turnover_pos): position {initial_position}, turnover_position {turnover_pos}{
+Rotor::Rotor(int initial_position, int turnover_pos): mappings {}, position {initial_position}, turnover_position {turnover_pos}{
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int turnover_pos, std::map<int, int>& map)
-        : position {initial_position}, turnover_position {turnover_pos}, mappings {map}
-{ }
+Rotor::Rotor(int initial_position, int turnover_pos, const int map[CONVERSION_MAP_ARRAY_SIZE])
+        : position {initial_position}, turnover_position {turnover_pos}, mappings {}
+{
+    for(int i {min_position}; i <= max_position; i++){
+        mappings[i] = map[i];
+    }
+}
 
 [[nodiscard]] int Rotor::get_position() const{
     return position;
@@ -40,8 +44,10 @@ void Rotor::set_position(int new_pos){
     position = new_pos;
 }
 
-void Rotor::set_mappings(std::map<int, int> const& new_mappings){
-    mappings = new_mappings;
+void Rotor::set_mappings(const int new_mappings[CONVERSION_MAP_ARRAY_SIZE]){
+    for(int i {min_position}; i <= max_position; i++) {
+        mappings[i] = new_mappings[i];
+    }
 }
 
 // forward is true if the current is coming from the keys, false if coming from the reflector
@@ -75,32 +81,34 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     }
     int output_relative_to_current_pos;
     if(forward) {
-        output_relative_to_current_pos = mappings.at(relative_input);
+        output_relative_to_current_pos = mappings[relative_input];
     }else{ // when coming back from reflector
+//        for(int i {min_position}; i <= max_position; i++) {
+//            if (mappings[i] == relative_input) {
+//                output_relative_to_current_pos = i;
+//                break;
+//            }else if(i >= max_position){ // searched through all rotor positions without finding a match (should not be possible)
+//                std::cout << "couldn't find mapping for char from reflector" << std::endl;
+//                throw std::exception {};
+//            }
+//        }
         int i {min_position};
-        while(i <= max_position){
-            if(mappings.at(i) == relative_input){
-                output_relative_to_current_pos = i;
-                break;
+//        std::cout << "relative_input = " << relative_input << std::endl;
+        while(i <= max_position && mappings[i] != relative_input){
+//            std::cout << "mappings[" << i << "] = " << mappings[i] << std::endl;
+            if(i >= max_position){
+                std::cout << "couldn't find mapping for char from reflector" << std::endl;
+                throw std::exception {};
             }
             i++;
         }
-        if(i > max_position){ // searched through all rotor positions without finding a match (should not be possible)
-            throw std::exception {};
-        }
+        output_relative_to_current_pos = i;
     }
 
-//    std::cout << "pos = " << position << ", norm = " << output_relative_to_current_pos << std::endl;
     // calculate the normalized output value (ie. the number of steps from the 'start' position that the letter output at
     if(Operations::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
-//        std::cout << "in 1" << std::endl;
-//        std::cout <<  "1) " << max_position - position + output_relative_to_current_pos << std::endl;
-//        std::cout << "2) " << output_relative_to_current_pos - position << std::endl;
         return max_position - position + output_relative_to_current_pos + 1;
     }else{
-//        std::cout << "in 2" << std::endl;
-//        std::cout <<  "1) " << max_position - position + output_relative_to_current_pos << std::endl;
-//        std::cout << "2) " << output_relative_to_current_pos - position << std::endl;
         return output_relative_to_current_pos - position + 1;
     }
 }
@@ -118,7 +126,7 @@ void Rotor::print_rotor_mappings() const{
     for(int i = 1; i <= max_position; i++) {
         std::cout << "   " << i << " -> ";
         try {
-            std::cout << mappings.at(i) << std::endl;
+            std::cout << mappings[i] << std::endl;
         }catch(std::exception& e){
             std::cout << "no such value" << std::endl;
         }
