@@ -5,15 +5,6 @@
 
 #define MAX_INPUT_STRING_LENGTH 10000
 
-std::string strip_text(const std::string& str){
-    std::string dest {};
-    for(char c: str){
-        if(isalpha(c)){
-            dest += static_cast<char>(tolower(c));
-        }
-    }
-    return dest;
-}
 
 bool check_char_duping(std::string s1, std::string s2){
     int i {};
@@ -35,7 +26,7 @@ void in_con_out(const std::string& in_f, const std::string& out_f, RotorBox rb){
     char in_buf[MAX_INPUT_STRING_LENGTH] {};
     in_file.read(in_buf, MAX_INPUT_STRING_LENGTH-1);
     in_file.close();
-    std::string in_str = strip_text(in_buf);
+    std::string in_str = Operations::strip_text(in_buf);
 
     std::string buffer {};
     for(char c: in_str){

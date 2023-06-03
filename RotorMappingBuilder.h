@@ -13,20 +13,21 @@ public:
 
     static std::map<int, int> get_rotor_mapping(int rotor_number);
 
-    static int ctoi(char c);
+    // which = 'A' || 'B' || 'C'
+    static std::map<int, int> get_reflector_mapping(char which);
 
     static void set_init(bool state);
 
     static void nullify_mappings();
-
-    static std::map<int, int> get_reflector_mapping();
 
 private:
     static std::pair<int, int> pair(int k, int v);
 
     static void map_insert(std::map<int, int>& map, int k, char v);
 
-    static std::map<int, int> *construct_rotor_mappings();
+    static void map_fill(std::map<int, int>& map, char* vals);
+
+    static std::map<int, int>* construct_rotor_mappings();
 
 };
 

@@ -6,7 +6,7 @@
 #include "RotorBox.h"
 #include "RotorMappingBuilder.h"
 
-RotorBox::RotorBox(){
+RotorBox::RotorBox(): reflector {Reflector()} {
     RotorMappingBuilder::set_init(false);
     RotorMappingBuilder::nullify_mappings();
     std::map<int, int> mapI = RotorMappingBuilder::get_rotor_mapping(1);
@@ -19,37 +19,29 @@ RotorBox::RotorBox(){
     std::map<int, int> mapVIII = RotorMappingBuilder::get_rotor_mapping(8);
 
     RotorI.set_mappings(mapI);
-    RotorI.set_turnover_position( RotorMappingBuilder::ctoi('r') );
+    RotorI.set_turnover_position(Operations::ctoi('r'));
 
     RotorII.set_mappings(mapII);
-    RotorI.set_turnover_position( RotorMappingBuilder::ctoi('f') );
+    RotorI.set_turnover_position(Operations::ctoi('f'));
 
     RotorIII.set_mappings(mapIII);
-    RotorIII.set_turnover_position( RotorMappingBuilder::ctoi('w') );
+    RotorIII.set_turnover_position(Operations::ctoi('w'));
 
     RotorIV.set_mappings(mapIV);
-    RotorIV.set_turnover_position( RotorMappingBuilder::ctoi('k') );
+    RotorIV.set_turnover_position(Operations::ctoi('k'));
 
     RotorV.set_mappings(mapV);
-    RotorV.set_turnover_position( RotorMappingBuilder::ctoi('a') );
+    RotorV.set_turnover_position(Operations::ctoi('a'));
 
     // these rotors should have 2 turnovers each (at 'a' and 'n'), but this is not currently supported
     RotorVI.set_mappings(mapVI);
     RotorVII.set_mappings(mapVII);
     RotorVIII.set_mappings(mapVIII);
-    RotorVI.set_turnover_position( RotorMappingBuilder::ctoi('a') );
-    RotorVII.set_turnover_position( RotorMappingBuilder::ctoi('a') );
-    RotorVIII.set_turnover_position( RotorMappingBuilder::ctoi('a') );
+    RotorVI.set_turnover_position(Operations::ctoi('a'));
+    RotorVII.set_turnover_position(Operations::ctoi('a'));
+    RotorVIII.set_turnover_position(Operations::ctoi('a'));
 
-    rotors_in_place =  new Rotor[] {RotorI, RotorII, RotorIII};
-}
-
-int RotorBox::ctoi(char c) {
-    return static_cast<int>(c - 'a' + 1);
-}
-
-char RotorBox::itoc(int i){
-    return static_cast<char>(i + 'a' - 1);
+    rotors_in_place = new Rotor[]{RotorI, RotorII, RotorIII};
 }
 
 Rotor RotorBox::get_rotor(int rotor_number){
@@ -99,7 +91,7 @@ char RotorBox::convert_char(char c) {
     }
 
     // iterate through rotors moving towards the reflector
-    next_input = ctoi(c);
+    next_input = Operations::ctoi(c);
     for(int i {0}; i < 3; i++){
         next_input = rotors_in_place[i].next(next_input, true, rotate);
         rotate = rotors_in_place[i].next_should_turn();
@@ -114,9 +106,17 @@ char RotorBox::convert_char(char c) {
         next_input = rotors_in_place[i].next(next_input, false, false);
     }
 
-    return itoc(next_input);
+    return Operations::itoc(next_input);
 }
 
 int RotorBox::reflect(int input){
-    return RotorMappingBuilder::get_reflector_mapping().at(input);
+    return reflector.reflect(input);
+}
+
+void RotorBox::set_reflector(char c){
+    reflector.set_reflector(c);
+}
+
+Reflector RotorBox::get_reflector(){
+    return reflector;
 }

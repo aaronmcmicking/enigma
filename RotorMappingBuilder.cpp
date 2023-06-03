@@ -3,7 +3,10 @@
 //
 
 #include <map>
+#include <cctype>
+#include <string>
 #include "RotorMappingBuilder.h"
+#include "Operations.h"
 
 bool RotorMappingBuilder::init {false};
 std::map<int, int>* RotorMappingBuilder::rotor_mappings {};
@@ -14,12 +17,6 @@ std::map<int, int> RotorMappingBuilder::get_rotor_mapping(int rotor_number){
     }
     if(rotor_mappings == nullptr) throw std::exception{};
     return rotor_mappings[rotor_number - 1];
-}
-
-// converts a character to it's 1-indexed position in the alphabet
-// ex: a -> 1, b -> 2, ..., z -> 26
-int RotorMappingBuilder::ctoi(char c) {
-    return static_cast<int>(c - 'a' + 1);
 }
 
 void RotorMappingBuilder::set_init(bool state){
@@ -36,45 +33,46 @@ std::pair<int, int> RotorMappingBuilder::pair(int k, int v) {
 }
 
 void RotorMappingBuilder::map_insert(std::map<int, int> &map, int k, char v) {
-    map.insert(pair(k, ctoi(v)));
+    map.insert(pair(k, Operations::ctoi(v)));
 }
 
-std::map<int, int> RotorMappingBuilder::get_reflector_mapping() {
-    std::map<int, int> mapA {};
+std::map<int, int> RotorMappingBuilder::get_reflector_mapping(char which) {
+    std::map<int, int> map {};
+    std::string reflection;
 
-    map_insert(mapA, 1,  'e');
-    map_insert(mapA, 2,  'j');
-    map_insert(mapA, 3,  'm');
-    map_insert(mapA, 4,  'z');
-    map_insert(mapA, 5,  'a');
-    map_insert(mapA, 6,  'l');
-    map_insert(mapA, 7,  'y');
-    map_insert(mapA, 8,  'x');
-    map_insert(mapA, 9,  'v');
-    map_insert(mapA, 10, 'b');
-    map_insert(mapA, 11, 'w');
-    map_insert(mapA, 12, 'f');
-    map_insert(mapA, 13, 'c');
-    map_insert(mapA, 14, 'r');
-    map_insert(mapA, 15, 'q');
-    map_insert(mapA, 16, 'u');
-    map_insert(mapA, 17, 'o');
-    map_insert(mapA, 18, 'n');
-    map_insert(mapA, 19, 't');
-    map_insert(mapA, 20, 's');
-    map_insert(mapA, 21, 'p');
-    map_insert(mapA, 22, 'i');
-    map_insert(mapA, 23, 'k');
-    map_insert(mapA, 24, 'h');
-    map_insert(mapA, 25, 'g');
-    map_insert(mapA, 26, 'd');
+    switch(tolower(which)){
+        case 'a':
+            reflection = "EJMZALYXVBWFCRQUONTSPIKHGD";
+            break;
+        case 'b':
+            reflection = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+            break;
+        case 'c':
+            reflection = "FVPJIAOYEDRZXWGCTKUQSBNMHL";
+            break;
+        default:
+            throw std::exception {};
+            break;
+    }
 
-    return mapA;
+    for(int i {1}; i <= 26; i++){
+        map_insert(map, i, static_cast<char>(tolower(reflection[i-1])));
+    }
+
+    return map;
+}
+
+void RotorMappingBuilder::map_fill(std::map<int, int> &map, char *vals) {
+    for(int i = 1; i <= 26; i++){
+        map_insert(map, i, static_cast<char>(tolower(vals[i-1])));
+    }
 }
 
 std::map<int, int>* RotorMappingBuilder::construct_rotor_mappings() {
     // I
     std::map<int, int> mapI{};
+    char* mapI_con {"EKMFLGDQVZNTOWYHXUSPAIBRCJ"};
+
     map_insert(mapI, 1,  'e');
     map_insert(mapI, 2,  'k');
     map_insert(mapI, 3,  'm');

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Rotor.h"
+#include "Operations.h"
 
 void Rotor::fill_default_mappings(){
     for(int i = min_position; i <= max_position; i++){
@@ -91,7 +92,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
 
 //    std::cout << "pos = " << position << ", norm = " << output_relative_to_current_pos << std::endl;
     // calculate the normalized output value (ie. the number of steps from the 'start' position that the letter output at
-    if(is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
+    if(Operations::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
 //        std::cout << "in 1" << std::endl;
 //        std::cout <<  "1) " << max_position - position + output_relative_to_current_pos << std::endl;
 //        std::cout << "2) " << output_relative_to_current_pos - position << std::endl;
@@ -102,10 +103,6 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
 //        std::cout << "2) " << output_relative_to_current_pos - position << std::endl;
         return output_relative_to_current_pos - position + 1;
     }
-}
-
-bool Rotor::is_in_range(int num, int min, int max){
-    return (num >= min) && (num <= max);
 }
 
 [[nodiscard]] bool Rotor::next_should_turn() const{

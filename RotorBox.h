@@ -7,6 +7,7 @@
 
 
 #include "Rotor.h"
+#include "Reflector.h"
 
 class RotorBox {
 private:
@@ -22,6 +23,8 @@ private:
     Rotor RotorVIII {};
 
     Rotor* rotors_in_place {new Rotor[3]{}};
+
+    Reflector reflector {};
 
 public:
     RotorBox();
@@ -44,11 +47,9 @@ public:
     // returns pointer to the rotor array (rotors are stored by value)
     Rotor* set_rotor_pos(int pos[3]);
 
-    static int ctoi(char c);
+    void set_reflector(char c);
 
-    static char itoc(int i);
-
-
+    Reflector get_reflector();
 };
 
 #endif //ENIGMA_ROTORBOX_H
