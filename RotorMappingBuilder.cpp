@@ -36,52 +36,43 @@ void RotorMappingBuilder::map_fill(int* map, std::string values){
     }
 }
 
-
 int** RotorMappingBuilder::construct_rotor_mappings() {
     // I
-//    std::map<int, int> mapI{};
     static int mapI[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapI_con {"EKMFLGDQVZNTOWYHXUSPAIBRCJ"};
     map_fill(mapI, mapI_con);
 
     // II
-//    std::map<int, int> mapII{};
     static int mapII[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapII_con {"AJDKSIRUXBLHWTMCQGZNPYFVOE"};
     map_fill(mapII, mapII_con);
 
     // III
-//    std::map<int, int> mapIII{};
     static int mapIII[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapIII_con {"BDFHJLCPRTXVZNYEIWGAKMUSQO"};
     map_fill(mapIII, mapIII_con);
 
     // IV
-//    std::map<int, int> mapIV{};
     static int mapIV[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapIV_con {"ESOVPZJAYQUIRHXLNFTGKDCMWB"};
     map_fill(mapIV, mapIV_con);
 
     // V
-//    std::map<int, int> mapV{};
     static int mapV[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapV_con {"VZBRGITYUPSDNHLXAWMJQOFECK"};
     map_fill(mapV, mapV_con);
 
     // VI
-//    std::map<int, int> mapVI{};
     static int mapVI[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapVI_con {"JPGVOUMFYQBENHZRDKASXLICTW"};
     map_fill(mapVI, mapVI_con);
 
     // VII
-//    std::map<int, int> mapVII{};
     static int mapVII[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapVII_con {"NZJHGRCXMYSWBOUFAIVLPEKQDT"};
     map_fill(mapVII, mapVII_con);
 
     // VIII
-//    std::map<int, int> mapVIII{};
     static int mapVIII[CONVERSION_MAP_ARRAY_SIZE] {};
     std::string mapVIII_con {"FKQHTLXOCBJSPDZRAMEWNIUYGV"};
     map_fill(mapVIII, mapVIII_con);

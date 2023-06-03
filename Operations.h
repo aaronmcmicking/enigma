@@ -19,11 +19,8 @@ public:
 
     static bool is_in_range(int num, int min, int max);
 
-//    static void map_insert(std::map<int, int>& map, int k, char v);
-
     static std::string strip_text(const std::string& str);
 
-//    static std::pair<int, int> pair(int k, int v);
 };
 
 

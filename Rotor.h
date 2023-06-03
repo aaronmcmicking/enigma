@@ -18,7 +18,6 @@ public:
     static const int min_position {1};
     int turnover_position;
     bool turnover_flag {false}; // true if the next rotor should turn, false otherwise
-//    std::map<int, int> mappings;
     int mappings[CONVERSION_MAP_ARRAY_SIZE]; // 1-indexed (ignore position 0)
 
     Rotor();

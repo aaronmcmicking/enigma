@@ -83,19 +83,8 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     if(forward) {
         output_relative_to_current_pos = mappings[relative_input];
     }else{ // when coming back from reflector
-//        for(int i {min_position}; i <= max_position; i++) {
-//            if (mappings[i] == relative_input) {
-//                output_relative_to_current_pos = i;
-//                break;
-//            }else if(i >= max_position){ // searched through all rotor positions without finding a match (should not be possible)
-//                std::cout << "couldn't find mapping for char from reflector" << std::endl;
-//                throw std::exception {};
-//            }
-//        }
         int i {min_position};
-//        std::cout << "relative_input = " << relative_input << std::endl;
         while(i <= max_position && mappings[i] != relative_input){
-//            std::cout << "mappings[" << i << "] = " << mappings[i] << std::endl;
             if(i >= max_position){
                 std::cout << "couldn't find mapping for char from reflector" << std::endl;
                 throw std::exception {};

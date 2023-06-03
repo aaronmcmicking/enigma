@@ -2,6 +2,7 @@
 #include "RotorBox.h"
 #include <fstream>
 #include <cctype>
+#include <ctime>
 
 #define MAX_INPUT_STRING_LENGTH 10000
 
@@ -72,16 +73,19 @@ int main(){
 
     std::cout << "Testing rotors" << std::endl;
 
-    int pos[] {8, 23, 9};
-    rotor_box.set_rotor_pos(pos);
-
-//    in_con_out("input.txt", "output_1.txt", rotor_box);
 
     std::cout << "starting" << std::endl;
-    for(int i {0}; i < 1000*1000*10; i++){
-        rotor_box.convert_char('a');
-    }
-    std::cout << "finished" << std::endl;
+//    for(unsigned long long i {0}; i < 1000*1000*10; i++){
+//        rotor_box.convert_char('a');
+//    }
+//    std::cout << "finished" << std::endl;
+
+
+    auto start = std::clock();
+
+    int pos[] {8, 23, 9};
+    rotor_box.set_rotor_pos(pos);
+    in_con_out("input.txt", "output_1.txt", rotor_box);
 
     rotor_box.set_rotor_pos(pos);
     Rotor* rs {rotor_box.get_rotors_in_place()};
@@ -89,19 +93,13 @@ int main(){
 
     in_con_out("output_1.txt", "output_2.txt", rotor_box);
 
-//    std::string str {"It might be urged that when playing the ‘imitation game’ the best strategy for the machine may possibly be something other than imitation of the behaviour of a man. This may be, but I think it is unlikely that there is any great effect of this kind. In any case there is no intention to investigate here the theory of the game, and it will be assumed that the best strategy is to try to provide answers that would naturally be given by a man."};
-//    std::string str1 {};
-//    str = strip_text(str);
+    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 
-    std::cout << (fcheck_char_duping("input.txt", "output_1.txt") ? "true" : "false") << std::endl;
 
+//    std::cout << (fcheck_char_duping("input.txt", "output_1.txt") ? "passed" : "false") << " dupe check" << std::endl;
 
 //    std::cout << "rotors: {" << rs[0].get_position() << ", " << rs[1].get_position() << ", " << rs[2].get_position() << "}" << std::endl;
 //    std::cout << "rotation points: {" << rs[0].get_turnover_position() << ", " << rs[1].get_turnover_position() << ", " << rs[2].get_turnover_position() << "}" << std::endl;
-
-
-
-
 
     std::cout << "Done" << std::endl;
 
