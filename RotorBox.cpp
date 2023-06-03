@@ -79,6 +79,7 @@ Rotor* RotorBox::set_rotor_pos(int pos[3]){
         }
         rotors_in_place[i].set_position(pos[i]);
     }
+    return rotors_in_place;
 }
 
 char RotorBox::convert_char(char c) {

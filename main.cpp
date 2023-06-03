@@ -75,7 +75,13 @@ int main(){
     int pos[] {8, 23, 9};
     rotor_box.set_rotor_pos(pos);
 
-    in_con_out("input.txt", "output_1.txt", rotor_box);
+//    in_con_out("input.txt", "output_1.txt", rotor_box);
+
+    std::cout << "starting" << std::endl;
+    for(int i {0}; i < 1000*1000*10; i++){
+        rotor_box.convert_char('a');
+    }
+    std::cout << "finished" << std::endl;
 
     rotor_box.set_rotor_pos(pos);
     Rotor* rs {rotor_box.get_rotors_in_place()};
