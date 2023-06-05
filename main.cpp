@@ -1,5 +1,6 @@
 #include <iostream>
 #include "RotorBox.h"
+#include "Plugboard.h"
 #include <fstream>
 #include <cctype>
 #include <ctime>
@@ -51,7 +52,7 @@ void in_con_out(const std::string& in_f, const std::string& out_f, RotorBox rb){
     char in_buf[MAX_INPUT_STRING_LENGTH] {};
     in_file.read(in_buf, MAX_INPUT_STRING_LENGTH-1);
     in_file.close();
-    std::string in_str = Operations::strip_text(in_buf);
+    std::string in_str = EMOps::strip_text(in_buf);
 
     std::string buffer {};
     for(char c: in_str){
@@ -69,14 +70,56 @@ void in_con_out(const std::string& in_f, const std::string& out_f, RotorBox rb){
 }
 
 int main(){
+
+
+    Plugboard p1 {"QA WS ED RF TG YH UJ IK OL PM"};
+//    p1.print();
+
+//    std::cout << "num_pairs() = " << p1.num_pairs() << std::endl;
+
+//    std::cout << '{' + p1.get_pairs() + '}' << std::endl;
+
+    /*
+    std::cout << "q -> " << EMOps::itoc(p1.convert_char('q')) << std::endl;
+    std::cout << "w -> " << EMOps::itoc(p1.convert_char('w')) << std::endl;
+    std::cout << "e -> " << EMOps::itoc(p1.convert_char('e')) << std::endl;
+    std::cout << "r -> " << EMOps::itoc(p1.convert_char('r')) << std::endl;
+    std::cout << "u -> " << EMOps::itoc(p1.convert_char('u')) << std::endl << std::endl;
+    std::cout << "t -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('t'))) << std::endl;
+    std::cout << "k -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('k'))) << std::endl;
+    std::cout << "l -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('l'))) << std::endl;
+    std::cout << "p -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('p'))) << std::endl;
+    std::cout << "a -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('a'))) << std::endl;
+    std::cout << "Done" << std::endl;
+    */
+
+//    Plugboard p2 {};
+//    p2.print();
+
+    std::cout << std::endl;
+//    p1.print();
+    for(int w {1}; w < CONVERSION_MAP_ARRAY_SIZE; w++){
+        std::cout << EMOps::itoc(w) << " -> " ;
+        std::cout << EMOps::itoc(p1.convert_int(w)) << std::endl;
+    }
+    std::cout << "p1.num_pairs() = " << p1.num_pairs() << std::endl;
+
+    return 0;
+
+
     RotorBox rotor_box {};
+
+    rotor_box.set_placed_rotor(5, 1);
+    rotor_box.set_placed_rotor(4, 2);
+    rotor_box.set_placed_rotor(1, 3);
+    rotor_box.set_reflector('c');
 
     std::cout << "Testing rotors" << std::endl;
 
 
     std::cout << "starting" << std::endl;
 //    for(unsigned long long i {0}; i < 1000*1000*10; i++){
-//        rotor_box.convert_char('a');
+//        rotor_box.convert_int('a');
 //    }
 //    std::cout << "finished" << std::endl;
 

@@ -6,7 +6,7 @@
 #define ENIGMA_REFLECTOR_H
 
 
-#include "Operations.h"
+#include "EMOps.h"
 #include "Rotor.h"
 
 class Reflector {

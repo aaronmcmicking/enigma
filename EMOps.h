@@ -2,8 +2,8 @@
 // Created by aaron on 2023-06-02.
 //
 
-#ifndef ENIGMA_OPERATIONS_H
-#define ENIGMA_OPERATIONS_H
+#ifndef ENIGMA_EMOPS_H
+#define ENIGMA_EMOPS_H
 
 #include <utility>
 
@@ -11,7 +11,7 @@
  * Helper class that contains general operations relating to character-int conversions and map operations *
  */
 
-class Operations {
+class EMOps {
 public:
     static int ctoi(char c);
 
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //ENIGMA_OPERATIONS_H
+#endif //ENIGMA_EMOPS_H

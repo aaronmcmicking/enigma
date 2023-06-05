@@ -21,27 +21,27 @@ RotorBox::RotorBox(): reflector {Reflector()} {
     int* mapVIII = RotorMappingBuilder::get_rotor_mapping(8);
 
     RotorI.set_mappings(mapI);
-    RotorI.set_turnover_position(Operations::ctoi('r'));
+    RotorI.set_turnover_position(EMOps::ctoi('r'));
 
     RotorII.set_mappings(mapII);
-    RotorI.set_turnover_position(Operations::ctoi('f'));
+    RotorI.set_turnover_position(EMOps::ctoi('f'));
 
     RotorIII.set_mappings(mapIII);
-    RotorIII.set_turnover_position(Operations::ctoi('w'));
+    RotorIII.set_turnover_position(EMOps::ctoi('w'));
 
     RotorIV.set_mappings(mapIV);
-    RotorIV.set_turnover_position(Operations::ctoi('k'));
+    RotorIV.set_turnover_position(EMOps::ctoi('k'));
 
     RotorV.set_mappings(mapV);
-    RotorV.set_turnover_position(Operations::ctoi('a'));
+    RotorV.set_turnover_position(EMOps::ctoi('a'));
 
     // these rotors should have 2 turnovers each (at 'a' and 'n'), but this is not currently supported
     RotorVI.set_mappings(mapVI);
     RotorVII.set_mappings(mapVII);
     RotorVIII.set_mappings(mapVIII);
-    RotorVI.set_turnover_position(Operations::ctoi('a'));
-    RotorVII.set_turnover_position(Operations::ctoi('a'));
-    RotorVIII.set_turnover_position(Operations::ctoi('a'));
+    RotorVI.set_turnover_position(EMOps::ctoi('a'));
+    RotorVII.set_turnover_position(EMOps::ctoi('a'));
+    RotorVIII.set_turnover_position(EMOps::ctoi('a'));
 
     rotors_in_place = new Rotor[]{RotorI, RotorII, RotorIII};
 }
@@ -94,7 +94,7 @@ char RotorBox::convert_char(char c) {
     }
 
     // iterate through rotors moving towards the reflector
-    next_input = Operations::ctoi(c);
+    next_input = EMOps::ctoi(c);
     for(int i {0}; i < 3; i++){
         next_input = rotors_in_place[i].next(next_input, true, rotate);
         rotate = rotors_in_place[i].next_should_turn();
@@ -109,7 +109,7 @@ char RotorBox::convert_char(char c) {
         next_input = rotors_in_place[i].next(next_input, false, false);
     }
 
-    return Operations::itoc(next_input);
+    return EMOps::itoc(next_input);
 }
 
 int RotorBox::reflect(int input){

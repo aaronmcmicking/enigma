@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Rotor.h"
-#include "Operations.h"
+#include "EMOps.h"
 
 void Rotor::fill_default_mappings(){
     for(int i {min_position}; i <= max_position; i++){
@@ -95,7 +95,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     }
 
     // calculate the normalized output value (ie. the number of steps from the 'start' position that the letter output at
-    if(Operations::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
+    if(EMOps::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
         return max_position - position + output_relative_to_current_pos + 1;
     }else{
         return output_relative_to_current_pos - position + 1;
