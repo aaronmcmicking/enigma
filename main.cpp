@@ -1,6 +1,7 @@
 #include <iostream>
 #include "RotorBox.h"
 #include "Plugboard.h"
+#include "EnigmaMachine.h"
 #include <fstream>
 #include <cctype>
 #include <ctime>
@@ -56,9 +57,9 @@ void in_con_out(const std::string& in_f, const std::string& out_f, RotorBox rb){
 
     std::string buffer {};
     for(char c: in_str){
-        char c1 = rb.convert_char(c);
+        int c1 = rb.convert_int(EMOps::ctoi(c));
 //        std::cout << static_cast<char>(toupper(c1));
-        buffer += c1;
+        buffer += EMOps::itoc(c1);
     }
 
     std::cout << std::endl;
@@ -71,6 +72,17 @@ void in_con_out(const std::string& in_f, const std::string& out_f, RotorBox rb){
 
 int main(){
 
+    int rotors[] {2, 1, 3};
+    int rotor_pos[] {3, 5, 7};
+
+    EnigmaMachine EM {rotors, rotor_pos, 'B', "AF TG UJ KM BV ZX"};
+
+    EM.encrypt_or_decrypt_file("input.txt", "output_1.txt");
+
+    EM.set_rotor_pos(rotor_pos);
+    EM.encrypt_or_decrypt_file("output_1.txt", "output_2.txt");
+
+    return 0;
 
     Plugboard p1 {"QA WS ED RF TG YH UJ IK OL PM"};
 //    p1.print();

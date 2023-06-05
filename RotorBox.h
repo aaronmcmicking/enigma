@@ -35,7 +35,11 @@ public:
 
     void set_placed_rotor(int rotor_number, int position);
 
-    char convert_char(char c);
+    void set_placed_rotor(int* rotors);
+
+    void set_placed_rotor(int* rotors, int* pos);
+
+    int convert_int(int i);
 
     int reflect(int input);
 
@@ -45,7 +49,7 @@ public:
     Rotor* set_rotor_pos(int rotor_pos, int pos);
 
     // returns pointer to the rotor array (rotors are stored by value)
-    Rotor* set_rotor_pos(int pos[3]);
+    Rotor* set_rotor_pos(const int pos[3]);
 
     void set_reflector(char c);
 

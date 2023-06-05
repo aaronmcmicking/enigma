@@ -6,12 +6,13 @@
 #define ENIGMA_EMOPS_H
 
 #include <utility>
+#include <string>
 
 /*
  * Helper class that contains general operations relating to character-int conversions and map operations *
  */
 
-class EMOps {
+class EMOps { // "EMOps" = Enigma Machine Operations
 public:
     static int ctoi(char c);
 
