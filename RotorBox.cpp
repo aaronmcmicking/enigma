@@ -60,7 +60,7 @@ void RotorBox::set_placed_rotor(int rotor_number, int position){
     rotors_in_place[position-1] = get_rotor(rotor_number);
 }
 
-void RotorBox::set_placed_rotor(int *rotors) {
+void RotorBox::set_placed_rotor(const int *rotors) {
     if(rotors_in_place == nullptr) throw std::exception {};
     for(int i {}; i < 3; i++){
         rotors_in_place[i] = get_rotor(rotors[i]);

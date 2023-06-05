@@ -9,6 +9,13 @@
 #include "Rotor.h"
 #include "Reflector.h"
 
+typedef struct{
+    int rotors[3];
+    int rotor_pos[3];
+    char reflector;
+    std::string plugboard;
+}EnigmaConfig;
+
 class RotorBox {
 private:
 
@@ -35,7 +42,7 @@ public:
 
     void set_placed_rotor(int rotor_number, int position);
 
-    void set_placed_rotor(int* rotors);
+    void set_placed_rotor(const int* rotors);
 
     void set_placed_rotor(int* rotors, int* pos);
 

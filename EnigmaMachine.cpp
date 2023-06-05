@@ -7,15 +7,20 @@
 #include <iostream>
 #include <fstream>
 
-#define MAX_INPUT_STRING_LENGTH (10*1000)
-
 EnigmaMachine::EnigmaMachine(): rotor_box {}, plugboard {} {}
 
 EnigmaMachine::EnigmaMachine(int rotors[3], int* rotor_pos, char reflector, const std::string& plugboard_settings) {
     rotor_box = RotorBox();
+    plugboard = Plugboard(plugboard_settings);
     rotor_box.set_placed_rotor(rotors, rotor_pos);
     rotor_box.set_reflector(reflector);
-    plugboard.set_pairs(plugboard_settings);
+}
+
+EnigmaMachine::EnigmaMachine(EnigmaConfig config) {
+    rotor_box = RotorBox();
+    plugboard = Plugboard(config.plugboard);
+    rotor_box.set_placed_rotor(config.rotors, config.rotor_pos);
+    rotor_box.set_reflector(config.reflector);
 }
 
 bool EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name){
@@ -43,11 +48,9 @@ bool EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_name, con
 
 std::string EnigmaMachine::encrypt_or_decrypt(const std::string& in){
     std::string out {};
-
     for(char c: in){
         out += EMOps::itoc(convert_char(c));
     }
-
     return out;
 }
 
@@ -61,6 +64,10 @@ int EnigmaMachine::convert_char(char c) {
     return c1;
 }
 
+void EnigmaMachine::set_rotors(const int *rotors) {
+    rotor_box.set_placed_rotor(rotors);
+}
+
 void EnigmaMachine::set_rotor_pos(const int *pos) {
     rotor_box.set_rotor_pos(pos);
 }
@@ -71,4 +78,11 @@ void EnigmaMachine::set_reflector(char c) {
 
 void EnigmaMachine::set_plugboard_settings(const std::string& settings) {
     plugboard.set_pairs(settings);
+}
+
+void EnigmaMachine::set_config(const EnigmaConfig& config){
+    set_rotors(config.rotors);
+    set_rotor_pos(config.rotor_pos);
+    set_reflector(config.reflector);
+    set_plugboard_settings(config.plugboard);
 }

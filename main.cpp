@@ -6,8 +6,6 @@
 #include <cctype>
 #include <ctime>
 
-#define MAX_INPUT_STRING_LENGTH 10000
-
 // return true if no dups found, false otherwise (true is desired generally)
 bool check_char_duping(std::string s1, std::string s2){
     int i {};
@@ -47,118 +45,132 @@ bool fcheck_char_duping(const std::string& file1_n, const std::string& file2_n){
     return true;
 }
 
-void in_con_out(const std::string& in_f, const std::string& out_f, RotorBox rb){
-    std::ifstream in_file {};
-    in_file.open(in_f);
-    char in_buf[MAX_INPUT_STRING_LENGTH] {};
-    in_file.read(in_buf, MAX_INPUT_STRING_LENGTH-1);
-    in_file.close();
-    std::string in_str = EMOps::strip_text(in_buf);
+bool fcheck_identical(const std::string& file1_n, const std::string& file2_n){
+    char buf1[MAX_INPUT_STRING_LENGTH] {};
+    char buf2[MAX_INPUT_STRING_LENGTH] {};
 
-    std::string buffer {};
-    for(char c: in_str){
-        int c1 = rb.convert_int(EMOps::ctoi(c));
-//        std::cout << static_cast<char>(toupper(c1));
-        buffer += EMOps::itoc(c1);
+    std::ifstream file1 {file1_n};
+    file1.read(buf1, MAX_INPUT_STRING_LENGTH);
+
+    std::ifstream file2 {file2_n};
+    file2.read(buf2, MAX_INPUT_STRING_LENGTH);
+
+    std::string sbuf1 {buf1};
+    std::string sbuf2 {buf2};
+
+    unsigned long long length = sbuf1.length() < sbuf2.length() ? sbuf1.length() : sbuf2.length(); // get min length
+    int i {0};
+    while(i < length){
+        if(sbuf1.at(i) != sbuf2.at(i)){
+            return false;
+        }
+        i++;
     }
+    return true;
+}
 
-    std::cout << std::endl;
+void in_out_cycle(EnigmaMachine& em, const std::string& file1_n, const std::string& file2_n, const std::string& file3_n, int* rotor_pos){
+    em.encrypt_or_decrypt_file(file1_n, file2_n);
+    em.set_rotor_pos(rotor_pos);
+    em.encrypt_or_decrypt_file(file2_n, file3_n);
+}
 
-    std::ofstream out_file {};
-    out_file.open(out_f);
-    out_file << buffer;
-    out_file.close();
+void rep_arr(int dest[3], int a, int b, int c){
+    int src[] {a, b, c};
+    for(int i {0}; i < 3; i++) dest[i] = src[i];
+}
+
+bool verification_cycle(EnigmaMachine& em, const std::string& file1_n, const std::string& file2_n, const std::string& file3_n, EnigmaConfig config) {
+    bool status;
+    std::remove(file2_n.c_str()); std::remove(file3_n.c_str()); // remove the output files
+
+    em.set_config(config);
+
+    in_out_cycle(em, file1_n, file2_n, file3_n, config.rotor_pos);
+    status = fcheck_char_duping(file1_n, file2_n);
+    if(!status) return false;
+    status = fcheck_identical(file1_n, file3_n);
+    return status;
+}
+
+void print_status(bool status){
+    if(!status) {
+        std::cout << "Verification failed" << std::endl;
+        exit(1);
+    }else{
+        std::cout << "Verification was successful" << std::endl;
+    }
+}
+
+void format_input_file(const std::string& filename){
+    std::ifstream ifile {filename};
+
+    char buf[MAX_INPUT_STRING_LENGTH] {};
+
+    ifile.read(buf, MAX_INPUT_STRING_LENGTH);
+    ifile.close();
+    std::remove(filename.c_str());
+
+    std::string buf2 = EMOps::strip_text(buf);
+
+    std::ofstream ofile {filename};
+    ofile << buf2;
+    ofile.close();
+}
+
+void print_config(const EnigmaConfig& config){
+    std::cout << "rotors = ";
+    for(int i{}; i < 3; i++) {
+        std::cout << config.rotors[i] << " ";
+    }
+    std::cout << std::endl << "pos = ";
+    for(int i{}; i < 3; i++) {
+        std::cout << config.rotor_pos[i] << " ";
+    }
+    std::cout << std::endl << "ref = " << config.reflector << std::endl;
+    std::cout << "plugboard = " << config.plugboard << std::endl;
 }
 
 int main(){
+    bool status {};
 
-    int rotors[] {2, 1, 3};
-    int rotor_pos[] {3, 5, 7};
+    std::string file1_n {R"(J:\Programming\enigma\cmake-build-debug\text\plaintext.txt)"};
+    std::string file2_n {R"(J:\Programming\enigma\cmake-build-debug\text\encrypted.txt)"};
+    std::string file3_n {R"(J:\Programming\enigma\cmake-build-debug\text\decrypted.txt)"};
 
-    EnigmaMachine EM {rotors, rotor_pos, 'B', "AF TG UJ KM BV ZX"};
+    format_input_file(file1_n);
 
-    EM.encrypt_or_decrypt_file("input.txt", "output_1.txt");
+    EnigmaConfig config {.rotors {2, 1, 3}, .rotor_pos {3, 5, 7}, .reflector = 'A', .plugboard {"TG NJ AZ DF CV PO WM"}};
 
-    EM.set_rotor_pos(rotor_pos);
-    EM.encrypt_or_decrypt_file("output_1.txt", "output_2.txt");
+    EnigmaMachine em {config};
 
-    return 0;
+    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
+    print_status(status);
 
-    Plugboard p1 {"QA WS ED RF TG YH UJ IK OL PM"};
-//    p1.print();
+    rep_arr(config.rotor_pos, 12, 26, 8);
+    rep_arr(config.rotors, 3, 5, 1);
+    config.reflector = 'c';
+    config.plugboard = "LA MD JC NE ZU QO";
+    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
+    print_status(status);
 
-//    std::cout << "num_pairs() = " << p1.num_pairs() << std::endl;
+    rep_arr(config.rotor_pos, 26, 26, 26);
+    rep_arr(config.rotors, 5, 5,5);
+    config.reflector = 'a';
+    config.plugboard = "";
+    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
+    print_status(status);
 
-//    std::cout << '{' + p1.get_pairs() + '}' << std::endl;
+    rep_arr(config.rotor_pos, 1, 26, 26);
+    rep_arr(config.rotors, 5, 4, 3);
+    config.reflector = 'b';
+    config.plugboard = "";
+    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
+    print_status(status);
 
-    /*
-    std::cout << "q -> " << EMOps::itoc(p1.convert_char('q')) << std::endl;
-    std::cout << "w -> " << EMOps::itoc(p1.convert_char('w')) << std::endl;
-    std::cout << "e -> " << EMOps::itoc(p1.convert_char('e')) << std::endl;
-    std::cout << "r -> " << EMOps::itoc(p1.convert_char('r')) << std::endl;
-    std::cout << "u -> " << EMOps::itoc(p1.convert_char('u')) << std::endl << std::endl;
-    std::cout << "t -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('t'))) << std::endl;
-    std::cout << "k -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('k'))) << std::endl;
-    std::cout << "l -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('l'))) << std::endl;
-    std::cout << "p -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('p'))) << std::endl;
-    std::cout << "a -> " << EMOps::itoc(p1.convert_int(EMOps::ctoi('a'))) << std::endl;
-    std::cout << "Done" << std::endl;
-    */
-
-//    Plugboard p2 {};
-//    p2.print();
-
-    std::cout << std::endl;
-//    p1.print();
-    for(int w {1}; w < CONVERSION_MAP_ARRAY_SIZE; w++){
-        std::cout << EMOps::itoc(w) << " -> " ;
-        std::cout << EMOps::itoc(p1.convert_int(w)) << std::endl;
-    }
-    std::cout << "p1.num_pairs() = " << p1.num_pairs() << std::endl;
-
-    return 0;
+    print_config(config);
 
 
-    RotorBox rotor_box {};
-
-    rotor_box.set_placed_rotor(5, 1);
-    rotor_box.set_placed_rotor(4, 2);
-    rotor_box.set_placed_rotor(1, 3);
-    rotor_box.set_reflector('c');
-
-    std::cout << "Testing rotors" << std::endl;
-
-
-    std::cout << "starting" << std::endl;
-//    for(unsigned long long i {0}; i < 1000*1000*10; i++){
-//        rotor_box.convert_int('a');
-//    }
-//    std::cout << "finished" << std::endl;
-
-
-    auto start = std::clock();
-
-    int pos[] {8, 23, 9};
-    rotor_box.set_rotor_pos(pos);
-    in_con_out("input.txt", "output_1.txt", rotor_box);
-
-    rotor_box.set_rotor_pos(pos);
-    Rotor* rs {rotor_box.get_rotors_in_place()};
-    std::cout << "rotors: {" << rs[0].get_position() << ", " << rs[1].get_position() << ", " << rs[2].get_position() << "}" << std::endl;
-
-    in_con_out("output_1.txt", "output_2.txt", rotor_box);
-
-    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
-
-
-//    std::cout << (fcheck_char_duping("input.txt", "output_1.txt") ? "passed" : "false") << " dupe check" << std::endl;
-
-//    std::cout << "rotors: {" << rs[0].get_position() << ", " << rs[1].get_position() << ", " << rs[2].get_position() << "}" << std::endl;
-//    std::cout << "rotation points: {" << rs[0].get_turnover_position() << ", " << rs[1].get_turnover_position() << ", " << rs[2].get_turnover_position() << "}" << std::endl;
-
-    std::cout << "Done" << std::endl;
-
-    // rotor_box.set_rotor_pos(position, num of rotor)
 
     return 0;
 }

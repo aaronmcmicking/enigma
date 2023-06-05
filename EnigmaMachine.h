@@ -20,9 +20,13 @@ private:
 public:
     EnigmaMachine(int rotors[3], int rotor_pos[3], char reflector, const std::string& plugboard);
 
+    EnigmaMachine(EnigmaConfig config);
+
     std::string encrypt_or_decrypt(const std::string& in);
 
     bool encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name); // true if success, false otherwise
+
+    void set_rotors(const int* rotors);
 
     void set_rotor_pos(const int* pos);
 
@@ -30,7 +34,9 @@ public:
 
     void set_plugboard_settings(const std::string& settings);
 
-    void print_settings();
+    void set_config(const EnigmaConfig& config);
+
+//    void print_settings();
 };
 
 

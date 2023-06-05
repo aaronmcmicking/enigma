@@ -8,6 +8,8 @@
 #include <utility>
 #include <string>
 
+#define MAX_INPUT_STRING_LENGTH (100*1000)
+
 /*
  * Helper class that contains general operations relating to character-int conversions and map operations *
  */
