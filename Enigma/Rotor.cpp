@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include "Rotor.h"
-#include "EMOps.h"
+#include "Headers/Rotor.h"
+#include "Headers/EMOps.h"
 
 void Rotor::fill_default_mappings(){
     for(int i {min_position}; i <= max_position; i++){

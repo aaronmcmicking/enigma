@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "Plugboard.h"
-#include "EMOps.h"
-#include "Rotor.h"
+#include "Headers/Plugboard.h"
+#include "Headers/EMOps.h"
+#include "Headers/Rotor.h"
 
 
 Plugboard::Plugboard(): pairs {new int[CONVERSION_MAP_ARRAY_SIZE]} {;

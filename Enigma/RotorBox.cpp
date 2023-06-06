@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include "RotorBox.h"
-#include "RotorMappingBuilder.h"
+#include "Headers/RotorBox.h"
+#include "Headers/RotorMappingBuilder.h"
 
 RotorBox::RotorBox(): reflector {Reflector()} {
     RotorMappingBuilder::set_init(false);

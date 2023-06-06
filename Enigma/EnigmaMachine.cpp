@@ -2,7 +2,7 @@
 // Created by aaron on 2023-06-05.
 //
 
-#include "EnigmaMachine.h"
+#include "Headers/EnigmaMachine.h"
 #include <string>
 #include <iostream>
 #include <fstream>

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <cctype>
 #include <string>
-#include "RotorMappingBuilder.h"
-#include "EMOps.h"
+#include "Headers/RotorMappingBuilder.h"
+#include "Headers/EMOps.h"
 
 bool RotorMappingBuilder::init {false};
 int** RotorMappingBuilder::rotor_mappings {nullptr};

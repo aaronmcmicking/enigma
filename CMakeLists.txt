@@ -3,4 +3,4 @@ project(enigma)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(enigma main.cpp RotorBox.cpp RotorBox.h Rotor.cpp Rotor.h RotorMappingBuilder.cpp RotorMappingBuilder.h Reflector.cpp Reflector.h EMOps.cpp EMOps.h Plugboard.cpp Plugboard.h EnigmaMachine.cpp EnigmaMachine.h)
+add_executable(enigma main.cpp Enigma/RotorBox.cpp Enigma/Headers/RotorBox.h Enigma/Rotor.cpp Enigma/Headers/Rotor.h Enigma/RotorMappingBuilder.cpp Enigma/Headers/RotorMappingBuilder.h Enigma/Reflector.cpp Enigma/Headers/Reflector.h Enigma/EMOps.cpp Enigma/Headers/EMOps.h Enigma/Plugboard.cpp Enigma/Headers/Plugboard.h Enigma/EnigmaMachine.cpp Enigma/Headers/EnigmaMachine.h IndexOfCoincidence/IndexOfCoincidence.cpp IndexOfCoincidence/IndexOfCoincidence.h)

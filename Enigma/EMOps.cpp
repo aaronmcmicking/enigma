@@ -3,7 +3,7 @@
 //
 
 #include <string>
-#include "EMOps.h"
+#include "Headers/EMOps.h"
 
 int EMOps::ctoi(char c) {
     return static_cast<int>(c - 'a' + 1);

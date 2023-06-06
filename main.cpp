@@ -1,7 +1,7 @@
 #include <iostream>
-#include "RotorBox.h"
-#include "Plugboard.h"
-#include "EnigmaMachine.h"
+#include "Enigma/Headers/RotorBox.h"
+#include "Enigma/Headers/Plugboard.h"
+#include "Enigma/Headers/EnigmaMachine.h"
 #include <fstream>
 #include <cctype>
 #include <ctime>
