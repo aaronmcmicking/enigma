@@ -131,12 +131,21 @@ void print_config(const EnigmaConfig& config){
     std::cout << "plugboard = " << config.plugboard << std::endl;
 }
 
+std::string get_path(){
+    std::ifstream path_file {"pathname.txt"};
+    char path_buf[100] {};
+    path_file.read(path_buf, 100);
+    return std::string {path_buf};
+}
+
 int main(){
     bool status {};
 
-    std::string file1_n {R"(J:\Programming\enigma\cmake-build-debug\text\plaintext.txt)"};
-    std::string file2_n {R"(J:\Programming\enigma\cmake-build-debug\text\encrypted.txt)"};
-    std::string file3_n {R"(J:\Programming\enigma\cmake-build-debug\text\decrypted.txt)"};
+    std::string path {get_path()};
+
+    std::string file1_n {path + "plaintext.txt"};
+    std::string file2_n {path + "encrypted.txt"};
+    std::string file3_n {path + "decrypted.txt"};
 
     format_input_file(file1_n);
 

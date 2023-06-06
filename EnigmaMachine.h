@@ -9,6 +9,13 @@
 #include "RotorBox.h"
 #include "Plugboard.h"
 
+typedef struct{
+    int rotors[3];
+    int rotor_pos[3];
+    char reflector;
+    std::string plugboard;
+}EnigmaConfig;
+
 class EnigmaMachine {
 private:
     RotorBox rotor_box;
@@ -20,7 +27,7 @@ private:
 public:
     EnigmaMachine(int rotors[3], int rotor_pos[3], char reflector, const std::string& plugboard);
 
-    EnigmaMachine(EnigmaConfig config);
+    explicit EnigmaMachine(EnigmaConfig config);
 
     std::string encrypt_or_decrypt(const std::string& in);
 

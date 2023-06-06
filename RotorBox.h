@@ -9,13 +9,6 @@
 #include "Rotor.h"
 #include "Reflector.h"
 
-typedef struct{
-    int rotors[3];
-    int rotor_pos[3];
-    char reflector;
-    std::string plugboard;
-}EnigmaConfig;
-
 class RotorBox {
 private:
 
