@@ -9,18 +9,20 @@
 
 EnigmaMachine::EnigmaMachine(): rotor_box {}, plugboard {} {}
 
-EnigmaMachine::EnigmaMachine(int rotors[3], int* rotor_pos, char reflector, const std::string& plugboard_settings) {
+EnigmaMachine::EnigmaMachine(int rotors[3], int* rotor_pos, int* ring_pos, char reflector, const std::string& plugboard_settings) {
     rotor_box = RotorBox();
     plugboard = Plugboard(plugboard_settings);
-    rotor_box.set_placed_rotor(rotors, rotor_pos);
+    rotor_box.set_rotors(rotors, rotor_pos);
+    rotor_box.set_rotor_ring_pos(ring_pos);
     rotor_box.set_reflector(reflector);
 }
 
 EnigmaMachine::EnigmaMachine(EnigmaConfig config) {
     rotor_box = RotorBox();
     plugboard = Plugboard(config.plugboard);
-    rotor_box.set_placed_rotor(config.rotors, config.rotor_pos);
+    rotor_box.set_rotors(config.rotors, config.rotor_pos);
     rotor_box.set_reflector(config.reflector);
+    rotor_box.set_rotor_ring_pos(config.ring_pos);
 }
 
 bool EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name){
@@ -73,11 +75,15 @@ int EnigmaMachine::convert_char(char c) {
 }
 
 void EnigmaMachine::set_rotors(const int *rotors) {
-    rotor_box.set_placed_rotor(rotors);
+    rotor_box.set_rotors(rotors);
 }
 
 void EnigmaMachine::set_rotor_pos(const int *pos) {
     rotor_box.set_rotor_pos(pos);
+}
+
+void EnigmaMachine::set_ring_pos(const int *ring_pos) {
+    rotor_box.set_rotor_ring_pos(ring_pos);
 }
 
 void EnigmaMachine::set_reflector(char c) {
@@ -91,6 +97,7 @@ void EnigmaMachine::set_plugboard_settings(const std::string& settings) {
 void EnigmaMachine::set_config(const EnigmaConfig& config){
     set_rotors(config.rotors);
     set_rotor_pos(config.rotor_pos);
+    set_ring_pos(config.ring_pos);
     set_reflector(config.reflector);
     set_plugboard_settings(config.plugboard);
 }

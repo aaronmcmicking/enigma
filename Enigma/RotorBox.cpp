@@ -21,32 +21,32 @@ RotorBox::RotorBox(): reflector {Reflector()} {
     int* mapVIII = RotorMappingBuilder::get_rotor_mapping(8);
 
     RotorI.set_mappings(mapI);
-    RotorI.set_turnover_position(EMOps::ctoi('r'));
+    RotorI.set_ring_position(EMOps::ctoi('r'));
 
     RotorII.set_mappings(mapII);
-    RotorI.set_turnover_position(EMOps::ctoi('f'));
+    RotorI.set_ring_position(EMOps::ctoi('f'));
 
     RotorIII.set_mappings(mapIII);
-    RotorIII.set_turnover_position(EMOps::ctoi('w'));
+    RotorIII.set_ring_position(EMOps::ctoi('w'));
 
     RotorIV.set_mappings(mapIV);
-    RotorIV.set_turnover_position(EMOps::ctoi('k'));
+    RotorIV.set_ring_position(EMOps::ctoi('k'));
 
     RotorV.set_mappings(mapV);
-    RotorV.set_turnover_position(EMOps::ctoi('a'));
+    RotorV.set_ring_position(EMOps::ctoi('a'));
 
     // these rotors should have 2 turnovers each (at 'a' and 'n'), but this is not currently supported
     RotorVI.set_mappings(mapVI);
     RotorVII.set_mappings(mapVII);
     RotorVIII.set_mappings(mapVIII);
-    RotorVI.set_turnover_position(EMOps::ctoi('a'));
-    RotorVII.set_turnover_position(EMOps::ctoi('a'));
-    RotorVIII.set_turnover_position(EMOps::ctoi('a'));
+    RotorVI.set_ring_position(EMOps::ctoi('a'));
+    RotorVII.set_ring_position(EMOps::ctoi('a'));
+    RotorVIII.set_ring_position(EMOps::ctoi('a'));
 
     rotors_in_place = new Rotor[]{RotorI, RotorII, RotorIII};
 }
 
-Rotor RotorBox::get_rotor(int rotor_number){
+Rotor RotorBox::get_individual_rotor(int rotor_number){
     Rotor rotors[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI,RotorVII, RotorVIII};
     return rotors[rotor_number-1];
 }
@@ -55,20 +55,20 @@ Rotor* RotorBox::get_all_rotors(){
     return new Rotor[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI, RotorVII, RotorVIII};
 }
 
-void RotorBox::set_placed_rotor(int rotor_number, int position){
+void RotorBox::set_rotor(int rotor_number, int position){
     if(rotors_in_place == nullptr) throw std::exception {};
-    rotors_in_place[position-1] = get_rotor(rotor_number);
+    rotors_in_place[position-1] = get_individual_rotor(rotor_number);
 }
 
-void RotorBox::set_placed_rotor(const int *rotors) {
+void RotorBox::set_rotors(const int *rotors) {
     if(rotors_in_place == nullptr) throw std::exception {};
     for(int i {}; i < 3; i++){
-        rotors_in_place[i] = get_rotor(rotors[i]);
+        rotors_in_place[i] = get_individual_rotor(rotors[i]);
     }
 }
 
-void RotorBox::set_placed_rotor(int *rotors, int* pos) {
-    set_placed_rotor(rotors);
+void RotorBox::set_rotors(int *rotors, int* pos) {
+    set_rotors(rotors);
     for(int i {}; i < 3; i++){
         rotors_in_place[i].set_position(pos[i]);
     }
@@ -99,8 +99,6 @@ Rotor* RotorBox::set_rotor_pos(const int pos[3]){
 }
 
 int RotorBox::convert_int(int i) {
-    bool rotate {true};
-    int next_input;
 
     if(rotors_in_place == nullptr){
         std::cout << "rotor array is null" << std::endl;
@@ -108,7 +106,8 @@ int RotorBox::convert_int(int i) {
     }
 
     // iterate through rotors moving towards the reflector
-    next_input = i;
+    bool rotate {true};
+    int next_input {i};
     for(int w {0}; w < 3; w++){
         next_input = rotors_in_place[w].next(next_input, true, rotate);
         rotate = rotors_in_place[w].next_should_turn();
@@ -140,4 +139,16 @@ void RotorBox::set_reflector(Reflector r) {
 
 Reflector RotorBox::get_reflector(){
     return reflector;
+}
+
+Rotor* RotorBox::set_rotor_ring_pos(int ring_pos, int pos) {
+    rotors_in_place[pos].set_ring_position(ring_pos);
+    return rotors_in_place;
+}
+
+Rotor* RotorBox::set_rotor_ring_pos(const int pos[3]) {
+    for(int i {0}; i < 3; i++){
+        rotors_in_place[i].set_ring_position(pos[i]);
+    }
+    return rotors_in_place;
 }

@@ -32,6 +32,9 @@ public:
 
     // allocates, but DOES NOT deallocate memory
     static char* load_from_file(const std::string& filename, int* size);
+
+private:
+    static int next_rotors();
 };
 
 

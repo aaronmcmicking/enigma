@@ -16,21 +16,21 @@ private:
 public:
     static const int max_position {26};
     static const int min_position {1};
-    int turnover_position;
+    int ring_position;
     bool turnover_flag {false}; // true if the next rotor should turn, false otherwise
     int mappings[CONVERSION_MAP_ARRAY_SIZE]; // 1-indexed (ignore position 0)
 
     Rotor();
 
-    Rotor(int initial_position, int turnover_pos);
+    Rotor(int initial_position, int ring_pos);
 
-    Rotor(int initial_position, int turnover_pos, const int map[CONVERSION_MAP_ARRAY_SIZE]);
+    Rotor(int initial_position, int ring_pos, const int map[CONVERSION_MAP_ARRAY_SIZE]);
 
     [[nodiscard]] int get_position() const;
 
-    [[nodiscard]] int get_turnover_position() const;
+    [[nodiscard]] int get_ring_position() const;
 
-    void set_turnover_position(int new_turnover_pos);
+    void set_ring_position(int new_ring_position);
 
     void set_position(int new_pos);
 

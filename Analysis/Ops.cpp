@@ -46,7 +46,7 @@ char Ops::itoc(int i) { return static_cast<char>(i + 'a' - 1); }
 char* Ops::load_from_file(const std::string& filename, int* size){
     Ops::format_input_file(filename);
 
-    static char buf[MAX_INPUT_STRING_LENGTH] {0};
+    char* buf {new char[MAX_INPUT_STRING_LENGTH]};
     std::ifstream file {filename};
     file.read(buf, MAX_INPUT_STRING_LENGTH-1);
 

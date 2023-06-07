@@ -12,6 +12,7 @@
 typedef struct{
     int rotors[3];
     int rotor_pos[3];
+    int ring_pos[3];
     char reflector;
     std::string plugboard;
 }EnigmaConfig;
@@ -25,7 +26,7 @@ private:
 
     int convert_char(char c);
 public:
-    EnigmaMachine(int rotors[3], int rotor_pos[3], char reflector, const std::string& plugboard);
+    EnigmaMachine(int rotors[3], int rotor_pos[3], int ring_pos[3], char reflector, const std::string& plugboard);
 
     explicit EnigmaMachine(EnigmaConfig config);
 
@@ -39,6 +40,8 @@ public:
 
     void set_rotor_pos(const int* pos);
 
+    void set_ring_pos(const int* ring_pos);
+
     void set_reflector(char c);
 
     void set_plugboard_settings(const std::string& settings);
@@ -48,7 +51,6 @@ public:
     void print_config();
 
     static void print_config_object(const EnigmaConfig& config);
-//    void print_settings();
 };
 
 

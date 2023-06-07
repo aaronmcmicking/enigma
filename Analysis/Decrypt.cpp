@@ -7,6 +7,26 @@
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
 #include "../Enigma/Headers/EnigmaMachine.h"
 
+#include <vector>
+
+void generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
+    for(int i {1}; i <= 5; i++){
+        for(int j {1}; j <= 5; j++){
+            for(int w {1}; w <= 5; w++){
+                // get unique arrangements only
+                if(i != j && i != w && j != w){
+                    auto* n = new std::vector<int>{i, j, w};
+                    permutations.push_back(*n);
+                }
+            }
+        }
+    }
+}
+
+std::vector<int> next_rotors(std::vector<std::vector<int>>& permutations, int pos){
+    return permutations.at(pos);
+}
+
 std::string itor(int i){
     std::string str {};
     switch(i){
@@ -43,34 +63,38 @@ std::string itor(int i){
 
 void Decrypt::decrypt(Decrypt::Method method) {
     EnigmaConfig config {.rotors {1, 2, 3},
-                         .rotor_pos{1, 1, 1},
+                         .rotor_pos{12, 25, 7},
+                         .ring_pos{8, 19, 0},
                          .reflector ='B',
-                         .plugboard {""}
+                         .plugboard {"QM AN SB DP OI CF RK UE HY"}
     };
 
     EnigmaMachine em {config};
 
     long double best_score {0};
     long double cur_score {0};
-    EnigmaConfig best_config {{1, 1, 1}, {1, 1, 1}, 'a', ""};
+    EnigmaConfig best_config {{1, 1, 1}, {1, 1, 1}, {0, 0, 0}, 'a', ""};
 
     int d_size {};
     char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
     char* d_text = new char[d_size];
 
-    for(int r1 {1}; r1 <= 5; r1++) {
-        for (int r2{1}; r2 <= 5; r2++) {
-            for (int r3{1}; r3 <= 5; r3++) {
-                for (int r1_p{1}; r1_p <= 26; r1_p++) {
-                    for (int r2_p{1}; r2_p <= 26; r2_p++) {
-                        for (int r3_p{1}; r3_p <= 26; r3_p++) {
-//                            for (char ref{'a'}; ref <= 'c'; ref++) {
-                                if(r1_p == 1 && r2_p == 1 && r3_p == 1) {
-                                    std::cout << itor(r1) << ", " << itor(r2) << ", " << itor(r3) << std::endl;
-                                }
-                                Ops::rep_arr3(config.rotors, r1, r2, r3);
+    std::vector<std::vector<int>> rotor_perms {};
+    generate_rotor_permutations(rotor_perms);
+
+    for(std::vector<int> cur_rotor_pos: rotor_perms){
+        for (int r1_p{1}; r1_p <= 26; r1_p++) {
+            for (int r2_p{1}; r2_p <= 26; r2_p++) {
+                for (int r3_p{1}; r3_p <= 26; r3_p++) {
+                    for (char ref{'a'}; ref <= 'c'; ref++) {
+                        if(r1_p == 1 && r2_p == 1 && r3_p == 1) {
+                            if(ref == 'a')
+                                std::cout << itor(cur_rotor_pos[0]) << ", " << itor(cur_rotor_pos[1]) << ", " << itor(cur_rotor_pos[2]) << std::endl;
+                        }
+//                                Ops::rep_arr3(config.rotors, r1, r2, r3);
+                                Ops::rep_arr3(config.rotors, cur_rotor_pos[0], cur_rotor_pos[1], cur_rotor_pos[2]);
                                 Ops::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
-//                                config.reflector = ref;
+                                config.reflector = ref;
 
                                 em.set_config(config);
 
@@ -89,7 +113,7 @@ void Decrypt::decrypt(Decrypt::Method method) {
 
                                 if (cur_score > best_score) {
                                     best_score = cur_score;
-                                    Ops::rep_arr3(best_config.rotors, r1, r2, r3);
+                                    Ops::rep_arr3(best_config.rotors, cur_rotor_pos[0], cur_rotor_pos[1], cur_rotor_pos[2]);
                                     Ops::rep_arr3(best_config.rotor_pos, r1_p, r2_p, r3_p);
 //                                    best_config.reflector = ref;
 
@@ -103,13 +127,11 @@ void Decrypt::decrypt(Decrypt::Method method) {
                                     ofile1.close();
 //                                    best_config.plugboard = something
                                 } // computing score
-//                            } // ref
+                            } // ref
                         } // r3 pos
                     } // r2 pos
                 } // r1 pos
-            } // r3
-        } // r2
-    } // r1
+            }
 
     EnigmaMachine::print_config_object(best_config);
     std::ofstream ofile {R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted.txt)"};
@@ -123,8 +145,30 @@ void Decrypt::decrypt(Decrypt::Method method) {
 
 
 int main(){
-    EnigmaConfig config {.rotors {1, 2, 3},
+//    std::vector<std::vector<int>> permutations;
+//
+//    generate_rotor_permutations(permutations);
+//
+//    int count {0};
+//
+//    // Printing the generated permutations
+//    for (const auto& permutation : permutations) {
+//        for (int i = 0; i < 3; i++) {
+//            std::cout << permutation[i] << " ";
+//        }
+//        std::cout << std::endl;
+//        count++;
+//    }
+//    std::cout << count << std::endl;
+//
+//    std::cout << "perm size = " << permutations.size() << std::endl;
+//
+//    return 0;
+
+    EnigmaConfig config {
+            .rotors {1, 2, 3},
             .rotor_pos{1, 1, 1},
+            .ring_pos{0, 0, 0},
             .reflector ='A',
             .plugboard {""}
     };

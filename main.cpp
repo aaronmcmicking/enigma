@@ -104,6 +104,10 @@ void print_config(const EnigmaConfig& config){
     for(int i{}; i < 3; i++) {
         std::cout << config.rotor_pos[i] << " ";
     }
+    std::cout << std::endl << "ring pos = ";
+    for(int i{}; i < 3; i++) {
+        std::cout << config.ring_pos[i] << " ";
+    }
     std::cout << std::endl << "ref = " << config.reflector << std::endl;
     std::cout << "plugboard = " << config.plugboard << std::endl;
 }

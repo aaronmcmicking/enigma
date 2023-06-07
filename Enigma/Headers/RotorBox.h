@@ -29,15 +29,15 @@ private:
 public:
     RotorBox();
 
-    Rotor get_rotor(int rotor_number);
+    Rotor get_individual_rotor(int rotor_number);
 
     Rotor* get_all_rotors();
 
-    void set_placed_rotor(int rotor_number, int position);
+    void set_rotor(int rotor_number, int position);
 
-    void set_placed_rotor(const int* rotors);
+    void set_rotors(const int* rotors);
 
-    void set_placed_rotor(int* rotors, int* pos);
+    void set_rotors(int* rotors, int* pos);
 
     int convert_int(int i);
 
@@ -50,6 +50,10 @@ public:
 
     // returns pointer to the rotor array (rotors are stored by value)
     Rotor* set_rotor_pos(const int pos[3]);
+
+    Rotor* set_rotor_ring_pos(int ring_pos, int pos);
+
+    Rotor* set_rotor_ring_pos(const int pos[3]);
 
     void set_reflector(char c);
 

@@ -12,16 +12,16 @@ void Rotor::fill_default_mappings(){
     }
 }
 
-Rotor::Rotor(): position {min_position}, turnover_position {max_position}, mappings {} {
+Rotor::Rotor(): position {min_position}, ring_position {max_position}, mappings {} {
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int turnover_pos): position {initial_position}, turnover_position {turnover_pos}, mappings {} {
+Rotor::Rotor(int initial_position, int ring_pos): position {initial_position}, ring_position {ring_pos}, mappings {} {
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int turnover_pos, const int map[CONVERSION_MAP_ARRAY_SIZE])
-        : position {initial_position}, turnover_position {turnover_pos}, mappings {}
+Rotor::Rotor(int initial_position, int ring_pos, const int map[CONVERSION_MAP_ARRAY_SIZE])
+        : position {initial_position}, ring_position {ring_pos}, mappings {}
 {
     for(int i {min_position}; i <= max_position; i++){
         mappings[i] = map[i];
@@ -32,12 +32,12 @@ Rotor::Rotor(int initial_position, int turnover_pos, const int map[CONVERSION_MA
     return position;
 }
 
-[[nodiscard]] int Rotor::get_turnover_position() const{
-    return turnover_position;
+[[nodiscard]] int Rotor::get_ring_position() const{
+    return ring_position;
 }
 
-void Rotor::set_turnover_position(int new_turnover_pos){
-    turnover_position = new_turnover_pos;
+void Rotor::set_ring_position(int new_ring_position){
+    if(EMOps::is_in_range(new_ring_position, 1, 26)) { ring_position = new_ring_position; }
 }
 
 void Rotor::set_position(int new_pos){
@@ -63,7 +63,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     // the rotors should turn before the signal passes
     if(should_rotate) {
         // turn the next rotors if needed
-        if(position == turnover_position){
+        if(position == ring_position){
             turnover_flag = true;
         }
         if(position == max_position){
