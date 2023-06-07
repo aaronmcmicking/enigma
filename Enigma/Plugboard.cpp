@@ -35,7 +35,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
     int count {};
     for(char c {'a'}; c <= 'z'; c++){
         count = 0;
-        for(int i {0}; i < str.length(); i++){
+        for(uint i {0}; i < str.length(); i++){
             if(str.at(i) == c) {
                 count++;
             }else if(!isalpha(str.at(i)) && !isspace(str.at(i)) ){
@@ -50,7 +50,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
     } // for all chars in alphabet
 
     // checking format
-    int w {};
+    uint w {};
     while(w < str.length()){
         char a, b, c;
         a = str.at(w++);
@@ -73,7 +73,7 @@ void Plugboard::set_pairs(const std::string &new_pairs) {
     std::string str_copy = new_pairs;
 
     // send all chars to lowercase
-    for (int i {0}; i < str_copy.length(); i++){
+    for (uint i {0}; i < str_copy.length(); i++){
         str_copy.at(i) = static_cast<char>(tolower(str_copy.at(i)));
     }
 
@@ -92,7 +92,7 @@ void Plugboard::parse_and_set_pairs(std::string &str) {
         pairs[w] = w;
     }
 
-    int i {};
+    uint i {};
     while(i < str.length()){
         int index;
         index = EMOps::ctoi(str.at(i));

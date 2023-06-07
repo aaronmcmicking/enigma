@@ -12,11 +12,11 @@ void Rotor::fill_default_mappings(){
     }
 }
 
-Rotor::Rotor(): mappings {}, position {min_position}, turnover_position {max_position} {
+Rotor::Rotor(): position {min_position}, turnover_position {max_position}, mappings {} {
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int turnover_pos): mappings {}, position {initial_position}, turnover_position {turnover_pos}{
+Rotor::Rotor(int initial_position, int turnover_pos): position {initial_position}, turnover_position {turnover_pos}, mappings {} {
     fill_default_mappings();
 }
 
@@ -94,7 +94,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
         output_relative_to_current_pos = i;
     }
 
-    // calculate the normalized output value (ie. the number of steps from the 'start' position that the letter output at
+    // calculate_f the normalized output value (ie. the number of steps from the 'start' position that the letter output at
     if(EMOps::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
         return max_position - position + output_relative_to_current_pos + 1;
     }else{

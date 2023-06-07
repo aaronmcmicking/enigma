@@ -29,7 +29,9 @@ public:
 
     explicit EnigmaMachine(EnigmaConfig config);
 
-    std::string encrypt_or_decrypt(const std::string& in);
+    std::string encrypt_or_decrypt_str(const std::string& in);
+
+    void encrypt_or_decrypt_arr(char* dest, char* src);
 
     bool encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name); // true if success, false otherwise
 

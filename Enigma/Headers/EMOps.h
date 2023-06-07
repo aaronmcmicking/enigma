@@ -12,6 +12,10 @@
 #define MAX_INPUT_STRING_LENGTH (40*1000)
 #endif
 
+#ifndef uint
+#define uint unsigned int
+#endif
+
 class EMOps { // "EMOps" = Enigma Machine Operations
 public:
     static int ctoi(char c);

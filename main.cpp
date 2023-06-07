@@ -5,7 +5,7 @@
 
 // return true if no dups found, false otherwise (true is desired generally)
 bool check_char_duping(std::string s1, std::string s2){
-    int i {};
+    uint i {};
     unsigned long long const s1_l {s1.length()};
     unsigned long long const s2_l {s2.length()};
 
@@ -32,7 +32,7 @@ bool fcheck_char_duping(const std::string& file1_n, const std::string& file2_n){
     std::string sbuf2 {buf2};
 
     unsigned long long length = sbuf1.length() < sbuf2.length() ? sbuf1.length() : sbuf2.length(); // get min length
-    int i {0};
+    uint i {0};
     while(i < length){
         if(sbuf1.at(i) == sbuf2.at(i)){
             return false;
@@ -56,7 +56,7 @@ bool fcheck_identical(const std::string& file1_n, const std::string& file2_n){
     std::string sbuf2 {buf2};
 
     unsigned long long length = sbuf1.length() < sbuf2.length() ? sbuf1.length() : sbuf2.length(); // get min length
-    int i {0};
+    uint i {0};
     while(i < length){
         if(sbuf1.at(i) != sbuf2.at(i)){
             return false;

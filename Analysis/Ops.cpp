@@ -39,10 +39,15 @@ std::string Ops::format_text(const std::string& str){
     return dest;
 }
 
-int Ops::ctoi(char c) {
-    return static_cast<int>(c - 'a' + 1);
-}
+int Ops::ctoi(char c) { return static_cast<int>(c - 'a' + 1); }
 
-char Ops::itoc(int i) {
-    return static_cast<char>(i + 'a' - 1);
+char Ops::itoc(int i) { return static_cast<char>(i + 'a' - 1); }
+
+char* Ops::load_from_file(const std::string& filename){
+    Ops::format_input_file(filename);
+
+    static char buf[MAX_INPUT_STRING_LENGTH] {0};
+    std::ifstream file {filename};
+    file.read(buf, MAX_INPUT_STRING_LENGTH-1);
+    return buf;
 }

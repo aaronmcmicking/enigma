@@ -13,6 +13,7 @@ public:
     };
 
     static void decrypt(Method method);
+
 };
 
 

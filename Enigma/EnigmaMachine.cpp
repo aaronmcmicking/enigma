@@ -46,12 +46,18 @@ bool EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_name, con
     return true;
 }
 
-std::string EnigmaMachine::encrypt_or_decrypt(const std::string& in){
+std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
     std::string out {};
     for(char c: in){
         out += EMOps::itoc(convert_char(c));
     }
     return out;
+}
+
+void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src) {
+    for(uint i {}; src[i] != '\0'; i++){
+        dest[i] = EMOps::itoc(convert_char(src[i]));
+    }
 }
 
 int EnigmaMachine::convert_char(char c) {

@@ -8,7 +8,13 @@
 #include <iostream>
 #include <fstream>
 
+#ifndef MAX_INPUT_STRING_LENGTH
 #define MAX_INPUT_STRING_LENGTH (40*1000)
+#endif
+
+#ifndef uint
+#define uint unsigned int
+#endif
 
 class Ops {
 public:
@@ -23,6 +29,9 @@ public:
     static int ctoi(char c);
 
     static char itoc(int i);
+
+    // allocates, but DOES NOT deallocate memory
+    static char* load_from_file(const std::string& filename);
 };
 
 
