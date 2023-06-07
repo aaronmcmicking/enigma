@@ -86,3 +86,21 @@ void EnigmaMachine::set_config(const EnigmaConfig& config){
     set_reflector(config.reflector);
     set_plugboard_settings(config.plugboard);
 }
+
+void EnigmaMachine::print_config_object(const EnigmaConfig& config){
+    std::cout << "rotors = ";
+    for(int i{}; i < 3; i++) {
+        std::cout << config.rotors[i] << " ";
+    }
+    std::cout << std::endl << "pos = ";
+    for(int i{}; i < 3; i++) {
+        std::cout << config.rotor_pos[i] << " ";
+    }
+    std::cout << std::endl << "ref = " << config.reflector << std::endl;
+    std::cout << "plugboard = " << config.plugboard << std::endl;
+}
+
+void EnigmaMachine::print_config(){
+    rotor_box.set_reflector(rotor_box.get_reflector());
+    std::cout << "IMPLEMENT ME" << std::endl;
+}

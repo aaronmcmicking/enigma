@@ -53,6 +53,8 @@ public:
 
     void set_reflector(char c);
 
+    void set_reflector(Reflector r);
+
     Reflector get_reflector();
 };
 

@@ -8,11 +8,9 @@
 #include <utility>
 #include <string>
 
-#define MAX_INPUT_STRING_LENGTH (100*1000)
-
-/*
- * Helper class that contains general operations relating to character-int conversions and map operations *
- */
+#ifndef MAX_INPUT_STRING_LENGTH
+#define MAX_INPUT_STRING_LENGTH (40*1000)
+#endif
 
 class EMOps { // "EMOps" = Enigma Machine Operations
 public:

@@ -1,10 +1,7 @@
 #include <iostream>
-#include "Enigma/Headers/RotorBox.h"
-#include "Enigma/Headers/Plugboard.h"
 #include "Enigma/Headers/EnigmaMachine.h"
+#include "Analysis/Ops.h"
 #include <fstream>
-#include <cctype>
-#include <ctime>
 
 // return true if no dups found, false otherwise (true is desired generally)
 bool check_char_duping(std::string s1, std::string s2){
@@ -75,10 +72,6 @@ void in_out_cycle(EnigmaMachine& em, const std::string& file1_n, const std::stri
     em.encrypt_or_decrypt_file(file2_n, file3_n);
 }
 
-void rep_arr(int dest[3], int a, int b, int c){
-    int src[] {a, b, c};
-    for(int i {0}; i < 3; i++) dest[i] = src[i];
-}
 
 bool verification_cycle(EnigmaMachine& em, const std::string& file1_n, const std::string& file2_n, const std::string& file3_n, EnigmaConfig config) {
     bool status;
@@ -102,22 +95,6 @@ void print_status(bool status){
     }
 }
 
-void format_input_file(const std::string& filename){
-    std::ifstream ifile {filename};
-
-    char buf[MAX_INPUT_STRING_LENGTH] {};
-
-    ifile.read(buf, MAX_INPUT_STRING_LENGTH);
-    ifile.close();
-    std::remove(filename.c_str());
-
-    std::string buf2 = EMOps::strip_text(buf);
-
-    std::ofstream ofile {filename};
-    ofile << buf2;
-    ofile.close();
-}
-
 void print_config(const EnigmaConfig& config){
     std::cout << "rotors = ";
     for(int i{}; i < 3; i++) {
@@ -138,6 +115,8 @@ std::string get_path(){
     return std::string {path_buf};
 }
 
+//#define USING_MAINCPP
+#ifdef USING_MAINCPP
 int main(){
     bool status {};
 
@@ -156,22 +135,22 @@ int main(){
     status = verification_cycle(em, file1_n, file2_n, file3_n, config);
     print_status(status);
 
-    rep_arr(config.rotor_pos, 12, 26, 8);
-    rep_arr(config.rotors, 3, 5, 1);
+    rep_arr3(config.rotor_pos, 12, 26, 8);
+    rep_arr3(config.rotors, 3, 5, 1);
     config.reflector = 'c';
     config.plugboard = "LA MD JC NE ZU QO";
     status = verification_cycle(em, file1_n, file2_n, file3_n, config);
     print_status(status);
 
-    rep_arr(config.rotor_pos, 26, 26, 26);
-    rep_arr(config.rotors, 5, 5,5);
+    rep_arr3(config.rotor_pos, 26, 26, 26);
+    rep_arr3(config.rotors, 5, 5, 5);
     config.reflector = 'a';
     config.plugboard = "";
     status = verification_cycle(em, file1_n, file2_n, file3_n, config);
     print_status(status);
 
-    rep_arr(config.rotor_pos, 1, 26, 26);
-    rep_arr(config.rotors, 5, 4, 3);
+    rep_arr3(config.rotor_pos, 1, 26, 26);
+    rep_arr3(config.rotors, 5, 4, 3);
     config.reflector = 'b';
     config.plugboard = "";
     status = verification_cycle(em, file1_n, file2_n, file3_n, config);
@@ -183,3 +162,4 @@ int main(){
 
     return 0;
 }
+#endif

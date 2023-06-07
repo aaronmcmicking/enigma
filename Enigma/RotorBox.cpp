@@ -134,6 +134,10 @@ void RotorBox::set_reflector(char c){
     reflector.set_reflector(c);
 }
 
+void RotorBox::set_reflector(Reflector r) {
+
+}
+
 Reflector RotorBox::get_reflector(){
     return reflector;
 }

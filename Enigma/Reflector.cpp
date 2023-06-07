@@ -15,6 +15,12 @@ void Reflector::set_reflector(char c) {
     mapping = get_mapping(c);
 }
 
+void Reflector::set_reflector(Reflector r) {
+    for(int i {}; i < CONVERSION_MAP_ARRAY_SIZE; i++) {
+        mapping[i] = r.mapping[i];
+    }
+}
+
 int Reflector::reflect(int in) {
     return mapping[in];
 }

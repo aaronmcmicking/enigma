@@ -17,6 +17,8 @@ public:
 
     void set_reflector(char c);
 
+    void set_reflector(Reflector r);
+
     int reflect(int in);
 
 private:

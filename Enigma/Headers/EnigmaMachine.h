@@ -43,6 +43,9 @@ public:
 
     void set_config(const EnigmaConfig& config);
 
+    void print_config();
+
+    static void print_config_object(const EnigmaConfig& config);
 //    void print_settings();
 };
 
