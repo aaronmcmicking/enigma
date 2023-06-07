@@ -54,9 +54,11 @@ std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
     return out;
 }
 
-void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src) {
-    for(uint i {}; src[i] != '\0'; i++){
+void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src, int size) {
+    int i {};
+    while(i < size && src[i] != '\0'){
         dest[i] = EMOps::itoc(convert_char(src[i]));
+        i++;
     }
 }
 

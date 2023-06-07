@@ -31,7 +31,7 @@ public:
 
     std::string encrypt_or_decrypt_str(const std::string& in);
 
-    void encrypt_or_decrypt_arr(char* dest, char* src);
+    void encrypt_or_decrypt_arr(char* dest, char* src, int size);
 
     bool encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name); // true if success, false otherwise
 

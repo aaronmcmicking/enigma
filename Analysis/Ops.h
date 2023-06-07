@@ -31,7 +31,7 @@ public:
     static char itoc(int i);
 
     // allocates, but DOES NOT deallocate memory
-    static char* load_from_file(const std::string& filename);
+    static char* load_from_file(const std::string& filename, int* size);
 };
 
 
