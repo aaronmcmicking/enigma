@@ -10,26 +10,20 @@
 
 #define MAX_INPUT_STRING_LENGTH (40*1000)
 
-void format_input_file(const std::string& filename);
+class Ops {
+public:
+    static void format_input_file(const std::string &filename);
 
-void rep_arr3(int dest[3], const int* src);
+    static void rep_arr3(int dest[3], const int *src);
 
-void rep_arr3(int dest[3], int a, int b, int c);
+    static void rep_arr3(int dest[3], int a, int b, int c);
 
-std::string format_text(const std::string& str);
+    static std::string format_text(const std::string &str);
 
-#ifndef ENIGMA_OPS_H
-int ctoi(char c);
+    static int ctoi(char c);
 
-char itoc(int i);
-#endif
+    static char itoc(int i);
+};
 
-// -----------------------------------------------------
-
-#ifdef OPS_IMPLEMENTATION
-
-
-
-#endif // OPS_IMPLEMENTATION
 
 #endif //ENIGMA_OPS_H

@@ -8,7 +8,7 @@
 #include "..\Ops.h"
 
 long double IndexOfCoincidence::calculate(const std::string& filename){
-    format_input_file(filename);
+    Ops::format_input_file(filename);
 
     char buf[MAX_BUFFER_LENGTH] {0};
     std::ifstream file {filename};
@@ -19,9 +19,9 @@ long double IndexOfCoincidence::calculate(const std::string& filename){
     int count {0};
     for(int i {1}; buf[i] != 0; i++){
         count++;
-        int c {ctoi(buf[i])};
+        int c {Ops::ctoi(buf[i])};
         if(c < 1 || c > 26) std::cout << "BAD INDEX (" << c << ")" << std::endl;
-        else appearances[ctoi(buf[i])] += 1;
+        else appearances[Ops::ctoi(buf[i])] += 1;
     }
 
     std::cout << "count = " << count << std::endl;
