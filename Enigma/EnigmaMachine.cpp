@@ -119,3 +119,11 @@ void EnigmaMachine::print_config(){
     rotor_box.set_reflector(rotor_box.get_reflector());
     std::cout << "IMPLEMENT ME" << std::endl;
 }
+
+void EnigmaMachine::copy_config(EnigmaConfig &dest, EnigmaConfig &src) {
+    EMOps::rep_arr3(dest.rotors, src.rotors);
+    EMOps::rep_arr3(dest.rotor_pos, src.rotor_pos);
+    EMOps::rep_arr3(dest.ring_pos, src.ring_pos);
+    dest.reflector = src.reflector;
+    dest.plugboard = src.plugboard;
+}

@@ -51,6 +51,8 @@ public:
     void print_config();
 
     static void print_config_object(const EnigmaConfig& config);
+
+    static void copy_config(EnigmaConfig& dest, EnigmaConfig& src);
 };
 
 

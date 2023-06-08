@@ -26,6 +26,9 @@ public:
 
     static std::string strip_text(const std::string& str);
 
+    static void rep_arr3(int dest[3], const int* src);
+
+    static void rep_arr3(int dest[3], int a, int b, int c);
 };
 
 

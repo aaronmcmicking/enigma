@@ -26,3 +26,12 @@ std::string EMOps::strip_text(const std::string& str){
 bool EMOps::is_in_range(int num, int min, int max){
     return (num >= min) && (num <= max);
 }
+
+void EMOps::rep_arr3(int dest[3], const int* src){
+    for(int i {0}; i < 3; i++) dest[i] = src[i];
+}
+
+void EMOps::rep_arr3(int dest[3], int a, int b, int c){
+    int src[] {a, b, c};
+    rep_arr3(dest, src);
+}

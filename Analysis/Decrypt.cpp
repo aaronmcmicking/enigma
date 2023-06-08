@@ -5,11 +5,8 @@
 #include <iostream>
 #include "Decrypt.h"
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
-#include "../Enigma/Headers/EnigmaMachine.h"
 
-#include <vector>
-
-void generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
+void Decrypt::generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
     for(int i {1}; i <= 5; i++){
         for(int j {1}; j <= 5; j++){
             for(int w {1}; w <= 5; w++){
@@ -23,42 +20,84 @@ void generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
     }
 }
 
-std::vector<int> next_rotors(std::vector<std::vector<int>>& permutations, int pos){
-    return permutations.at(pos);
+std::string Decrypt::itor(int i){
+    if(!EMOps::is_in_range(i, 1, 8)){
+        return "INVALID";
+    }
+    std::string str[] {"I", "II", "III", "IV", "V", "VI", "VII", "VIII"};
+    return str[i-1];
 }
 
-std::string itor(int i){
-    std::string str {};
-    switch(i){
-        case 1:
-            str = "I";
-            break;
-        case 2:
-            str = "II";
-            break;
-        case 3:
-            str = "III";
-            break;
-        case 4:
-            str = "IV";
-            break;
-        case 5:
-            str = "V";
-            break;
-        case 6:
-            str = "VI";
-            break;
-        case 7:
-            str = "VII";
-            break;
-        case 8:
-            str = "VIII";
-            break;
-        default:
-            str = "UNVALID";
-            break;
-    }
-    return str;
+void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text,
+                          std::list<std::pair<int *, int *>> &best_rotors) {
+    (void) em;
+    (void) method;
+    (void) text;
+    (void) best_rotors;
+
+
+    std::vector<std::vector<int>> rotor_perms {};
+    generate_rotor_permutations(rotor_perms);
+
+    EnigmaConfig config {
+        .rotors {1, 2, 3},
+        .rotor_pos{1, 1, 1},
+        .ring_pos{0, 0, 0},
+        .reflector = 'a',
+        .plugboard {""}
+    };
+
+    EnigmaConfig best_config {};
+    std::queue<std::pair<int *, int *>> cumulative_best_rotors;
+
+    int d_size {};
+    char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
+    char* d_text = new char[d_size];
+
+    long double cur_fitness {};
+    long double best_fitness {};
+
+    for(std::vector<int> cur_rotors: rotor_perms){
+        for(int r1_p {1}; r1_p <= 26; r1_p++){
+            Ops::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
+            for(int r2_p {1}; r2_p <= 26; r2_p++){
+                for(int r3_p {1}; r3_p <= 26; r3_p++){
+                    for(char ref {'a'}; ref <= 'c'; ref++){
+                        Ops::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
+                        config.reflector = ref;
+
+                        em.set_config(config);
+
+                        em.encrypt_or_decrypt_arr(d_text, e_text, d_size);
+
+                        switch (method) {
+                            case (Method::INDEX_OF_COINCIDENCE):
+                                cur_fitness = IndexOfCoincidence::calculate(d_text);
+                                break;
+                            default:
+                                std::cout << "decrypt: no method selected" << std::endl;
+                                return;
+                        }
+
+                        if(cur_fitness >= best_fitness){
+                            EnigmaMachine::copy_config(best_config, config);
+
+                        }
+
+                    } // ref
+                } // r3_p
+            } // r2_p
+        } // r1_p
+    } // rotor perms
+
+}
+
+void Decrypt::find_rings(EnigmaMachine em, Decrypt::Method method, const char *text,
+                         std::vector<std::vector<int>> &best_ring_settings) {
+    (void) em;
+    (void) method;
+    (void) text;
+    (void) best_ring_settings;
 }
 
 void Decrypt::decrypt(Decrypt::Method method) {
@@ -145,26 +184,6 @@ void Decrypt::decrypt(Decrypt::Method method) {
 
 
 int main(){
-//    std::vector<std::vector<int>> permutations;
-//
-//    generate_rotor_permutations(permutations);
-//
-//    int count {0};
-//
-//    // Printing the generated permutations
-//    for (const auto& permutation : permutations) {
-//        for (int i = 0; i < 3; i++) {
-//            std::cout << permutation[i] << " ";
-//        }
-//        std::cout << std::endl;
-//        count++;
-//    }
-//    std::cout << count << std::endl;
-//
-//    std::cout << "perm size = " << permutations.size() << std::endl;
-//
-//    return 0;
-
     EnigmaConfig config {
             .rotors {1, 2, 3},
             .rotor_pos{1, 1, 1},
