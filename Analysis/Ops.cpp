@@ -43,7 +43,7 @@ int Ops::ctoi(char c) { return static_cast<int>(c - 'a' + 1); }
 
 char Ops::itoc(int i) { return static_cast<char>(i + 'a' - 1); }
 
-char* Ops::load_from_file(const std::string& filename, int* size){
+char* Ops::load_from_file(const std::string& filename, long* size){
     Ops::format_input_file(filename);
 
     char* buf {new char[MAX_INPUT_STRING_LENGTH]};

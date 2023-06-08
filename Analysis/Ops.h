@@ -31,10 +31,8 @@ public:
     static char itoc(int i);
 
     // allocates, but DOES NOT deallocate memory
-    static char* load_from_file(const std::string& filename, int* size);
+    static char* load_from_file(const std::string& filename, long* size);
 
-private:
-    static int next_rotors();
 };
 
 

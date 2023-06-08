@@ -10,8 +10,7 @@ void Decrypt::generate_rotor_permutations(std::vector<std::vector<int>>& permuta
     for(int i {1}; i <= 5; i++){
         for(int j {1}; j <= 5; j++){
             for(int w {1}; w <= 5; w++){
-                // get unique arrangements only
-                if(i != j && i != w && j != w){
+                if(i != j && i != w && j != w){ // get unique arrangements only
                     auto* n = new std::vector<int>{i, j, w};
                     permutations.push_back(*n);
                 }
@@ -28,14 +27,8 @@ std::string Decrypt::itor(int i){
     return str[i-1];
 }
 
-void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text,
-                          std::list<std::pair<int *, int *>> &best_rotors) {
-    (void) em;
-    (void) method;
-    (void) text;
-    (void) best_rotors;
-
-
+void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text, long text_size,
+                          std::list<std::pair<std::pair<int *, int *>, long double>>& best_rotors) {
     std::vector<std::vector<int>> rotor_perms {};
     generate_rotor_permutations(rotor_perms);
 
@@ -48,11 +41,9 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text,
     };
 
     EnigmaConfig best_config {};
-    std::queue<std::pair<int *, int *>> cumulative_best_rotors;
+    std::queue<std::pair<std::pair<int *, int *>, long double>> cumulative_best_rotors; // contains pair<rotors, rotor pos>, fitness
 
-    int d_size {};
-    char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
-    char* d_text = new char[d_size];
+    char* d_text = new char[text_size];
 
     long double cur_fitness {};
     long double best_fitness {};
@@ -63,16 +54,22 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text,
             for(int r2_p {1}; r2_p <= 26; r2_p++){
                 for(int r3_p {1}; r3_p <= 26; r3_p++){
                     for(char ref {'a'}; ref <= 'c'; ref++){
+                        if(r1_p == 1 && r2_p == 1 && r3_p == 1) {
+                            if(ref == 'a')
+                                std::cout << itor(cur_rotors[0]) << ", " << itor(cur_rotors[1]) << ", " << itor(cur_rotors[2]) << std::endl;
+                        }
+
                         Ops::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
                         config.reflector = ref;
 
                         em.set_config(config);
 
-                        em.encrypt_or_decrypt_arr(d_text, e_text, d_size);
+                        em.encrypt_or_decrypt_arr(d_text, text, text_size);
 
                         switch (method) {
                             case (Method::INDEX_OF_COINCIDENCE):
                                 cur_fitness = IndexOfCoincidence::calculate(d_text);
+//                                for(int i {0}; i < 10; i++) std::cout << d_text[i];
                                 break;
                             default:
                                 std::cout << "decrypt: no method selected" << std::endl;
@@ -80,15 +77,33 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text,
                         }
 
                         if(cur_fitness >= best_fitness){
-                            EnigmaMachine::copy_config(best_config, config);
+                            best_fitness = cur_fitness;
+                            std::cout << "new best fitness: " << best_fitness << std::endl;
+//                            EnigmaMachine::copy_config(best_config, config);
+                            int* r = new int[3]{cur_rotors[0], cur_rotors[1], cur_rotors[2]};
+                            int* rp = new int[3]{r1_p, r2_p, r3_p};
+                            std::pair<int*, int*> rpair {r, rp};
+                            std::pair<std::pair<int*, int*>, long double> npair {rpair, best_fitness};
+                            cumulative_best_rotors.push(npair);
+                            if(cumulative_best_rotors.size() > 10){
+                                cumulative_best_rotors.pop();
+                            }
 
-                        }
+                            std::ofstream ofile {R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted.txt)"};
+                            ofile << d_text;
+                            ofile.close();
+                        } // cur_fitness >= best_fitness
 
                     } // ref
                 } // r3_p
             } // r2_p
         } // r1_p
     } // rotor perms
+
+    for(int i {0}; i < 10; i++){
+        best_rotors.push_back(cumulative_best_rotors.front());
+        cumulative_best_rotors.pop();
+    }
 
 }
 
@@ -114,7 +129,7 @@ void Decrypt::decrypt(Decrypt::Method method) {
     long double cur_score {0};
     EnigmaConfig best_config {{1, 1, 1}, {1, 1, 1}, {0, 0, 0}, 'a', ""};
 
-    int d_size {};
+    long d_size {};
     char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
     char* d_text = new char[d_size];
 
@@ -185,18 +200,33 @@ void Decrypt::decrypt(Decrypt::Method method) {
 
 int main(){
     EnigmaConfig config {
-            .rotors {1, 2, 3},
-            .rotor_pos{1, 1, 1},
+            .rotors {4, 2, 3},
+            .rotor_pos{5, 23, 8},
             .ring_pos{0, 0, 0},
-            .reflector ='A',
-            .plugboard {""}
+            .reflector ='B',
+            .plugboard {"OK BH"}
     };
 
     EnigmaMachine em {config};
 
     em.encrypt_or_decrypt_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)", R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)");
 
-    Decrypt::decrypt(Decrypt::Method::INDEX_OF_COINCIDENCE);
+    long d_size {};
+    char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
+
+    std::list<std::pair<std::pair<int*, int*>, long double>> best_rotors {};
+
+    Decrypt::find_rotors(em, Decrypt::INDEX_OF_COINCIDENCE, e_text, d_size, best_rotors);
+
+    std::for_each(best_rotors.begin(), best_rotors.end(), [&](const auto &item) {
+        int* r {static_cast<std::pair<std::pair<int*, int*>, long double>>(item).first.first};
+        int* rp {static_cast<std::pair<std::pair<int*, int*>, long double>>(item).first.second};
+        long double fit {static_cast<std::pair<std::pair<int*, int*>, long double>>(item).second};
+        std::cout << Decrypt::itor(r[0]) << ": " << rp[0] << "  " << Decrypt::itor(r[1]) << ": " << rp[1] << "  " << Decrypt::itor(r[2]) << ": " << rp[2] << " -> " << fit << std::endl;
+    });
+
+
+    //    Decrypt::decrypt(Decrypt::Method::INDEX_OF_COINCIDENCE);
 
 //    std::cout << "IOC: " << IndexOfCoincidence::calculate_f(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)") << std::endl;
     std::cout << "Done" << std::endl;
