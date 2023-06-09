@@ -11,11 +11,6 @@
 #include <utility>
 #include "../Enigma/Headers/EnigmaMachine.h"
 
-typedef struct{
-    int* rotors;
-    int* rotor_pos;
-    char reflector;
-}RotorDecryptInfo;
 
 class Decrypt {
 public:
@@ -23,16 +18,23 @@ public:
         INDEX_OF_COINCIDENCE
     };
 
-    static void decrypt(Method method);
+    typedef struct{
+        int* rotors;
+        int* rotor_pos;
+        char reflector;
+        Method analysis_method;
+        long double fitness;
+    }RotorDecryptInfo;
 
-    // best settings has pairs<rotors, rotor_pos>
-    static void find_rotors(EnigmaMachine em, Method method, char* e_text, long text_size, std::list<std::pair<std::pair<int *, int *>, long double>>& best_rotors);
+    static void find_rotors(EnigmaMachine em, Method method, char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
 
     static void find_rings(EnigmaMachine em, Method method, const char* text, std::vector<std::vector<int>>& best_ring_settings);
 
     static void generate_rotor_permutations(std::vector<std::vector<int>>& permutations);
 
     static std::string itor(int i); // int to roman numeral
+
+    static void print_rotor_decrypt_info_list(std::list<RotorDecryptInfo>& info);
 
 };
 

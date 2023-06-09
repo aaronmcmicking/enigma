@@ -42,9 +42,9 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
     long double den = size*(size-1) / static_cast<long double>(NORMALIZING_COEFFICIENT);
     long double returnable = sum / den;
 
-    if(returnable < -0.01 || returnable > 5){
-        std::cout << "INDEX_OF_COINCIDENCE ERROR FOR FINAL VALUE (" << returnable << ")" << std::endl;
-    }
+//    if(returnable < -0.01 || returnable > 5){
+//        std::cout << "INDEX_OF_COINCIDENCE ERROR FOR FINAL VALUE (" << returnable << ")" << std::endl;
+//    }
 
 //    auto end_time = std::chrono::high_resolution_clock::now();
 //    auto duration = duration_cast<std::chrono::nanoseconds>(end_time - start_time);
