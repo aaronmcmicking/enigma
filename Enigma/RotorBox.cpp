@@ -6,6 +6,8 @@
 #include "Headers/RotorBox.h"
 #include "Headers/RotorMappingBuilder.h"
 
+//#include <chrono>
+
 RotorBox::RotorBox(): reflector {Reflector()} {
     RotorMappingBuilder::set_init(false);
     RotorMappingBuilder::nullify_mappings();
@@ -99,6 +101,8 @@ Rotor* RotorBox::set_rotor_pos(const int pos[3]){
 }
 
 int RotorBox::convert_int(int i) {
+
+
 
     if(rotors_in_place == nullptr){
         std::cout << "rotor array is null" << std::endl;

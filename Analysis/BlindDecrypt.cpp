@@ -31,24 +31,33 @@ bool ring_decrypt_info_sort_order(const BlindDecrypt::RingDecryptInfo& first, co
 }
 
 void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& info) {
-    std::cout << "ROTOR SETTINGS:" << std::endl;
+    using namespace std;
+    cout << "ROTOR SETTINGS:" << endl;
+    for(int i {}; i < 3; i++)
+        cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "     ";
+    cout << "REF" << "         " << "FIT" << endl;
+//    cout << endl;
     for(auto& r: info){
-        std::cout << std::setw(3) << BlindDecrypt::itor(r.rotors[0]) << "  " << std::setw(2) << r.rotor_pos[0] << " |   "
-                  << std::setw(3) << BlindDecrypt::itor(r.rotors[1]) << "  " << std::setw(2) << r.rotor_pos[1] << " |   "
-                  << std::setw(3) << BlindDecrypt::itor(r.rotors[2]) << "  " << std::setw(2) << r.rotor_pos[2] << " |   "
+        cout << left << setw(3) << BlindDecrypt::itor(r.rotors[0]) << "  " << left << setw(2) << r.rotor_pos[0] << "  |  "
+                  << left << setw(3) << BlindDecrypt::itor(r.rotors[1]) << "  " << left << setw(2) << r.rotor_pos[1] << "  |  "
+                  << left << setw(3) << BlindDecrypt::itor(r.rotors[2]) << "  " << left << setw(2) << r.rotor_pos[2] << "  |  "
                   << "REF: " << static_cast<char>(toupper(r.reflector)) << "  "
-                  << " -> " << r.fitness << std::endl;
+                  << " ->  " << r.fitness << endl;
     }
 }
 
 void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo> &info) {
-    std::cout << "RING SETTINGS:" << std::endl;
+    using namespace std;
+    cout << "RING SETTINGS:" << endl;
+    for(int i {}; i < 3; i++)
+        cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
+    cout << "REF" << "         " << "FIT" << endl;
     for(auto & r: info) {
-        std::cout << std::setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << std::setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << std::setw(2) << r.rings[0] << " |   "
-                  << std::setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << std::setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << std::setw(2) << r.rings[1] << " |   "
-                  << std::setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[2]) << "  " << std::setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << std::setw(2) << r.rings[2] << " |   "
+        cout << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.rings[0] << " |  "
+                  << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.rings[1] << " |  "
+                  << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[2]) << "  " << setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << r.rings[2] << " |  "
                   << "REF: " << static_cast<char>(toupper(r.rotor_info.reflector)) << "  "
-                  << " -> " << r.fitness << std::endl;
+                  << " ->  " << r.fitness << endl;
     }
 
 }
@@ -106,9 +115,9 @@ void BlindDecrypt::find_rotors(EnigmaMachine em, BlindDecrypt::Method method, co
                     for(char ref {'a'}; ref <= 'c'; ref++){
                         // print the current rotor configuration
                         if(r1_p == 1 && r2_p == 1 && r3_p == 1 && ref == 'a') {
-                                std::cout   << std::setw(3) << itor(cur_rotors[0]) << " "
-                                            << std::setw(3) << itor(cur_rotors[1]) << " "
-                                            << std::setw(3) << itor(cur_rotors[2]) << std::endl;
+                                std::cout   << std::left << std::setw(4) << itor(cur_rotors[0]) << " "
+                                            << std::left << std::setw(4) << itor(cur_rotors[1]) << " "
+                                            << std::left << std::setw(4) << itor(cur_rotors[2]) << std::endl;
                         }
 
                         // set new rotor settings
@@ -183,7 +192,7 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
     long double best_fitness {};
 
     auto rotor_it {best_rotors.cbegin()};
-    for(int i {0}; i < 3; i++){
+    for(int i {0}; i < 5; i++){
         auto rinfo {rotor_it};
         rotor_it++;
         Ops::rep_arr3(config.rotors, rinfo->rotors);
@@ -191,8 +200,9 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
         config.reflector = rinfo->reflector;
         for (int r1{1}; r1 <= 26; r1++) {
             for (int r2{1}; r2 <= 26; r2++) {
-                for (int r3{1}; r3 <= 26; r3++) {
-                    Ops::rep_arr3(config.ring_pos, r1, r2, r3);
+//                for (int r3{1}; r3 <= 26; r3++) {
+//                    Ops::rep_arr3(config.ring_pos, r1, r2, r3);
+                    Ops::rep_arr3(config.ring_pos, r1, r2, 1);
 
                     em.set_config(config);
 
@@ -225,12 +235,13 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
 
                         RingDecryptInfo * ninfo{new RingDecryptInfo {
                             .rotor_info {rninfo},
-                            .rings = new int[3]{r1, r2, r3},
+//                            .rings = new int[3]{r1, r2, r3},
+                            .rings = new int[3]{r1, r2, 1},
                             .method = method,
                             .fitness = cur_fitness
                         }};
 
-                        if(best_rings.size() >= 3) best_rings.pop_back();
+                        if(best_rings.size() >= 5) best_rings.pop_back();
                         best_rings.push_back(*ninfo);
                         best_rings.sort(ring_decrypt_info_sort_order);
 
@@ -244,7 +255,7 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
                         }
                     } // should add to best settings
 
-                } // r3
+//                } // r3
             } // r2
         } // r1
     } // best rotor positions
@@ -254,13 +265,14 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
 
 int main(){
     EnigmaConfig config {
-            .rotors {1, 5, 3},
-            .rotor_pos{3, 15, 19},
+            .rotors {3, 4, 5},
+            .rotor_pos{17, 25, 3},
 //            .ring_pos{9, 22, 17},
-            .ring_pos{3, 25, 21},
-            .reflector ='B',
-            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
-            //.plugboard {"QP AL ZM XK SN DJ CH FB GU TY"}
+            .ring_pos{5, 10, 15},
+            .reflector ='C',
+//            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
+//            .plugboard {"QU IN VB LE"}
+            .plugboard {""}
     };
 
     EnigmaMachine em {config};
@@ -275,11 +287,11 @@ int main(){
     BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
     BlindDecrypt::print_rotor_decrypt_info_list(best_rotors);
+    std::cout << std::endl;
 
     std::list<BlindDecrypt::RingDecryptInfo> best_rings {};
 
     BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
-    std::cout << "Finished searching ring positions" << std::endl;
     BlindDecrypt::print_ring_decrypt_info_list(best_rings);
 
     delete e_text;

@@ -35,8 +35,6 @@ public:
 
     static void find_rotors(EnigmaMachine em, Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
 
-    static void find_reflector(EnigmaMachine em, Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
-
     static void find_rings(EnigmaMachine em, BlindDecrypt::Method method, const char *e_text, long text_size,
                            const std::list<RotorDecryptInfo>& best_rotors, std::list<RingDecryptInfo>& best_rings);
 
