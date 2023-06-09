@@ -54,7 +54,7 @@ char* Ops::load_from_file(const std::string& filename, int* size){
         int count{0};
         for (int i{0}; buf[i] != '\0'; i++) count++;
         *size = count;
-        std::cout << "got size = " << count << std::endl;
+//        std::cout << "got size = " << count << std::endl;
     }
 
     return buf;
