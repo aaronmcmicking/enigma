@@ -7,6 +7,7 @@
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
 #include <cmath>
 #include <iomanip>
+#include <chrono>
 
 /**
  * Defines weak ordering for lists of BlindDecrypt::RotorDecryptInfo structs. An item should come first in a list if
@@ -271,8 +272,8 @@ int main(){
             .ring_pos{5, 10, 15},
             .reflector ='C',
 //            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
-//            .plugboard {"QU IN VB LE"}
-            .plugboard {""}
+            .plugboard {"QU IN VB LE"}
+//            .plugboard {""}
     };
 
     EnigmaMachine em {config};
@@ -284,6 +285,8 @@ int main(){
 
     std::list<BlindDecrypt::RotorDecryptInfo> best_rotors {};
 
+    auto start_time {std::chrono::high_resolution_clock ::now()};
+
     BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
     BlindDecrypt::print_rotor_decrypt_info_list(best_rotors);
@@ -293,6 +296,14 @@ int main(){
 
     BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     BlindDecrypt::print_ring_decrypt_info_list(best_rings);
+
+    auto end_time {std::chrono::high_resolution_clock::now()};
+    auto duration {duration_cast<std::chrono::seconds>(end_time - start_time)};
+    std::cout << "decryption took " << duration.count() << " seconds" << std::endl;
+
+    std::ofstream log_file {R"(J:\Programming\enigma\cmake-build-debug\in_out\log.txt)"};
+    log_file << "decryption took " << duration.count() << " seconds" << std::endl;
+    log_file.close();
 
     delete e_text;
     std::cout << std::endl << "Done" << std::endl;

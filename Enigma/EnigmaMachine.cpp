@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
 EnigmaMachine::EnigmaMachine(): rotor_box {}, plugboard {} {}
 
@@ -29,7 +30,7 @@ bool EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_name, con
     char in_buf[MAX_INPUT_STRING_LENGTH] {};
     std::ifstream in_file {};
     in_file.open(in_file_name);
-    in_file.read(in_buf, MAX_INPUT_STRING_LENGTH-1);
+    in_file.get(in_buf, MAX_INPUT_STRING_LENGTH);
     in_file.close();
     std::string in_str = EMOps::strip_text(in_buf);
 
@@ -69,10 +70,6 @@ void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char *src, i
     while(i < size && src[i] != '\0'){
         int c1 = plugboard.convert_char(src[i]);
         c1 = rotor_box.convert_int(c1);
-        if(c1 == -1){
-            // don't need to print anything here, convert_int already would have
-            throw std::exception {};
-        }
         dest[i++] = EMOps::itoc(plugboard.convert_int(c1));
     }
 }

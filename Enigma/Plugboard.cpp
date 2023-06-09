@@ -6,7 +6,7 @@
 #include "Headers/Plugboard.h"
 #include "Headers/EMOps.h"
 #include "Headers/Rotor.h"
-
+#include <chrono>
 
 Plugboard::Plugboard(): pairs {new int[CONVERSION_MAP_ARRAY_SIZE]} {;
     for(int i {0}; i <= Rotor::max_position; i++){
@@ -115,12 +115,14 @@ int Plugboard::convert_int(int i) {
 
 // wrapper for convert_int(int c)
 int Plugboard::convert_char(char c){
-    int i{ EMOps::ctoi(static_cast<char>(tolower(c))) };
-    if(i >= CONVERSION_MAP_ARRAY_SIZE){
-        std::cout << "Plugboard cannot convert invalid value (" << i << ")";
-        throw std::exception {};
-    }
-    return pairs[i];
+//    int i{ EMOps::ctoi(static_cast<char>(tolower(c))) };
+//    if(i >= CONVERSION_MAP_ARRAY_SIZE){
+//        std::cout << "Plugboard cannot convert invalid value (" << i << ")";
+//        throw std::exception {};
+//    }
+//    return pairs[i];
+
+    return pairs[c - 'a' + 1];
 }
 
 void Plugboard::print() {

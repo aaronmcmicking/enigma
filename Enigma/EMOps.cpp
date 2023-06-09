@@ -23,6 +23,7 @@ std::string EMOps::strip_text(const std::string& str){
     return dest;
 }
 
+// inclusive
 bool EMOps::is_in_range(int num, int min, int max){
     return (num >= min) && (num <= max);
 }

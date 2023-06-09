@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <chrono>
 #include "IndexOfCoincidence.h"
 #include "..\Ops.h"
 
@@ -22,7 +23,7 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
     int appearances[27] {0};
 
     for(int i {1}; text[i] != '\0' && i < size; i++){
-//        int c {Ops::ctoi(text[i])};
+        /*
         int c {text[i] - 'a' + 1}; // ~20% faster than calling Ops::ctoi(char)
         if(c < 1 || c > 26) {
             std::cout << "BAD INDEX (" << c << ") IN INDEXOFCOINCIDENCE" << std::endl;
@@ -30,7 +31,10 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
             exit(1);
         }
         appearances[c] += 1;
+         */
+        appearances[text[i] - 'a' + 1] += 1; // ignoring safety checks is ~20-25% faster
     }
+
 
     unsigned long long sum {};
     for(int i {1}; i < 27; i++){
@@ -41,10 +45,6 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
     size--; // -1 to account for null terminator in c-string
     long double den = size*(size-1) / static_cast<long double>(NORMALIZING_COEFFICIENT);
     long double returnable = sum / den;
-
-//    if(returnable < -0.01 || returnable > 5){
-//        std::cout << "INDEX_OF_COINCIDENCE ERROR FOR FINAL VALUE (" << returnable << ")" << std::endl;
-//    }
 
 //    auto end_time = std::chrono::high_resolution_clock::now();
 //    auto duration = duration_cast<std::chrono::nanoseconds>(end_time - start_time);

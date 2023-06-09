@@ -6,7 +6,7 @@
 #include "Headers/RotorBox.h"
 #include "Headers/RotorMappingBuilder.h"
 
-//#include <chrono>
+#include <chrono>
 
 RotorBox::RotorBox(): reflector {Reflector()} {
     RotorMappingBuilder::set_init(false);
@@ -102,12 +102,12 @@ Rotor* RotorBox::set_rotor_pos(const int pos[3]){
 
 int RotorBox::convert_int(int i) {
 
+//    auto start_time {std::chrono::high_resolution_clock::now()};
 
-
-    if(rotors_in_place == nullptr){
-        std::cout << "rotor array is null" << std::endl;
-        return -1;
-    }
+//    if(rotors_in_place == nullptr){
+//        std::cout << "rotor array is null" << std::endl;
+//        return -1;
+//    }
 
     // iterate through rotors moving towards the reflector
     bool rotate {true};
@@ -124,6 +124,10 @@ int RotorBox::convert_int(int i) {
     for(int w {2}; w >= 0; w--){
         next_input = rotors_in_place[w].next(next_input, false, false);
     }
+
+//    auto end_time {std::chrono::high_resolution_clock::now()};
+//    auto duration {duration_cast<std::chrono::nanoseconds>(end_time - start_time)};
+//    std::cout << "converting 1 int took " << duration.count() << " nanoseconds" << std::endl;
 
     return next_input;
 }

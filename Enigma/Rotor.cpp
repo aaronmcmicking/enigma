@@ -76,15 +76,19 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     if(forward) {
         output_relative_to_current_pos = mappings[relative_input];
     }else{ // when coming back from reflector
-        int i {min_position};
-        while(i <= max_position && mappings[i] != relative_input){
-            if(i >= max_position){
-                std::cout << "couldn't find mapping for value " << i << " from reflector" << std::endl;
-                throw std::exception {};
-            }
-            i++;
+//        int i {min_position};
+//        while(i <= max_position && mappings[i] != relative_input){
+////            if(i >= max_position){
+////                std::cout << "couldn't find mapping for value " << i << " from reflector" << std::endl;
+////                throw std::exception {};
+////            }
+//            i++;
+//        }
+//        output_relative_to_current_pos = i;
+        output_relative_to_current_pos = min_position;
+        while(output_relative_to_current_pos <= max_position && mappings[output_relative_to_current_pos] != relative_input){
+            output_relative_to_current_pos++;
         }
-        output_relative_to_current_pos = i;
     }
 
     // calculate_f the normalized output value (ie. the number of steps from the 'start' position that the letter output at
