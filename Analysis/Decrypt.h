@@ -11,6 +11,12 @@
 #include <utility>
 #include "../Enigma/Headers/EnigmaMachine.h"
 
+typedef struct{
+    int* rotors;
+    int* rotor_pos;
+    char reflector;
+}RotorDecryptInfo;
+
 class Decrypt {
 public:
     enum Method{
