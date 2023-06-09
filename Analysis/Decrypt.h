@@ -20,7 +20,7 @@ public:
     static void decrypt(Method method);
 
     // best settings has pairs<rotors, rotor_pos>
-    static void find_rotors(EnigmaMachine em, Method method, char* text, long text_size, std::list<std::pair<std::pair<int *, int *>, long double>>& best_rotors);
+    static void find_rotors(EnigmaMachine em, Method method, char* e_text, long text_size, std::list<std::pair<std::pair<int *, int *>, long double>>& best_rotors);
 
     static void find_rings(EnigmaMachine em, Method method, const char* text, std::vector<std::vector<int>>& best_ring_settings);
 

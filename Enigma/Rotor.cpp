@@ -52,20 +52,13 @@ void Rotor::set_mappings(const int new_mappings[CONVERSION_MAP_ARRAY_SIZE]){
 
 // forward is true if the current is coming from the keys, false if coming from the reflector
 int Rotor::next(int normalized_input, bool forward, bool should_rotate){
-    /*
-     * Assume input position is normalized
-     *
-     * to find correct key, get diff between current position and normalized input position
-     *
-     * offset = current position
-     */
-
     // the rotors should turn before the signal passes
     if(should_rotate) {
         // turn the next rotors if needed
         if(position == ring_position){
             turnover_flag = true;
         }
+
         if(position == max_position){
             position = min_position;
         }else{
@@ -86,7 +79,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
         int i {min_position};
         while(i <= max_position && mappings[i] != relative_input){
             if(i >= max_position){
-                std::cout << "couldn't find mapping for char from reflector" << std::endl;
+                std::cout << "couldn't find mapping for value " << i << " from reflector" << std::endl;
                 throw std::exception {};
             }
             i++;
@@ -102,12 +95,18 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     }
 }
 
-[[nodiscard]] bool Rotor::next_should_turn() const{
+[[nodiscard]] bool Rotor::should_next_turn() const{
     return turnover_flag;
 }
 
 void Rotor::reset_turnover_flag(){
     turnover_flag = false;
+}
+
+[[nodiscard]] bool Rotor::pop_turnover_flag() {
+    bool b {turnover_flag};
+    turnover_flag = false;
+    return b;
 }
 
 void Rotor::print_rotor_mappings() const{

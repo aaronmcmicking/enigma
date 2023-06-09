@@ -106,7 +106,6 @@ void Plugboard::parse_and_set_pairs(std::string &str) {
 
 // i must already have correct indexing format
 int Plugboard::convert_int(int i) {
-//    std::cout << "convert_int(int i)" << std::endl;
     if(i >= CONVERSION_MAP_ARRAY_SIZE){
         std::cout << "Plugboard cannot convert invalid value (" << i << ")";
         throw std::exception {};
@@ -116,9 +115,12 @@ int Plugboard::convert_int(int i) {
 
 // wrapper for convert_int(int c)
 int Plugboard::convert_char(char c){
-//    std::cout << "convert_char(char c)" << std::endl;
-    c = static_cast<char>(tolower(c));
-    return convert_int(EMOps::ctoi(c));
+    int i{ EMOps::ctoi(static_cast<char>(tolower(c))) };
+    if(i >= CONVERSION_MAP_ARRAY_SIZE){
+        std::cout << "Plugboard cannot convert invalid value (" << i << ")";
+        throw std::exception {};
+    }
+    return pairs[i];
 }
 
 void Plugboard::print() {

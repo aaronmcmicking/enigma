@@ -6,6 +6,7 @@
 #include "Decrypt.h"
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
 
+
 void Decrypt::generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
     for(int i {1}; i <= 5; i++){
         for(int j {1}; j <= 5; j++){
@@ -27,7 +28,7 @@ std::string Decrypt::itor(int i){
     return str[i-1];
 }
 
-void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text, long text_size,
+void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* e_text, long text_size,
                           std::list<std::pair<std::pair<int *, int *>, long double>>& best_rotors) {
     std::vector<std::vector<int>> rotor_perms {};
     generate_rotor_permutations(rotor_perms);
@@ -43,7 +44,7 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text, 
     EnigmaConfig best_config {};
     std::queue<std::pair<std::pair<int *, int *>, long double>> cumulative_best_rotors; // contains pair<rotors, rotor pos>, fitness
 
-    char* d_text = new char[text_size];
+    char* d_text = new char[text_size+1]{0};
 
     long double cur_fitness {};
     long double best_fitness {};
@@ -64,11 +65,11 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text, 
 
                         em.set_config(config);
 
-                        em.encrypt_or_decrypt_arr(d_text, text, text_size);
+                        em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
 
                         switch (method) {
                             case (Method::INDEX_OF_COINCIDENCE):
-                                cur_fitness = IndexOfCoincidence::calculate(d_text);
+                                cur_fitness = IndexOfCoincidence::calculate(d_text, text_size);
 //                                for(int i {0}; i < 10; i++) std::cout << d_text[i];
                                 break;
                             default:
@@ -78,7 +79,7 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text, 
 
                         if(cur_fitness >= best_fitness){
                             best_fitness = cur_fitness;
-                            std::cout << "new best fitness: " << best_fitness << std::endl;
+                            if(best_fitness > 1.01) std::cout << "new best fitness: " << best_fitness << std::endl;
 //                            EnigmaMachine::copy_config(best_config, config);
                             int* r = new int[3]{cur_rotors[0], cur_rotors[1], cur_rotors[2]};
                             int* rp = new int[3]{r1_p, r2_p, r3_p};
@@ -105,6 +106,7 @@ void Decrypt::find_rotors(EnigmaMachine em, Decrypt::Method method, char* text, 
         cumulative_best_rotors.pop();
     }
 
+    delete[] d_text;
 }
 
 void Decrypt::find_rings(EnigmaMachine em, Decrypt::Method method, const char *text,
@@ -118,7 +120,7 @@ void Decrypt::find_rings(EnigmaMachine em, Decrypt::Method method, const char *t
 void Decrypt::decrypt(Decrypt::Method method) {
     EnigmaConfig config {.rotors {1, 2, 3},
                          .rotor_pos{12, 25, 7},
-                         .ring_pos{8, 19, 0},
+                         .ring_pos{0, 0, 0},
                          .reflector ='B',
                          .plugboard {"QM AN SB DP OI CF RK UE HY"}
     };
@@ -129,7 +131,7 @@ void Decrypt::decrypt(Decrypt::Method method) {
     long double cur_score {0};
     EnigmaConfig best_config {{1, 1, 1}, {1, 1, 1}, {0, 0, 0}, 'a', ""};
 
-    long d_size {};
+    int d_size {};
     char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
     char* d_text = new char[d_size];
 
@@ -158,7 +160,7 @@ void Decrypt::decrypt(Decrypt::Method method) {
 
                                 switch (method) {
                                     case (Method::INDEX_OF_COINCIDENCE):
-                                        cur_score = IndexOfCoincidence::calculate(d_text);
+                                        cur_score = IndexOfCoincidence::calculate(d_text, d_size);
                                         break;
                                     default:
                                         std::cout << "decrypt: no method selected" << std::endl;
@@ -200,23 +202,28 @@ void Decrypt::decrypt(Decrypt::Method method) {
 
 int main(){
     EnigmaConfig config {
-            .rotors {4, 2, 3},
-            .rotor_pos{5, 23, 8},
-            .ring_pos{0, 0, 0},
-            .reflector ='B',
-            .plugboard {"OK BH"}
+            .rotors {5, 3, 4},
+            .rotor_pos{25, 7, 7},
+            .ring_pos{9, 22, 17},
+            .reflector ='C',
+            .plugboard {"QP AL ZM XK SN DJ CH FB GU TY"}
     };
 
     EnigmaMachine em {config};
 
     em.encrypt_or_decrypt_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)", R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)");
 
-    long d_size {};
-    char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &d_size);
+    int e_size {};
+    char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &e_size);
 
     std::list<std::pair<std::pair<int*, int*>, long double>> best_rotors {};
 
-    Decrypt::find_rotors(em, Decrypt::INDEX_OF_COINCIDENCE, e_text, d_size, best_rotors);
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    Decrypt::find_rotors(em, Decrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = duration_cast<std::chrono::milliseconds>(end_time - start_time);
 
     std::for_each(best_rotors.begin(), best_rotors.end(), [&](const auto &item) {
         int* r {static_cast<std::pair<std::pair<int*, int*>, long double>>(item).first.first};
@@ -225,10 +232,12 @@ int main(){
         std::cout << Decrypt::itor(r[0]) << ": " << rp[0] << "  " << Decrypt::itor(r[1]) << ": " << rp[1] << "  " << Decrypt::itor(r[2]) << ": " << rp[2] << " -> " << fit << std::endl;
     });
 
+    std::cout << std::endl << "Finding rotors took " << duration.count() / 1000.0l << "s" << std::endl;
 
     //    Decrypt::decrypt(Decrypt::Method::INDEX_OF_COINCIDENCE);
 
 //    std::cout << "IOC: " << IndexOfCoincidence::calculate_f(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)") << std::endl;
-    std::cout << "Done" << std::endl;
+    delete e_text;
+    std::cout << std::endl << "Done" << std::endl;
     return 0;
 }

@@ -39,16 +39,16 @@ std::string Ops::format_text(const std::string& str){
     return dest;
 }
 
-int Ops::ctoi(char c) { return static_cast<int>(c - 'a' + 1); }
+int Ops::ctoi(char c) { return c - 'a' + 1; }
 
 char Ops::itoc(int i) { return static_cast<char>(i + 'a' - 1); }
 
-char* Ops::load_from_file(const std::string& filename, long* size){
+char* Ops::load_from_file(const std::string& filename, int* size){
     Ops::format_input_file(filename);
 
     char* buf {new char[MAX_INPUT_STRING_LENGTH]};
     std::ifstream file {filename};
-    file.read(buf, MAX_INPUT_STRING_LENGTH-1);
+    file.get(buf, MAX_INPUT_STRING_LENGTH);
 
     if(size != nullptr) {
         int count{0};

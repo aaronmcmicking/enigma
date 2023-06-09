@@ -18,7 +18,7 @@ public:
 
     static long double calculate_f(const std::string& filename);
 
-    static long double calculate(const char* text);
+    static long double calculate(const char* text, int size);
 };
 
 

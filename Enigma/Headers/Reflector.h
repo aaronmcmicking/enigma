@@ -19,7 +19,7 @@ public:
 
     void set_reflector(Reflector r);
 
-    int reflect(int in);
+    int reflect(int input);
 
 private:
     int* mapping;

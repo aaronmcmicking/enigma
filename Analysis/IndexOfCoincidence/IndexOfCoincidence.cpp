@@ -12,22 +12,25 @@ long double IndexOfCoincidence::calculate_f(const std::string &filename) {
 
     char buf[MAX_INPUT_STRING_LENGTH] {0};
     std::ifstream file {filename};
-    file.read(buf, MAX_INPUT_STRING_LENGTH-1);
-    return calculate(buf);
+    file.get(buf, MAX_INPUT_STRING_LENGTH);
+    int size {static_cast<int>(file.gcount())};
+    return calculate(buf, size);
 }
 
-long double IndexOfCoincidence::calculate(const char* text){
+long double IndexOfCoincidence::calculate(const char* text, int size){
+//    auto start_time = std::chrono::high_resolution_clock::now();
     int appearances[27] {0};
 
-    int count {0};
-    for(int i {1}; text[i] != '\0'; i++){
-        count++;
-        int c {Ops::ctoi(text[i])};
-        if(c < 1 || c > 26) std::cout << "BAD INDEX (" << c << ")" << std::endl;
-        else appearances[Ops::ctoi(text[i])] += 1;
+    for(int i {1}; text[i] != '\0' && i < size; i++){
+//        int c {Ops::ctoi(text[i])};
+        int c {text[i] - 'a' + 1}; // ~20% faster than calling Ops::ctoi(char)
+        if(c < 1 || c > 26) {
+            std::cout << "BAD INDEX (" << c << ") IN INDEXOFCOINCIDENCE" << std::endl;
+            std::cout << "text = {" << text << "}" << std::endl;
+            exit(1);
+        }
+        appearances[c] += 1;
     }
-
-//    std::cout << "count = " << count << std::endl;
 
     unsigned long long sum {};
     for(int i {1}; i < 27; i++){
@@ -35,12 +38,17 @@ long double IndexOfCoincidence::calculate(const char* text){
         sum += val*(val-1);
     }
 
-    long double den = count*(count-1) / static_cast<long double>(NORMALIZING_COEFFICIENT);
+    size--; // -1 to account for null terminator in c-string
+    long double den = size*(size-1) / static_cast<long double>(NORMALIZING_COEFFICIENT);
     long double returnable = sum / den;
 
     if(returnable < -0.01 || returnable > 5){
-        std::cout << "INDEX_OF_COINCIDENCE ERROR FOR FINAL VALUE" << returnable << std::endl;
+        std::cout << "INDEX_OF_COINCIDENCE ERROR FOR FINAL VALUE (" << returnable << ")" << std::endl;
     }
+
+//    auto end_time = std::chrono::high_resolution_clock::now();
+//    auto duration = duration_cast<std::chrono::nanoseconds>(end_time - start_time);
+//    std::cout << std::endl << "IOC took " << duration.count() << " nanoseconds" << std::endl;
 
     return returnable;
 }

@@ -18,20 +18,20 @@
 
 class Ops {
 public:
-    static void format_input_file(const std::string &filename);
+    static int ctoi(char c);
+
+    static char itoc(int i);
 
     static void rep_arr3(int dest[3], const int *src);
 
     static void rep_arr3(int dest[3], int a, int b, int c);
 
+    static void format_input_file(const std::string &filename);
+
     static std::string format_text(const std::string &str);
 
-    static int ctoi(char c);
-
-    static char itoc(int i);
-
     // allocates, but DOES NOT deallocate memory
-    static char* load_from_file(const std::string& filename, long* size);
+    static char* load_from_file(const std::string& filename, int* size);
 
 };
 

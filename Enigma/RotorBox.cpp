@@ -110,8 +110,7 @@ int RotorBox::convert_int(int i) {
     int next_input {i};
     for(int w {0}; w < 3; w++){
         next_input = rotors_in_place[w].next(next_input, true, rotate);
-        rotate = rotors_in_place[w].next_should_turn();
-        rotors_in_place[w].reset_turnover_flag();
+        rotate = rotors_in_place[w].pop_turnover_flag();
     }
 
     // reflect

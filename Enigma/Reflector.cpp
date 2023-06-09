@@ -21,8 +21,8 @@ void Reflector::set_reflector(Reflector r) {
     }
 }
 
-int Reflector::reflect(int in) {
-    return mapping[in];
+int Reflector::reflect(int input) {
+    return mapping[input];
 }
 
 int* Reflector::get_mapping(char which) {

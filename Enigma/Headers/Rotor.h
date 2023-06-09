@@ -38,9 +38,12 @@ public:
 
     int next(int normalized_input, bool forward, bool should_rotate);
 
-    [[nodiscard]] bool next_should_turn() const;
+    [[nodiscard]] bool should_next_turn() const;
 
     void reset_turnover_flag();
+
+    // pop_turnover_flag returns and resets the turnover flag (collapses multiple function calls)
+    [[nodiscard]] bool pop_turnover_flag();
 
     void print_rotor_mappings() const;
 };

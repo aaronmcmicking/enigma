@@ -64,6 +64,19 @@ void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src, int size) {
     }
 }
 
+void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size) {
+    int i {};
+    while(i < size && src[i] != '\0'){
+        int c1 = plugboard.convert_char(src[i]);
+        c1 = rotor_box.convert_int(c1);
+        if(c1 == -1){
+            // don't need to print anything here, convert_int already would have
+            throw std::exception {};
+        }
+        dest[i++] = EMOps::itoc(plugboard.convert_int(c1));
+    }
+}
+
 int EnigmaMachine::convert_char(char c) {
     int c1 = plugboard.convert_char(c);
     c1 = rotor_box.convert_int(c1);
