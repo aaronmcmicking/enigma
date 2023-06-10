@@ -5,6 +5,7 @@
 #include <iostream>
 #include "BlindDecrypt.h"
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
+#include "CharacterFrequency/CharacterFrequency.h"
 #include <cmath>
 #include <iomanip>
 #include <chrono>
@@ -28,6 +29,17 @@ bool rotor_decrypt_info_sort_order(const BlindDecrypt::RotorDecryptInfo& first, 
  * @return True if `first` is ordered before `second`, false otherwise.
  */
 bool ring_decrypt_info_sort_order(const BlindDecrypt::RingDecryptInfo& first, const BlindDecrypt::RingDecryptInfo& second){
+    return first.fitness >= second.fitness;
+}
+
+/**
+ * Defines weak ordering for lists of BlindDecrypt::PlugboardDecryptInfo structs. An item should come first in a list if
+ * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
+ * @param first The first item to compare.
+ * @param second The second item to compare.
+ * @return True if `first` is ordered before `second`, false otherwise.
+ */
+bool plug_decrypt_info_sort_order(const BlindDecrypt::PlugboardDecryptInfo& first, const BlindDecrypt::PlugboardDecryptInfo& second){
     return first.fitness >= second.fitness;
 }
 
@@ -135,6 +147,9 @@ void BlindDecrypt::find_rotors(EnigmaMachine em, BlindDecrypt::Method method, co
                                 cur_fitness = IndexOfCoincidence::calculate(d_text, text_size);
 //                                for(int i {0}; i < 10; i++) std::cout << d_text[i];
                                 break;
+                            case CHARACTER_FREQUENCY:
+                                cur_fitness = CharacterFrequency::calculate(d_text, text_size);
+                                break;
                             default:
                                 std::cout << "decrypt: no method selected" << std::endl;
                                 return;
@@ -213,6 +228,9 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
                         case INDEX_OF_COINCIDENCE:
                             cur_fitness = IndexOfCoincidence::calculate(d_text, text_size);
                             break;
+                        case CHARACTER_FREQUENCY:
+                            cur_fitness = CharacterFrequency::calculate(d_text, text_size);
+                            break;
                         default:
                             std::cout << "no decryption method selected for ring settings" << std::endl;
                             break;
@@ -264,7 +282,27 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
     delete[] d_text;
 }
 
+void BlindDecrypt::find_plugs(EnigmaMachine em, BlindDecrypt::Method method, const char *e_text, long text_size,
+                              const std::list<RingDecryptInfo> &best_rings, std::list<EnigmaConfig>& best_configs) {
+    (void) em;
+    (void) method;
+    (void) e_text;
+    (void) text_size;
+    (void) best_rings;
+    (void) best_configs;
+}
+
 int main(){
+
+//    int size {};
+//    char* text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &size);
+//
+//    double result {CharacterFrequency::calculate(text, size)};
+//
+//    std::cout << std::endl << "result = " << result << std::endl;
+//
+//    return 0;
+
     EnigmaConfig config {
             .rotors {3, 4, 5},
             .rotor_pos{17, 25, 3},
@@ -287,14 +325,16 @@ int main(){
 
     auto start_time {std::chrono::high_resolution_clock ::now()};
 
-    BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+//    BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+    BlindDecrypt::find_rotors(em, BlindDecrypt::CHARACTER_FREQUENCY, e_text, e_size, best_rotors);
     std::cout << std::endl;
     BlindDecrypt::print_rotor_decrypt_info_list(best_rotors);
     std::cout << std::endl;
 
     std::list<BlindDecrypt::RingDecryptInfo> best_rings {};
 
-    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
+//    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
+    BlindDecrypt::find_rings(em, BlindDecrypt::CHARACTER_FREQUENCY, e_text, e_size, best_rotors, best_rings);
     BlindDecrypt::print_ring_decrypt_info_list(best_rings);
 
     auto end_time {std::chrono::high_resolution_clock::now()};

@@ -15,7 +15,8 @@
 class BlindDecrypt {
 public:
     enum Method{
-        INDEX_OF_COINCIDENCE
+        INDEX_OF_COINCIDENCE,
+        CHARACTER_FREQUENCY
     };
 
     typedef struct{
@@ -33,10 +34,20 @@ public:
         long double fitness;
     }RingDecryptInfo;
 
+    typedef struct{
+        EnigmaConfig config;
+        Method rotor_method;
+        Method plug_method;
+        long double fitness;
+    }PlugboardDecryptInfo;
+
     static void find_rotors(EnigmaMachine em, Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
 
     static void find_rings(EnigmaMachine em, BlindDecrypt::Method method, const char *e_text, long text_size,
                            const std::list<RotorDecryptInfo>& best_rotors, std::list<RingDecryptInfo>& best_rings);
+
+    static void find_plugs(EnigmaMachine em, BlindDecrypt::Method method, const char* e_text, long text_size,
+                           const std::list<RingDecryptInfo>& best_rings, std::list<EnigmaConfig>& best_configs);
 
     static void generate_rotor_permutations(std::vector<std::vector<int>>& permutations);
 

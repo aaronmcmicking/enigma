@@ -22,7 +22,7 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
 //    auto start_time = std::chrono::high_resolution_clock::now();
     int appearances[27] {0};
 
-    for(int i {1}; text[i] != '\0' && i < size; i++){
+    for(int i {0}; text[i] != '\0' && i < size; i++){
         /*
         int c {text[i] - 'a' + 1}; // ~20% faster than calling Ops::ctoi(char)
         if(c < 1 || c > 26) {
