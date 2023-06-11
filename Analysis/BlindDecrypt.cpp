@@ -66,13 +66,44 @@ void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo>
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
     cout << "REF" << "         " << "FIT" << endl;
     for(auto & r: info) {
-        cout << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.rings[0] << " |  "
-                  << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.rings[1] << " |  "
-                  << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[2]) << "  " << setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << r.rings[2] << " |  "
+        cout << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.ring_pos[0] << " |  "
+             << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.ring_pos[1] << " |  "
+             << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[2]) << "  " << setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << r.ring_pos[2] << " |  "
                   << "REF: " << static_cast<char>(toupper(r.rotor_info.reflector)) << "  "
                   << " ->  " << r.fitness << endl;
     }
+}
 
+void BlindDecrypt::print_plugboard_decrypt_info_list(const std::list<PlugboardDecryptInfo> &info) {
+    using namespace std;
+    cout << "FINAL SETTINGS:" << endl;
+    for(int i {}; i < 3; i++)
+        cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
+    cout << "REF" << "         " << "FIT" << endl;
+    for(auto & p: info) { 
+        cout << left << setw(3) << BlindDecrypt::itor(p.ring_info.rotor_info.rotors[0]) << "  " << setw(2) << p.ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << p.ring_info.ring_pos[0] << " |  "
+             << left << setw(3) << BlindDecrypt::itor(p.ring_info.rotor_info.rotors[1]) << "  " << setw(2) << p.ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << p.ring_info.ring_pos[1] << " |  "
+             << left << setw(3) << BlindDecrypt::itor(p.ring_info.rotor_info.rotors[2]) << "  " << setw(2) << p.ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << p.ring_info.ring_pos[2] << " |  "
+             << "REF: " << static_cast<char>(toupper(p.ring_info.rotor_info.reflector)) << "  "
+             << " ->  " << p.fitness << endl;
+        cout << "WITH PLUGBOARD: " << p.plugboard << endl;
+    }
+}
+
+double BlindDecrypt::calculate_fitness(BlindDecrypt::Method method, char *text, int text_size,
+                                     const std::string& current_target) {
+    switch(method){
+        case INDEX_OF_COINCIDENCE:
+            return static_cast<double>(IndexOfCoincidence::calculate(text, text_size));
+            break;
+        case CHARACTER_FREQUENCY:
+            return CharacterFrequency::calculate(text, text_size);
+            break;
+        default:
+            std::cout << "no decryption method selected for " << current_target << std::endl;
+            return -1.0;
+            break;
+    }
 }
 
 void BlindDecrypt::generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
@@ -84,6 +115,16 @@ void BlindDecrypt::generate_rotor_permutations(std::vector<std::vector<int>>& pe
                     permutations.push_back(*n);
                 }
             }
+        }
+    }
+}
+
+void BlindDecrypt::generate_plugboard_pair_permutations(std::vector<char*> &permutations) {
+    permutations.clear();
+    for (char c1 {'A'}; c1 <= 'Z'; c1++) {
+        for(char c2 {static_cast<char>(c1+1)}; c2 <= 'Z'; c2++){
+            char* n = new char[]{c1, c2};
+            permutations.push_back(n);
         }
     }
 }
@@ -142,18 +183,7 @@ void BlindDecrypt::find_rotors(EnigmaMachine em, BlindDecrypt::Method method, co
                         em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
 
                         // analyze
-                        switch (method) {
-                            case (Method::INDEX_OF_COINCIDENCE):
-                                cur_fitness = IndexOfCoincidence::calculate(d_text, text_size);
-//                                for(int i {0}; i < 10; i++) std::cout << d_text[i];
-                                break;
-                            case CHARACTER_FREQUENCY:
-                                cur_fitness = CharacterFrequency::calculate(d_text, text_size);
-                                break;
-                            default:
-                                std::cout << "decrypt: no method selected" << std::endl;
-                                return;
-                        }
+                        cur_fitness = calculate_fitness(method, d_text, text_size, "rotor settings");
 
                         // if a good rotor configuration was found, store it
                         if(best_rotors.empty() || cur_fitness >= best_rotors.back().fitness){
@@ -224,17 +254,7 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
 
                     em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
 
-                    switch(method){
-                        case INDEX_OF_COINCIDENCE:
-                            cur_fitness = IndexOfCoincidence::calculate(d_text, text_size);
-                            break;
-                        case CHARACTER_FREQUENCY:
-                            cur_fitness = CharacterFrequency::calculate(d_text, text_size);
-                            break;
-                        default:
-                            std::cout << "no decryption method selected for ring settings" << std::endl;
-                            break;
-                    }
+                cur_fitness = calculate_fitness(method, d_text, text_size, "ring settings");
 
                     if(best_rings.empty() || cur_fitness >= best_rings.back().fitness){
                         static RotorDecryptInfo rninfo {
@@ -254,8 +274,8 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
 
                         RingDecryptInfo * ninfo{new RingDecryptInfo {
                             .rotor_info {rninfo},
-//                            .rings = new int[3]{r1, r2, r3},
-                            .rings = new int[3]{r1, r2, 1},
+//                            .ring_pos = new int[3]{r1, r2, r3},
+                            .ring_pos = new int[3]{r1, r2, 1},
                             .method = method,
                             .fitness = cur_fitness
                         }};
@@ -283,26 +303,89 @@ void BlindDecrypt::find_rings(EnigmaMachine em, BlindDecrypt::Method method, con
 }
 
 void BlindDecrypt::find_plugs(EnigmaMachine em, BlindDecrypt::Method method, const char *e_text, long text_size,
-                              const std::list<RingDecryptInfo> &best_rings, std::list<EnigmaConfig>& best_configs) {
-    (void) em;
-    (void) method;
-    (void) e_text;
-    (void) text_size;
-    (void) best_rings;
-    (void) best_configs;
+                              const std::list<RingDecryptInfo> &best_rings, std::list<PlugboardDecryptInfo>& best_plugboards) {
+    (void) best_plugboards;
+
+    EnigmaConfig config {};
+
+    std::string fixed {};
+
+    std::vector<char*> possible_pairs {};
+    generate_plugboard_pair_permutations(possible_pairs);
+
+    char* d_text = new char[text_size+1]{0};
+
+    long double cur_fitness;
+    long double best_fitness {};
+
+    for(RingDecryptInfo rinfo: best_rings) {
+        Ops::rep_arr3(config.rotors, rinfo.rotor_info.rotors);
+        Ops::rep_arr3(config.rotor_pos, rinfo.rotor_info.rotor_pos);
+        Ops::rep_arr3(config.ring_pos, rinfo.ring_pos);
+        config.reflector = rinfo.rotor_info.reflector;
+        config.plugboard = "";
+
+        em.set_config(config);
+        for (char *pair: possible_pairs) {
+            char cur[] {pair[0], pair[1], '\0'};
+            if(!fixed.empty()) fixed += " ";
+            std::string cur_s {fixed + cur};
+            em.set_plugboard_settings(cur_s);
+
+            em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+
+            cur_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
+
+            if(best_plugboards.empty() || cur_fitness > best_plugboards.back().fitness){
+                if(fixed.size() > 30){
+                    fixed.erase(0, 3);
+                }
+
+                auto new_rotor_info = new RotorDecryptInfo {
+                    .rotors = new int[3],
+                    .rotor_pos = new int[3],
+                    .reflector = rinfo.rotor_info.reflector,
+                    .method = rinfo.rotor_info.method,
+                    .fitness = rinfo.rotor_info.fitness
+                };
+                Ops::rep_arr3(new_rotor_info->rotors, rinfo.rotor_info.rotors);
+                Ops::rep_arr3(new_rotor_info->rotor_pos, rinfo.rotor_info.rotor_pos);
+
+                auto new_ring_info = new RingDecryptInfo {
+                    .rotor_info = *new_rotor_info,
+                    .ring_pos = new int[3],
+                    .method = rinfo.method,
+                    .fitness = rinfo.fitness
+                };
+                Ops::rep_arr3(new_ring_info->ring_pos, rinfo.ring_pos);
+
+                auto new_good_plugboard = new PlugboardDecryptInfo {
+                    .plugboard = *(new std::string {cur_s}),
+                    .ring_info = *new_ring_info,
+                    .method = method,
+                    .fitness = cur_fitness
+                };
+
+                if(best_plugboards.size() >= 5){
+                    best_plugboards.pop_back();
+                }
+                best_plugboards.push_back(*new_good_plugboard);
+                best_plugboards.sort(plug_decrypt_info_sort_order);
+
+                if(cur_fitness > best_fitness || best_plugboards.empty()) {
+                    std::cout << "new best fitness: " << best_fitness << std::endl;
+                    best_fitness = cur_fitness;
+                    std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_plugs.txt)"};
+                    ofile << d_text;
+                    ofile.close();
+                }
+            }
+
+        }
+    }
 }
 
 int main(){
-
-//    int size {};
-//    char* text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &size);
-//
-//    double result {CharacterFrequency::calculate(text, size)};
-//
-//    std::cout << std::endl << "result = " << result << std::endl;
-//
-//    return 0;
-
     EnigmaConfig config {
             .rotors {3, 4, 5},
             .rotor_pos{17, 25, 3},
@@ -326,7 +409,7 @@ int main(){
     auto start_time {std::chrono::high_resolution_clock ::now()};
 
 //    BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
-    BlindDecrypt::find_rotors(em, BlindDecrypt::CHARACTER_FREQUENCY, e_text, e_size, best_rotors);
+    BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
     BlindDecrypt::print_rotor_decrypt_info_list(best_rotors);
     std::cout << std::endl;
@@ -334,8 +417,13 @@ int main(){
     std::list<BlindDecrypt::RingDecryptInfo> best_rings {};
 
 //    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
-    BlindDecrypt::find_rings(em, BlindDecrypt::CHARACTER_FREQUENCY, e_text, e_size, best_rotors, best_rings);
+    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     BlindDecrypt::print_ring_decrypt_info_list(best_rings);
+
+
+    std::list<BlindDecrypt::PlugboardDecryptInfo> best_configs {};
+    BlindDecrypt::find_plugs(em, BlindDecrypt::CHARACTER_FREQUENCY, e_text, e_size, best_rings, best_configs);
+    BlindDecrypt::print_plugboard_decrypt_info_list(best_configs);
 
     auto end_time {std::chrono::high_resolution_clock::now()};
     auto duration {duration_cast<std::chrono::seconds>(end_time - start_time)};

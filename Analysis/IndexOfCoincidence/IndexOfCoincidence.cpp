@@ -23,18 +23,8 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
     int appearances[27] {0};
 
     for(int i {0}; text[i] != '\0' && i < size; i++){
-        /*
-        int c {text[i] - 'a' + 1}; // ~20% faster than calling Ops::ctoi(char)
-        if(c < 1 || c > 26) {
-            std::cout << "BAD INDEX (" << c << ") IN INDEXOFCOINCIDENCE" << std::endl;
-            std::cout << "text = {" << text << "}" << std::endl;
-            exit(1);
-        }
-        appearances[c] += 1;
-         */
         appearances[text[i] - 'a' + 1] += 1; // ignoring safety checks is ~20-25% faster
     }
-
 
     unsigned long long sum {};
     for(int i {1}; i < 27; i++){
