@@ -51,6 +51,11 @@ public:
     int num_pairs();
 
     void print();
+
+    // returns true if the new_pair is allowed to be added, false otherwise
+    static bool can_add(const std::string& new_pair, const int* pairs);
+
+    static bool can_add(const std::string& new_pair, const std::string& pairs);
 };
 
 

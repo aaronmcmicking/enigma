@@ -337,7 +337,7 @@ void BlindDecrypt::find_plugs(EnigmaMachine em, BlindDecrypt::Method method, con
             auto new_pair = new std::pair<char*, double>{new char[2]{pair[0], pair[1]}, cur_fitness};
             best_pairs.push_back(*new_pair);
             best_pairs.sort(pair_sort_ordering);
-            if(best_pairs.size() >= 10){
+            if(best_pairs.size() >= 30){
                 best_pairs.pop_back();
             }
 
@@ -356,7 +356,9 @@ void BlindDecrypt::find_plugs(EnigmaMachine em, BlindDecrypt::Method method, con
     std::string final_plugboard {};
     for(auto& pair: best_pairs){
         std::string cur_setting {pair.first[0], pair.first[1]};
-        final_plugboard += cur_setting + " ";
+        if(Plugboard::can_add(cur_setting, final_plugboard)) {
+            final_plugboard += cur_setting + " ";
+        }
     }
     std::cout << "final plugboard settings: {" << final_plugboard << "}" << std::endl;
 

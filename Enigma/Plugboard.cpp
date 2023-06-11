@@ -181,3 +181,17 @@ std::string Plugboard::get_pairs() {
     str.pop_back(); // removes unwanted space at end of string
     return str;
 }
+
+bool Plugboard::can_add(const std::string& new_pair, const int* pairs) {
+    return pairs[EMOps::ctoi(new_pair[0])] == EMOps::ctoi(new_pair[0]);
+}
+
+bool Plugboard::can_add(const std::string &new_pair, const std::string &pairs) {
+    if(pairs.length() > 30) return false;
+    for(char c: pairs){
+        if(c == new_pair[0] || c == new_pair[1]){
+            return false;
+        }
+    }
+    return true;
+}
