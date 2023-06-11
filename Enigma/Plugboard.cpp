@@ -22,7 +22,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
 }
 
 [[nodiscard]] bool Plugboard::validate_plugboard_string(const std::string& str){
-//    std::cout << "plugboard validation received {" << str << "}" << std::endl;
+//    std::cout << "plugboard validation received {" << str << "}" << " with length " << str.length() << std::endl;
 
 
     const uint MAX_PLUGBOARD_STRING_LENGTH {20};
@@ -54,31 +54,13 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
         }
     } // for all chars in alphabet
 
-    /*
-    // checking format
-    uint w {};
-    while(w < str.length()){
-        char a, b, c;
-        a = str.at(w++);
-        b = str.at(w++);
-        if(!isalpha(a) || !isalpha(b)){
-            std::cout << "Invalid plugboard setting segment in: " << std::endl << "   {" << str << "}" << std::endl;
-            throw std::exception {};
-        }else if(w < str.length()-1){
-            // seperated space checking since the last pair does not have a following space
-            c = str.at(w++);
-            if(!isspace(c)){
-                std::cout << "Invalid plugboard setting segment in: " << std::endl << "   {" << str << "}" << std::endl;
-            } // if !isspace(c)
-        } // if ( !isalpha(a) || !isalpha(b) ) else ( w < str.len-1)
-    } // while (w < str.len)
-     */
     return true;
 }
 
 void Plugboard::set_pairs(const std::string &new_pairs) {
     std::string str_copy {};
 
+//    std::cout << "new_pairs.len = " << new_pairs.length() << std::endl;
     uint i;
     // send all chars to lowercase
     for (i = 0; i < new_pairs.length(); i++){
@@ -87,13 +69,16 @@ void Plugboard::set_pairs(const std::string &new_pairs) {
         }
     }
 
+//    if(new_pairs.length() > 0) std::cout << "1.2.1" << std::endl;
     // validate string
     if(!validate_plugboard_string(str_copy)){
         throw std::exception {};
     }
+//    if(new_pairs.length() > 0) std::cout << "1.2.2" << std::endl;
 
     // parse and set
     parse_and_set_pairs(str_copy);
+//    if(new_pairs.length() > 0) std::cout << "1.2.3" << std::endl;
 }
 
 void Plugboard::parse_and_set_pairs(std::string &str) {
@@ -102,15 +87,18 @@ void Plugboard::parse_and_set_pairs(std::string &str) {
         pairs[w] = w;
     }
 
+//    if(str.length() > 0)
+//        std::cout << "parse_and_set_pairs: str = {" << str << "} with length = " << str.length() << std::endl;
+
     uint i {};
     while(i < str.length()){
         int index;
-        index = EMOps::ctoi(str.at(i));
-        i++;
-        int val {EMOps::ctoi(str.at(i))};
+        index = EMOps::ctoi(str.at(i++));
+//        i++;
+        int val {EMOps::ctoi(str.at(i++))};
         pairs[index] = val;
         pairs[val] = index;
-        i += 2;
+//        i += 2;
     }
 }
 
@@ -125,13 +113,6 @@ int Plugboard::convert_int(int i) {
 
 // wrapper for convert_int(int c)
 int Plugboard::convert_char(char c){
-//    int i{ EMOps::ctoi(static_cast<char>(tolower(c))) };
-//    if(i >= CONVERSION_MAP_ARRAY_SIZE){
-//        std::cout << "Plugboard cannot convert invalid value (" << i << ")";
-//        throw std::exception {};
-//    }
-//    return pairs[i];
-
     return pairs[c - 'a' + 1];
 }
 
@@ -151,6 +132,17 @@ void Plugboard::print() {
         if(pairs[index] && pairs[index] != index) count++;
     }
     return count/2;
+}
+
+// assumes it is a valid plugboard string
+int Plugboard::num_pairs(const std::string &pair_str) {
+    int count {};
+    for(char c: pair_str){
+        if(isalpha(c)) {
+            count++;
+        }
+    }
+    return count / 2;
 }
 
 int* Plugboard::without_dupes(){
@@ -187,9 +179,11 @@ bool Plugboard::can_add(const std::string& new_pair, const int* pairs) {
 }
 
 bool Plugboard::can_add(const std::string &new_pair, const std::string &pairs) {
-    if(pairs.length() > 30) return false;
+    if(num_pairs(pairs) >= 10) return false;
     for(char c: pairs){
-        if(c == new_pair[0] || c == new_pair[1]){
+        if(isspace(c)) continue;
+        int c_lower {tolower(c)};
+        if(c_lower == tolower(new_pair[0]) || c_lower == tolower(new_pair[1])){
             return false;
         }
     }

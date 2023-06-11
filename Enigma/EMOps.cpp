@@ -6,7 +6,7 @@
 #include "Headers/EMOps.h"
 
 int EMOps::ctoi(char c) {
-    return static_cast<int>(c - 'a' + 1);
+    return (tolower(c) - 'a' + 1);
 }
 
 char EMOps::itoc(int i) {

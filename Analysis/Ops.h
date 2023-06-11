@@ -22,9 +22,15 @@ public:
 
     static char itoc(int i);
 
+    static void rep_arr3(int dest[3], int a, int b, int c);
+
     static void rep_arr3(int dest[3], const int *src);
 
-    static void rep_arr3(int dest[3], int a, int b, int c);
+    static void rep_arr3(char dest[3], const char *src);
+
+    static void rep_arr(int* dest, const int* src, int size);
+
+    static void rep_arr(char* dest, const char* src, int size);
 
     static void format_input_file(const std::string &filename);
 

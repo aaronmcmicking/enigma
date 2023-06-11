@@ -24,6 +24,18 @@ void Ops::rep_arr3(int dest[3], const int* src){
     for(int i {0}; i < 3; i++) dest[i] = src[i];
 }
 
+void Ops::rep_arr3(char dest[3], const char* src){
+    for(int i {0}; i < 3; i++) dest[i] = src[i];
+}
+
+void Ops::rep_arr(int* dest, const int* src, int size){
+    for(int i {0}; i < size; i++) dest[i] = src[i];
+}
+
+void Ops::rep_arr(char* dest, const char* src, int size){
+    for(int i {0}; i < size; i++) dest[i] = src[i];
+}
+
 void Ops::rep_arr3(int dest[3], int a, int b, int c){
     int src[] {a, b, c};
     rep_arr3(dest, src);
@@ -39,7 +51,7 @@ std::string Ops::format_text(const std::string& str){
     return dest;
 }
 
-int Ops::ctoi(char c) { return c - 'a' + 1; }
+int Ops::ctoi(char c) { return tolower(c) - 'a' + 1; }
 
 char Ops::itoc(int i) { return static_cast<char>(i + 'a' - 1); }
 

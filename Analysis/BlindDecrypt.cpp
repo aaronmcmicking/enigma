@@ -48,7 +48,7 @@ void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInf
     cout << "ROTOR SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "     ";
-    cout << "REF" << "         " << "FIT" << endl;
+    cout << "REF" << "          " << "FIT" << endl;
 //    cout << endl;
     for(auto& r: info){
         cout << left << setw(3) << BlindDecrypt::itor(r.rotors[0]) << "  " << left << setw(2) << r.rotor_pos[0] << "  |  "
@@ -64,7 +64,7 @@ void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo>
     cout << "RING SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-    cout << "REF" << "         " << "FIT" << endl;
+    cout << "REF" << "          " << "FIT" << endl;
     for(auto & r: info) {
         cout << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.ring_pos[0] << " |  "
              << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.ring_pos[1] << " |  "
@@ -79,7 +79,7 @@ void BlindDecrypt::print_plugboard_decrypt_info(const PlugboardDecryptInfo& info
     cout << "FINAL SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-    cout << "REF" << "         " << "FIT" << endl;
+    cout << "REF" << "          " << "FIT" << endl;
         cout << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[0]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << info.ring_info.ring_pos[0] << " |  "
              << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[1]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << info.ring_info.ring_pos[1] << " |  "
              << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[2]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << info.ring_info.ring_pos[2] << " |  "
@@ -206,7 +206,7 @@ void BlindDecrypt::find_rotors(EnigmaMachine em, BlindDecrypt::Method method, co
                             if(cur_fitness > best_fitness) {
 //                                std::cout << "new best fitness: " << best_fitness << std::endl;
                                 best_fitness = cur_fitness;
-                                std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted.txt)"};
+                                std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_rotors.txt)"};
                                 ofile << d_text;
                                 ofile.close();
                             }
@@ -317,66 +317,59 @@ void BlindDecrypt::find_plugs(EnigmaMachine em, BlindDecrypt::Method method, con
 
     char* d_text = new char[text_size+1]{0};
 
-    long double cur_fitness;
+    double best_fitness_on_cycle {};
+    char* best_pair_on_cycle {new char[3]{}};
+    double cur_fitness;
+    std::string fixed {};
 
-    std::list<std::pair<char*, double>> best_pairs {};
-    auto pair_sort_ordering = [](std::pair<char*, double> first, std::pair<char*, double> second){ return first.second >= second.second; };
+    for(int i {}; i < 10; i++) {
+        for (char *pair: possible_pairs) {
 
-    int count {};
-
-    for (char *pair: possible_pairs) {
-        count++;
-        char cur[] {pair[0], pair[1], '\0'};
-
-        em.set_plugboard_settings(cur);
-        em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
-
-        cur_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
-
-        if(best_pairs.empty() || cur_fitness > best_pairs.back().second){
-            auto new_pair = new std::pair<char*, double>{new char[2]{pair[0], pair[1]}, cur_fitness};
-            best_pairs.push_back(*new_pair);
-            best_pairs.sort(pair_sort_ordering);
-            if(best_pairs.size() >= 30){
-                best_pairs.pop_back();
+            char cur[]{pair[0], pair[1], '\0'};
+            if(!Plugboard::can_add(cur, fixed)){
+                continue;
             }
 
-//            if(cur_fitness > best_fitness || best_plugboards.empty()) {
-//                std::cout << "new best fitness: " << best_fitness << std::endl;
-//                best_fitness = cur_fitness;
-//                std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_plugs.txt)"};
-//                ofile << d_text;
-//                ofile.close();
-//            }
+            em.set_config(config);
+            std::string set_str {fixed + " " + cur};
+            em.set_plugboard_settings(set_str);
+            em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+
+            cur_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
+
+            if (cur_fitness > best_fitness_on_cycle) {
+                best_fitness_on_cycle = cur_fitness;
+                Ops::rep_arr(best_pair_on_cycle, cur, 3);
+            }
+
+            if(possible_pairs.back()[0] == pair[0] && possible_pairs.back()[1] == pair[1]){
+                fixed += " ";
+                fixed += best_pair_on_cycle;
+                best_fitness_on_cycle = 0;
+            }
         }
     }
-    std::cout << "Did " << count << " attempts at plugs" << std::endl;
 
-    // construct final plugboard
-    std::string final_plugboard {};
-    for(auto& pair: best_pairs){
-        std::string cur_setting {pair.first[0], pair.first[1]};
-        if(Plugboard::can_add(cur_setting, final_plugboard)) {
-            final_plugboard += cur_setting + " ";
-        }
-    }
-    std::cout << "final plugboard settings: {" << final_plugboard << "}" << std::endl;
-
-    config.plugboard = final_plugboard;
+    config.plugboard = fixed;
     em.set_config(config);
     em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
     double final_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
 
-    best_plugboard.plugboard = final_plugboard;
+    std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_plugs.txt)"};
+    ofile << d_text;
+    ofile.close();
+
+    best_plugboard.plugboard = fixed;
     best_plugboard.ring_info = best_ring;
     best_plugboard.method = method;
     best_plugboard.fitness = final_fitness;
+
 
     delete[] d_text;
 }
 
 int main(){
-    EnigmaConfig config {
+    EnigmaConfig encrypt_config {
             .rotors {3, 4, 5},
             .rotor_pos{17, 25, 3},
 //            .ring_pos{9, 22, 17},
@@ -387,7 +380,7 @@ int main(){
 //            .plugboard {""}
     };
 
-    EnigmaMachine em {config};
+    EnigmaMachine em {encrypt_config};
 
     em.encrypt_or_decrypt_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)", R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)");
 
@@ -409,6 +402,7 @@ int main(){
 //    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     BlindDecrypt::print_ring_decrypt_info_list(best_rings);
+    std::cout << std::endl;
 
 
     BlindDecrypt::PlugboardDecryptInfo best_plugboard {};
@@ -422,6 +416,21 @@ int main(){
     std::ofstream log_file {R"(J:\Programming\enigma\cmake-build-debug\in_out\log.txt)"};
     log_file << "decryption took " << duration.count() << " seconds" << std::endl;
     log_file.close();
+
+    EnigmaConfig decrypt_config {
+        .rotors = {},
+        .rotor_pos = {},
+        .ring_pos = {},
+        .reflector = best_plugboard.ring_info.rotor_info.reflector,
+        .plugboard = best_plugboard.plugboard
+    };
+
+    Ops::rep_arr3(decrypt_config.rotors, best_plugboard.ring_info.rotor_info.rotors);
+    Ops::rep_arr3(decrypt_config.rotor_pos, best_plugboard.ring_info.rotor_info.rotor_pos);
+    Ops::rep_arr3(decrypt_config.ring_pos, best_plugboard.ring_info.ring_pos);
+
+    em.set_config(decrypt_config);
+    em.encrypt_or_decrypt_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted.txt)");
 
     delete e_text;
     std::cout << std::endl << "Done" << std::endl;
