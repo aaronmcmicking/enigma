@@ -22,25 +22,30 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
 }
 
 [[nodiscard]] bool Plugboard::validate_plugboard_string(const std::string& str){
-    // checking number of pairs
-    // each pair has 3 characters in str EXCEPT the final pair, which has two
-    // there can be no more than ten pairs
-    // so str.length() <= 9*3 + 1*2 = 29
-    if(str.length() > 29){
-        std::cout << str.length() << " exceeds max plugboard string length of 28 (were there more than 10 pairs included?)" << std::endl;
+//    std::cout << "plugboard validation received {" << str << "}" << std::endl;
+
+
+    const uint MAX_PLUGBOARD_STRING_LENGTH {20};
+
+    if(str.length() > MAX_PLUGBOARD_STRING_LENGTH){
+        std::cout << str.length() << " exceeds max plugboard string length of "<< MAX_PLUGBOARD_STRING_LENGTH << " (were there more than 10 pairs included?)" << std::endl;
+        throw std::exception {};
+    }else if(str.length() % 2 != 0){
+        std::cout << str.length() << " has non-even length "<< str.length() << " (is there a malformed pair included?)" << std::endl;
         throw std::exception {};
     }
 
     // checking character validity
-    int count {};
+    int count;
     for(char c {'a'}; c <= 'z'; c++){
         count = 0;
         for(uint i {0}; i < str.length(); i++){
             if(str.at(i) == c) {
                 count++;
-            }else if(!isalpha(str.at(i)) && !isspace(str.at(i)) ){
-                std::cout << "Invalid plugboard character '" << str.at(i) << "' in: " << std::endl << "   {" << str << "}" << std::endl;
             }
+//            else if(!isalpha(str.at(i)) && !isspace(str.at(i)) ){
+//                std::cout << "Invalid plugboard character '" << str.at(i) << "' in: " << std::endl << "   {" << str << "}" << std::endl;
+//            }
         } // for all chars in string
         if(!(count == 0 || count == 1)){
             std::cout << "Invalid plugboard setting for '" << c << "' in: " << std::endl << "   {" << str << "}" << std::endl;
@@ -49,6 +54,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
         }
     } // for all chars in alphabet
 
+    /*
     // checking format
     uint w {};
     while(w < str.length()){
@@ -66,15 +72,19 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
             } // if !isspace(c)
         } // if ( !isalpha(a) || !isalpha(b) ) else ( w < str.len-1)
     } // while (w < str.len)
+     */
     return true;
 }
 
 void Plugboard::set_pairs(const std::string &new_pairs) {
-    std::string str_copy = new_pairs;
+    std::string str_copy {};
 
+    uint i;
     // send all chars to lowercase
-    for (uint i {0}; i < str_copy.length(); i++){
-        str_copy.at(i) = static_cast<char>(tolower(str_copy.at(i)));
+    for (i = 0; i < new_pairs.length(); i++){
+        if(isalpha(new_pairs.at(i))) {
+            str_copy += static_cast<char>(tolower(new_pairs.at(i)));
+        }
     }
 
     // validate string
