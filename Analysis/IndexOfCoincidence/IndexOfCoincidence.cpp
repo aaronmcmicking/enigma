@@ -8,6 +8,10 @@
 #include "IndexOfCoincidence.h"
 #include "..\Ops.h"
 
+long double IndexOfCoincidence::abs(long double val) {
+    return val >= 0 ? val : -val;
+}
+
 long double IndexOfCoincidence::calculate_f(const std::string &filename) {
     Ops::format_input_file(filename);
 
@@ -34,11 +38,13 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
 
     size--; // -1 to account for null terminator in c-string
     long double den = size*(size-1) / static_cast<long double>(NORMALIZING_COEFFICIENT);
-    long double returnable = sum / den;
+    long double measured_ioc = sum / den;
 
 //    auto end_time = std::chrono::high_resolution_clock::now();
 //    auto duration = duration_cast<std::chrono::nanoseconds>(end_time - start_time);
 //    std::cout << std::endl << "IOC took " << duration.count() << " nanoseconds" << std::endl;
 
-    return returnable;
+    return 1 - abs(ENGLISH_EXPECTED_IOC - measured_ioc);
+
+//    return measured_ioc;
 }

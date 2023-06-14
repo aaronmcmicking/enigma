@@ -36,7 +36,7 @@ double CharacterFrequency::calculate(const char* text, int size){
     }
 
     return 1 - sum;
-//    return sum / 26.0;
+//    return 1 - (sum / 26.0);
 }
 
 double CharacterFrequency::abs(double val){

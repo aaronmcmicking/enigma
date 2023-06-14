@@ -13,7 +13,12 @@
 #include "../Ops.h"
 
 class IndexOfCoincidence {
+private:
+    static long double abs(long double val);
+
 public:
+    constexpr static const long double ENGLISH_EXPECTED_IOC {1.73};
+
     static const int NORMALIZING_COEFFICIENT {26};
 
     static long double calculate_f(const std::string& filename);

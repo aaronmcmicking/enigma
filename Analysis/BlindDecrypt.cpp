@@ -48,7 +48,7 @@ void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInf
     cout << "ROTOR SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "     ";
-    cout << "REF" << "          " << "FIT" << endl;
+    cout << "REF" << "          " << "FITNESS" << endl;
 //    cout << endl;
     for(auto& r: info){
         cout << left << setw(3) << BlindDecrypt::itor(r.rotors[0]) << "  " << left << setw(2) << r.rotor_pos[0] << "  |  "
@@ -64,7 +64,7 @@ void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo>
     cout << "RING SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-    cout << "REF" << "          " << "FIT" << endl;
+    cout << "REF" << "          " << "FITNESS" << endl;
     for(auto & r: info) {
         cout << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.ring_pos[0] << " |  "
              << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.ring_pos[1] << " |  "
@@ -79,7 +79,7 @@ void BlindDecrypt::print_plugboard_decrypt_info(const PlugboardDecryptInfo& info
     cout << "FINAL SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-    cout << "REF" << "          " << "FIT" << endl;
+    cout << "REF" << "          " << "FITNESS" << endl;
         cout << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[0]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << info.ring_info.ring_pos[0] << " |  "
              << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[1]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << info.ring_info.ring_pos[1] << " |  "
              << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[2]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << info.ring_info.ring_pos[2] << " |  "
@@ -372,11 +372,12 @@ int main(){
     EnigmaConfig encrypt_config {
             .rotors {3, 4, 5},
             .rotor_pos{17, 25, 3},
-//            .ring_pos{9, 22, 17},
-            .ring_pos{5, 10, 15},
+            .ring_pos{9, 22, 17},
+//            .ring_pos{5, 10, 15},
+//            .ring_pos{1, 1, 1},
             .reflector ='C',
-//            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
-            .plugboard {"QU IN VB LE"}
+            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
+//            .plugboard {"QU IN VB LE"}
 //            .plugboard {""}
     };
 
@@ -406,7 +407,7 @@ int main(){
 
 
     BlindDecrypt::PlugboardDecryptInfo best_plugboard {};
-    BlindDecrypt::find_plugs(em, BlindDecrypt::CHARACTER_FREQUENCY, e_text, e_size, best_rings.front(), best_plugboard);
+    BlindDecrypt::find_plugs(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
     BlindDecrypt::print_plugboard_decrypt_info(best_plugboard);
 
     auto end_time {std::chrono::high_resolution_clock::now()};
