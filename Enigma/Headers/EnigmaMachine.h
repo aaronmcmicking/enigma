@@ -48,6 +48,8 @@ public:
 
     void set_plugboard_settings(const std::string& settings);
 
+    Plugboard& get_plugboard();
+
     void set_config(const EnigmaConfig& config);
 
     void print_config();

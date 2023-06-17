@@ -18,7 +18,8 @@ public:
     static const int min_position {1};
     int ring_position;
     bool turnover_flag {false}; // true if the next rotor should turn, false otherwise
-    int mappings[CONVERSION_MAP_ARRAY_SIZE]; // 1-indexed (ignore position 0)
+    int forward_mapping[CONVERSION_MAP_ARRAY_SIZE]; // 1-indexed (ignore position 0)
+    int reverse_mapping[CONVERSION_MAP_ARRAY_SIZE]; // 1-indexed (ignore position 0)
 
     Rotor();
 
@@ -34,7 +35,7 @@ public:
 
     void set_position(int new_pos);
 
-    void set_mappings(const int new_mappings[CONVERSION_MAP_ARRAY_SIZE]);
+    void set_mappings(const int new_mapping[CONVERSION_MAP_ARRAY_SIZE]);
 
     int next(int normalized_input, bool forward, bool should_rotate);
 

@@ -116,11 +116,11 @@ int Plugboard::convert_char(char c){
     return pairs[c - 'a' + 1];
 }
 
-void Plugboard::print() {
+void Plugboard::print(bool show_default_connections) {
     int* copy = without_dupes();
     // print
     for(int index {0}; index < 27; index++) {
-        if(copy[index]) {
+        if(copy[index] && (show_default_connections || copy[index] != index)) {
             std::cout << EMOps::itoc(index) << " <-> " << EMOps::itoc(copy[index]) << std::endl;
         }
     }

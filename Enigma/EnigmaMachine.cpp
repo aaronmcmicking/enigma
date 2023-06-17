@@ -66,11 +66,11 @@ void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src, int size) {
 }
 
 void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size) {
-    int i {};
+    int i {}, c1;
     while(i < size && src[i] != '\0'){
-        int c1 = plugboard.convert_char(src[i]);
+        c1 = plugboard.convert_char(src[i]);
         c1 = rotor_box.convert_int(c1);
-        dest[i++] = EMOps::itoc(plugboard.convert_int(c1));
+        dest[i++] = static_cast<char>(plugboard.convert_int(c1) + 'a' - 1);
     }
 }
 
@@ -126,7 +126,7 @@ void EnigmaMachine::print_config_object(const EnigmaConfig& config){
 }
 
 void EnigmaMachine::print_config(){
-    rotor_box.set_reflector(rotor_box.get_reflector());
+    rotor_box.set_reflector(rotor_box.get_reflector()); // removes static warning message
     std::cout << "IMPLEMENT ME" << std::endl;
 }
 
@@ -136,4 +136,8 @@ void EnigmaMachine::copy_config(EnigmaConfig &dest, EnigmaConfig &src) {
     EMOps::rep_arr3(dest.ring_pos, src.ring_pos);
     dest.reflector = src.reflector;
     dest.plugboard = src.plugboard;
+}
+
+Plugboard& EnigmaMachine::get_plugboard(){
+    return plugboard;
 }

@@ -57,7 +57,7 @@ public:
 
     static int num_pairs(const std::string& pair_str);
 
-    void print();
+    void print(bool show_default_connections);
 
     // returns true if the new_pair is allowed to be added, false otherwise
     static bool can_add(const std::string& new_pair, const int* pairs);

@@ -11,7 +11,6 @@
 #include <utility>
 #include "../Enigma/Headers/EnigmaMachine.h"
 
-
 class BlindDecrypt {
 public:
     enum Method{
@@ -40,6 +39,8 @@ public:
         Method method;
         long double fitness;
     }PlugboardDecryptInfo;
+
+    static int main();
 
     static void print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& info);
 

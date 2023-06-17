@@ -45,6 +45,5 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
 //    std::cout << std::endl << "IOC took " << duration.count() << " nanoseconds" << std::endl;
 
     return 1 - abs(ENGLISH_EXPECTED_IOC - measured_ioc);
-
 //    return measured_ioc;
 }

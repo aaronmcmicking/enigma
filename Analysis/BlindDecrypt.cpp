@@ -32,17 +32,6 @@ bool ring_decrypt_info_sort_order(const BlindDecrypt::RingDecryptInfo& first, co
     return first.fitness >= second.fitness;
 }
 
-/**
- * Defines weak ordering for lists of BlindDecrypt::PlugboardDecryptInfo structs. An item should come first in a list if
- * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
- * @param first The first item to compare.
- * @param second The second item to compare.
- * @return True if `first` is ordered before `second`, false otherwise.
- */
-bool plug_decrypt_info_sort_order(const BlindDecrypt::PlugboardDecryptInfo& first, const BlindDecrypt::PlugboardDecryptInfo& second){
-    return first.fitness >= second.fitness;
-}
-
 void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& info) {
     using namespace std;
     cout << "ROTOR SETTINGS:" << endl;
@@ -93,14 +82,11 @@ double BlindDecrypt::calculate_fitness(BlindDecrypt::Method method, char *text, 
     switch(method){
         case INDEX_OF_COINCIDENCE:
             return static_cast<double>(IndexOfCoincidence::calculate(text, text_size));
-            break;
         case CHARACTER_FREQUENCY:
             return CharacterFrequency::calculate(text, text_size);
-            break;
         default:
             std::cout << "no decryption method selected for " << current_target << std::endl;
             return -1.0;
-            break;
     }
 }
 
@@ -359,25 +345,59 @@ void BlindDecrypt::find_plugs(EnigmaMachine em, BlindDecrypt::Method method, con
     ofile << d_text;
     ofile.close();
 
+    best_plugboard = *(new PlugboardDecryptInfo {});
+    best_plugboard.ring_info = *(new RingDecryptInfo {
+        .rotor_info {
+            *new RotorDecryptInfo {
+               .rotors = new int[3],
+               .rotor_pos = new int[3],
+               .reflector = best_ring.rotor_info.reflector,
+               .method = best_ring.rotor_info.method,
+               .fitness = best_ring.rotor_info.fitness
+            } },
+        .ring_pos = new int[3],
+        .method = best_ring.method,
+        .fitness = best_ring.fitness
+    });
+    // copy rotorbox info
+    Ops::rep_arr3(best_plugboard.ring_info.rotor_info.rotors, best_ring.rotor_info.rotors);
+    Ops::rep_arr3(best_plugboard.ring_info.rotor_info.rotor_pos, best_ring.rotor_info.rotor_pos);
+
+    // copy ring info
+    Ops::rep_arr3(best_plugboard.ring_info.ring_pos, best_ring.ring_pos);
+
+    // new plugboard info
     best_plugboard.plugboard = fixed;
-    best_plugboard.ring_info = best_ring;
     best_plugboard.method = method;
     best_plugboard.fitness = final_fitness;
 
+//    std::cout << "fixed = " << fixed << std::endl;
+//    std::cout << "config.plugboard = " << config.plugboard << std::endl;
+//    std::cout << "e_text = " << e_text << std::endl;
+//    std::cout << std::endl << "actual plugboard: " << std::endl;
+//    em.get_plugboard().print(false);
+//    std::cout << std::endl;
+//    EnigmaMachine::print_config_object(config);
 
     delete[] d_text;
 }
 
-int main(){
+int BlindDecrypt::main(){
+//    Ops::format_input_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)");
+//    return 0;
+
     EnigmaConfig encrypt_config {
-            .rotors {3, 4, 5},
-            .rotor_pos{17, 25, 3},
-            .ring_pos{9, 22, 17},
-//            .ring_pos{5, 10, 15},
-//            .ring_pos{1, 1, 1},
-            .reflector ='C',
-            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
-//            .plugboard {"QU IN VB LE"}
+            .rotors {2, 5, 3},
+            .rotor_pos{21, 19, 6},
+//            .ring_pos{9, 22, 17},
+            .ring_pos{7, 19, 3},
+//            .ring_pos{26, 26, 26},
+//            .ring_pos{0, 0, 0},
+            .reflector = 'B',
+//            .plugboard {"JM HO PQ LD UG ZF KS AN BX YW"}
+//            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
+            .plugboard {"QU IN VB LE"}
+//            .plugboard {"IK BH RG NA PF"}
 //            .plugboard {""}
     };
 
@@ -388,27 +408,27 @@ int main(){
     int e_size {};
     char* e_text = Ops::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\encrypted.txt)", &e_size);
 
-    std::list<BlindDecrypt::RotorDecryptInfo> best_rotors {};
+    std::list<RotorDecryptInfo> best_rotors {};
 
     auto start_time {std::chrono::high_resolution_clock ::now()};
 
-//    BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
-    BlindDecrypt::find_rotors(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+//    find_rotors(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+    find_rotors(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
-    BlindDecrypt::print_rotor_decrypt_info_list(best_rotors);
-    std::cout << std::endl;
-
-    std::list<BlindDecrypt::RingDecryptInfo> best_rings {};
-
-//    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
-    BlindDecrypt::find_rings(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
-    BlindDecrypt::print_ring_decrypt_info_list(best_rings);
+    print_rotor_decrypt_info_list(best_rotors);
     std::cout << std::endl;
 
+    std::list<RingDecryptInfo> best_rings {};
 
-    BlindDecrypt::PlugboardDecryptInfo best_plugboard {};
-    BlindDecrypt::find_plugs(em, BlindDecrypt::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
-    BlindDecrypt::print_plugboard_decrypt_info(best_plugboard);
+//    find_rings(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
+    find_rings(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
+    print_ring_decrypt_info_list(best_rings);
+    std::cout << std::endl;
+
+
+    PlugboardDecryptInfo best_plugboard {};
+    find_plugs(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
+    print_plugboard_decrypt_info(best_plugboard);
 
     auto end_time {std::chrono::high_resolution_clock::now()};
     auto duration {duration_cast<std::chrono::seconds>(end_time - start_time)};

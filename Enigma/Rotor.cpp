@@ -8,24 +8,23 @@
 
 void Rotor::fill_default_mappings(){
     for(int i {min_position}; i <= max_position; i++){
-        mappings[i] = i;
+        forward_mapping[i] = i;
+        reverse_mapping[i] = i;
     }
 }
 
-Rotor::Rotor(): position {min_position}, ring_position {max_position}, mappings {} {
+Rotor::Rotor(): position {min_position}, ring_position {max_position}, forward_mapping {}, reverse_mapping {} {
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int ring_pos): position {initial_position}, ring_position {ring_pos}, mappings {} {
+Rotor::Rotor(int initial_position, int ring_pos): position {initial_position}, ring_position {ring_pos}, forward_mapping {}, reverse_mapping {} {
     fill_default_mappings();
 }
 
 Rotor::Rotor(int initial_position, int ring_pos, const int map[CONVERSION_MAP_ARRAY_SIZE])
-        : position {initial_position}, ring_position {ring_pos}, mappings {}
+        : position {initial_position}, ring_position {ring_pos}, forward_mapping {}, reverse_mapping {}
 {
-    for(int i {min_position}; i <= max_position; i++){
-        mappings[i] = map[i];
-    }
+    set_mappings(map);
 }
 
 [[nodiscard]] int Rotor::get_position() const{
@@ -44,9 +43,10 @@ void Rotor::set_position(int new_pos){
     position = new_pos;
 }
 
-void Rotor::set_mappings(const int new_mappings[CONVERSION_MAP_ARRAY_SIZE]){
+void Rotor::set_mappings(const int new_mapping[CONVERSION_MAP_ARRAY_SIZE]){
     for(int i {min_position}; i <= max_position; i++) {
-        mappings[i] = new_mappings[i];
+        forward_mapping[i] = new_mapping[i];
+        reverse_mapping[ forward_mapping[i] ] = i;
     }
 }
 
@@ -72,25 +72,13 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     }else{
         relative_input = max_position;
     }
-    int output_relative_to_current_pos;
-    if(forward) {
-        output_relative_to_current_pos = mappings[relative_input];
-    }else{ // when coming back from reflector
-//        int i {min_position};
-//        while(i <= max_position && mappings[i] != relative_input){
-////            if(i >= max_position){
-////                std::cout << "couldn't find mapping for value " << i << " from reflector" << std::endl;
-////                throw std::exception {};
-////            }
-//            i++;
-//        }
-//        output_relative_to_current_pos = i;
-        output_relative_to_current_pos = min_position;
-        while(output_relative_to_current_pos <= max_position && mappings[output_relative_to_current_pos] != relative_input){
-            output_relative_to_current_pos++;
-        }
-    }
 
+    int output_relative_to_current_pos;
+    if(forward){
+        output_relative_to_current_pos = forward_mapping[relative_input];
+    }else{ // when coming back from reflector
+        output_relative_to_current_pos = reverse_mapping[relative_input];
+    }
     // calculate_f the normalized output value (ie. the number of steps from the 'start' position that the letter output at
     if(EMOps::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
         return max_position - position + output_relative_to_current_pos + 1;
@@ -108,9 +96,9 @@ void Rotor::reset_turnover_flag(){
 }
 
 [[nodiscard]] bool Rotor::pop_turnover_flag() {
-    bool b {turnover_flag};
+    bool should_turnover {turnover_flag};
     turnover_flag = false;
-    return b;
+    return should_turnover;
 }
 
 void Rotor::print_rotor_mappings() const{
@@ -118,7 +106,7 @@ void Rotor::print_rotor_mappings() const{
     for(int i = 1; i <= max_position; i++) {
         std::cout << "   " << i << " -> ";
         try {
-            std::cout << mappings[i] << std::endl;
+            std::cout << forward_mapping[i] << std::endl;
         }catch(std::exception& e){
             std::cout << "no such value" << std::endl;
         }
