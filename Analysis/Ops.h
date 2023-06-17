@@ -37,7 +37,7 @@ public:
     static std::string format_text(const std::string &str);
 
     // allocates, but DOES NOT deallocate memory
-    static char* load_from_file(const std::string& filename, int* size);
+    static char* load_from_file(const std::string& filename, int* size_ptr);
 
 };
 

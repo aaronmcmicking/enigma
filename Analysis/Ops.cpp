@@ -55,18 +55,18 @@ int Ops::ctoi(char c) { return tolower(c) - 'a' + 1; }
 
 char Ops::itoc(int i) { return static_cast<char>(i + 'a' - 1); }
 
-char* Ops::load_from_file(const std::string& filename, int* size){
+char* Ops::load_from_file(const std::string& filename, int* size_ptr){
     Ops::format_input_file(filename);
 
     char* buf {new char[MAX_INPUT_STRING_LENGTH]};
     std::ifstream file {filename};
     file.get(buf, MAX_INPUT_STRING_LENGTH);
 
-    if(size != nullptr) {
+    if(size_ptr != nullptr) {
         int count{0};
         for (int i{0}; buf[i] != '\0'; i++) count++;
-        *size = count;
-//        std::cout << "got size = " << count << std::endl;
+        *size_ptr = count;
+//        std::cout << "got size_ptr = " << count << std::endl;
     }
 
     return buf;

@@ -49,6 +49,7 @@ RotorBox::RotorBox(): reflector {Reflector()} {
 }
 
 Rotor RotorBox::get_individual_rotor(int rotor_number){
+    if(rotor_number < 1 || rotor_number > 7) std::cout << "rotor_number = " << rotor_number << std::endl;
     Rotor rotors[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI,RotorVII, RotorVIII};
     return rotors[rotor_number-1];
 }

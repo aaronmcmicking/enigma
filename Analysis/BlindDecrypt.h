@@ -42,18 +42,20 @@ public:
 
     static int main();
 
+    static void decrypt(const std::string& input_filepath, const std::string& output_filepath);
+
     static void print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& info);
 
     static void print_ring_decrypt_info_list(const std::list<RingDecryptInfo>& info);
 
     static void print_plugboard_decrypt_info(const PlugboardDecryptInfo& info);
 
-    static void find_rotors(EnigmaMachine em, Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
+    static void find_rotors(Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
 
-    static void find_rings(EnigmaMachine em, BlindDecrypt::Method method, const char *e_text, long text_size,
+    static void find_rings(BlindDecrypt::Method method, const char *e_text, long text_size,
                            const std::list<RotorDecryptInfo>& best_rotors, std::list<RingDecryptInfo>& best_rings);
 
-    static void find_plugs(EnigmaMachine em, BlindDecrypt::Method method, const char* e_text, long text_size,
+    static void find_plugs(BlindDecrypt::Method method, const char* e_text, long text_size,
                            const RingDecryptInfo& best_ring, PlugboardDecryptInfo& best_plugboard);
 
     static std::string itor(int i); // int to roman numeral
