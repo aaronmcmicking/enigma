@@ -6,6 +6,7 @@
 #include "BlindDecrypt.h"
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
 #include "CharacterFrequency/CharacterFrequency.h"
+#include "KnownPlaintextSimple//KnownPlaintextSimple.h"
 #include <cmath>
 #include <iomanip>
 #include <chrono>
@@ -245,7 +246,7 @@ void BlindDecrypt::find_rings(BlindDecrypt::Method method, const char *e_text, l
 
                     em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
 
-                cur_fitness = calculate_fitness(method, d_text, text_size, "ring settings");
+                    cur_fitness = calculate_fitness(method, d_text, text_size, "ring settings");
 
                     if(best_rings.empty() || cur_fitness >= best_rings.back().fitness){
                         static RotorDecryptInfo rninfo {
@@ -463,7 +464,8 @@ int BlindDecrypt::main(){
 //            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
 //            .plugboard {"QU IN VB LE"}
 //            .plugboard {"IK BH RG NA PF"}
-            .plugboard {""}
+            .plugboard {"AF"},
+//            .plugboard {""}
     };
 
     EnigmaMachine em {encrypt_config};

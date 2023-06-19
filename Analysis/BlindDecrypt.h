@@ -15,7 +15,8 @@ class BlindDecrypt {
 public:
     enum Method{
         INDEX_OF_COINCIDENCE,
-        CHARACTER_FREQUENCY
+        CHARACTER_FREQUENCY,
+        KNOWN_PLAINTEXT_SIMPLE
     };
 
     typedef struct{
