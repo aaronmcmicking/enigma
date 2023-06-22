@@ -11,6 +11,8 @@
 #include <iomanip>
 #include <chrono>
 
+#include "Op.h"
+
 /**
  * Defines weak ordering for lists of BlindDecrypt::RotorDecryptInfo structs. An item should come first in a list if
  * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
@@ -152,7 +154,7 @@ void BlindDecrypt::find_rotors(BlindDecrypt::Method method, const char* e_text, 
 
     for(std::vector<int> cur_rotors: rotor_positions){
         for(int r3_p {1}; r3_p <= 26; r3_p++){
-            Ops::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
+            Op::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
             for(int r2_p {1}; r2_p <= 26; r2_p++){
                 for(int r1_p {1}; r1_p <= 26; r1_p++){
                     for(char ref {'a'}; ref <= 'c'; ref++){
@@ -164,7 +166,7 @@ void BlindDecrypt::find_rotors(BlindDecrypt::Method method, const char* e_text, 
                         }
 
                         // set new rotor settings
-                        Ops::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
+                        Op::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
                         config.reflector = ref;
 
                         em.set_config(config);
@@ -233,14 +235,14 @@ void BlindDecrypt::find_rings(BlindDecrypt::Method method, const char *e_text, l
     for(int i {0}; i < 5; i++){
         auto rinfo {rotor_it};
         rotor_it++;
-        Ops::rep_arr3(config.rotors, rinfo->rotors);
-        Ops::rep_arr3(config.rotor_pos, rinfo->rotor_pos);
+        Op::rep_arr3(config.rotors, rinfo->rotors);
+        Op::rep_arr3(config.rotor_pos, rinfo->rotor_pos);
         config.reflector = rinfo->reflector;
         for (int r1{1}; r1 <= 26; r1++) {
             for (int r2{1}; r2 <= 26; r2++) {
 //                for (int r3{1}; r3 <= 26; r3++) {
-//                    Ops::rep_arr3(config.ring_pos, r1, r2, r3);
-                    Ops::rep_arr3(config.ring_pos, r1, r2, 1);
+//                    Op::rep_arr3(config.ring_pos, r1, r2, r3);
+                    Op::rep_arr3(config.ring_pos, r1, r2, 1);
 
                     em.set_config(config);
 
@@ -258,8 +260,8 @@ void BlindDecrypt::find_rings(BlindDecrypt::Method method, const char *e_text, l
                         };
 
                         // yuck
-                        Ops::rep_arr3(rninfo.rotors, rinfo->rotors);
-                        Ops::rep_arr3(rninfo.rotor_pos, rinfo->rotor_pos);
+                        Op::rep_arr3(rninfo.rotors, rinfo->rotors);
+                        Op::rep_arr3(rninfo.rotor_pos, rinfo->rotor_pos);
                         rninfo.reflector = rinfo->reflector;
                         rninfo.fitness = rinfo->fitness;
                         rninfo.method = rinfo->method;
@@ -300,9 +302,9 @@ void BlindDecrypt::find_plugs(BlindDecrypt::Method method, const char *e_text, l
     EnigmaMachine em {new int[3] {1, 2, 3}, new int[3] {1, 1, 1}, new int[3] {0, 0, 0}, 'a', ""};
 
     EnigmaConfig config {};
-    Ops::rep_arr3(config.rotors, best_ring.rotor_info.rotors);
-    Ops::rep_arr3(config.rotor_pos, best_ring.rotor_info.rotor_pos);
-    Ops::rep_arr3(config.ring_pos, best_ring.ring_pos);
+    Op::rep_arr3(config.rotors, best_ring.rotor_info.rotors);
+    Op::rep_arr3(config.rotor_pos, best_ring.rotor_info.rotor_pos);
+    Op::rep_arr3(config.ring_pos, best_ring.ring_pos);
     config.reflector = best_ring.rotor_info.reflector;
     config.plugboard = "";
     em.set_config(config);
@@ -334,7 +336,7 @@ void BlindDecrypt::find_plugs(BlindDecrypt::Method method, const char *e_text, l
 
             if (cur_fitness > best_fitness_on_cycle) {
                 best_fitness_on_cycle = cur_fitness;
-                Ops::rep_arr(best_pair_on_cycle, cur, 3);
+                Op::rep_arr(best_pair_on_cycle, cur, 3);
             }
 
             if(possible_pairs.back()[0] == pair[0] && possible_pairs.back()[1] == pair[1]){
@@ -369,11 +371,11 @@ void BlindDecrypt::find_plugs(BlindDecrypt::Method method, const char *e_text, l
         .fitness = best_ring.fitness
     });
     // copy rotorbox info
-    Ops::rep_arr3(best_plugboard.ring_info.rotor_info.rotors, best_ring.rotor_info.rotors);
-    Ops::rep_arr3(best_plugboard.ring_info.rotor_info.rotor_pos, best_ring.rotor_info.rotor_pos);
+    Op::rep_arr3(best_plugboard.ring_info.rotor_info.rotors, best_ring.rotor_info.rotors);
+    Op::rep_arr3(best_plugboard.ring_info.rotor_info.rotor_pos, best_ring.rotor_info.rotor_pos);
 
     // copy ring info
-    Ops::rep_arr3(best_plugboard.ring_info.ring_pos, best_ring.ring_pos);
+    Op::rep_arr3(best_plugboard.ring_info.ring_pos, best_ring.ring_pos);
 
     // new plugboard info
     best_plugboard.plugboard = fixed;
@@ -395,7 +397,7 @@ void BlindDecrypt::find_plugs(BlindDecrypt::Method method, const char *e_text, l
 
 void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string &output_filepath) {
     int e_size {};
-    char* e_text = Ops::load_from_file(input_filepath, &e_size);
+    char* e_text = Op::load_from_file(input_filepath, &e_size);
 
     std::list<RotorDecryptInfo> best_rotors {};
 
@@ -438,9 +440,9 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
             .plugboard = best_plugboard.plugboard
     };
 
-    Ops::rep_arr3(decrypt_config.rotors, best_plugboard.ring_info.rotor_info.rotors);
-    Ops::rep_arr3(decrypt_config.rotor_pos, best_plugboard.ring_info.rotor_info.rotor_pos);
-    Ops::rep_arr3(decrypt_config.ring_pos, best_plugboard.ring_info.ring_pos);
+    Op::rep_arr3(decrypt_config.rotors, best_plugboard.ring_info.rotor_info.rotors);
+    Op::rep_arr3(decrypt_config.rotor_pos, best_plugboard.ring_info.rotor_info.rotor_pos);
+    Op::rep_arr3(decrypt_config.ring_pos, best_plugboard.ring_info.ring_pos);
 
 //    em.set_config(decrypt_config);
     EnigmaMachine em {decrypt_config};
@@ -450,7 +452,7 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 }
 
 int BlindDecrypt::main(){
-//    Ops::format_input_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)");
+//    Op::format_input_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)");
 //    return 0;
     EnigmaConfig encrypt_config {
             .rotors {2, 5, 3},

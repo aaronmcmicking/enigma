@@ -4,8 +4,10 @@
 
 #include <iomanip>
 #include <chrono>
+#include <iostream>
 #include "KnownPlaintextStack.h"
-#include "Ops.h"
+
+#include "Op.h"
 
 void KnownPlaintextStack::generate_rotor_permutations(std::vector<std::vector<int>>& permutations) {
     permutations.clear();
@@ -87,7 +89,7 @@ void KnownPlaintextStack::decrypt(const char *text, long size, const char* plain
 
     for (std::vector<int> cur_rotors: rotor_perms) {
         for (int r3_p{1}; r3_p <= 26; r3_p++) {
-            Ops::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
+            Op::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
             for (int r2_p{1}; r2_p <= 26; r2_p++) {
                 for (int r1_p{1}; r1_p <= 26; r1_p++) {
                     for (char ref{'a'}; ref <= 'c'; ref++) {
@@ -106,8 +108,8 @@ void KnownPlaintextStack::decrypt(const char *text, long size, const char* plain
                             std::string cur_plug {plug_pair[0], plug_pair[1]};
 
                             config.plugboard = fixed_plugs + " " + cur_plug;
-                            Ops::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
-//                                    Ops::rep_arr3(config.ring_pos, ring1, ring2, 1);
+                            Op::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
+//                                    Op::rep_arr3(config.ring_pos, ring1, ring2, 1);
                             config.reflector = ref;
 
                             em.set_config(config);
@@ -203,7 +205,7 @@ int KnownPlaintextStack::main() {
     em.encrypt_or_decrypt_file(R"(.\in_out\plaintext.txt)", R"(.\in_out\encrypted.txt)");
 
     int e_size {};
-    char* e_text = Ops::load_from_file(R"(./in_out/encrypted.txt)", &e_size);
+    char* e_text = Op::load_from_file(R"(./in_out/encrypted.txt)", &e_size);
 
     char* plaintext {new char[]{"iproposet"}};
     int plaintext_size {strlength(plaintext)};

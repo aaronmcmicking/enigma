@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Enigma/Headers/EnigmaMachine.h"
-#include "Analysis/Ops.h"
+#include "Analysis/Op.h"
 #include "Analysis/BlindDecrypt.h"
 #include "Analysis/KnownPlaintextStack.h"
 #include <fstream>
@@ -137,7 +137,7 @@ int main(){
 //    std::string file2_n {path + "encrypted.txt"};
 //    std::string file3_n {path + "decrypted.txt"};
 //
-//    Ops::format_input_file(file1_n);
+//    Op::format_input_file(file1_n);
 //
 //    EnigmaConfig config {.rotors {2, 1, 3}, .rotor_pos {3, 5, 7}, .reflector = 'A', .plugboard {"TG NJ AZ DF CV PO WM"}};
 //
@@ -146,22 +146,22 @@ int main(){
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
 //    print_status(status);
 //
-//    Ops::rep_arr3(config.rotor_pos, 12, 26, 8);
-//    Ops::rep_arr3(config.rotors, 3, 5, 1);
+//    Op::rep_arr3(config.rotor_pos, 12, 26, 8);
+//    Op::rep_arr3(config.rotors, 3, 5, 1);
 //    config.reflector = 'c';
 //    config.plugboard = "LA MD JC NE ZU QO";
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
 //    print_status(status);
 //
-//    Ops::rep_arr3(config.rotor_pos, 26, 26, 26);
-//    Ops::rep_arr3(config.rotors, 5, 5, 5);
+//    Op::rep_arr3(config.rotor_pos, 26, 26, 26);
+//    Op::rep_arr3(config.rotors, 5, 5, 5);
 //    config.reflector = 'a';
 //    config.plugboard = "";
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
 //    print_status(status);
 //
-//    Ops::rep_arr3(config.rotor_pos, 1, 26, 26);
-//    Ops::rep_arr3(config.rotors, 5, 4, 3);
+//    Op::rep_arr3(config.rotor_pos, 1, 26, 26);
+//    Op::rep_arr3(config.rotors, 5, 4, 3);
 //    config.reflector = 'b';
 //    config.plugboard = "";
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);

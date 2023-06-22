@@ -10,7 +10,6 @@
 #endif
 
 #include <string>
-#include "../Ops.h"
 
 class IndexOfCoincidence {
 private:

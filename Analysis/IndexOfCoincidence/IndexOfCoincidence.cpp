@@ -6,14 +6,14 @@
 #include <iostream>
 #include <chrono>
 #include "IndexOfCoincidence.h"
-#include "..\Ops.h"
+#include "..\Op.h"
 
 long double IndexOfCoincidence::abs(long double val) {
     return val >= 0 ? val : -val;
 }
 
 long double IndexOfCoincidence::calculate_f(const std::string &filename) {
-    Ops::format_input_file(filename);
+    Op::format_input_file(filename);
 
     char buf[MAX_INPUT_STRING_LENGTH] {0};
     std::ifstream file {filename};
