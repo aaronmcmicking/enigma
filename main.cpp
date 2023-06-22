@@ -2,6 +2,7 @@
 #include "Enigma/Headers/EnigmaMachine.h"
 #include "Analysis/Ops.h"
 #include "Analysis/BlindDecrypt.h"
+#include "Analysis/KnownPlaintextStack.h"
 #include <fstream>
 
 // return true if no dups found, false otherwise (true is desired generally)
@@ -125,6 +126,8 @@ std::string get_path(){
 int main(){
 
     BlindDecrypt::main();
+//
+//    KnownPlaintextStack::main();
 
 //    bool status {};
 //
