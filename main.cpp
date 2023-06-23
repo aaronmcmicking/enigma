@@ -3,6 +3,7 @@
 #include "Analysis/Op.h"
 #include "Analysis/BlindDecrypt.h"
 #include "Analysis/KnownPlaintextStack.h"
+#include "Testing.cpp"
 #include <fstream>
 
 // return true if no dups found, false otherwise (true is desired generally)
@@ -125,7 +126,9 @@ std::string get_path(){
 #ifdef USING_MAINCPP
 int main(){
 
-    BlindDecrypt::main();
+    EMFunctionTesting::main();
+
+//    BlindDecrypt::main();
 //
 //    KnownPlaintextStack::main();
 

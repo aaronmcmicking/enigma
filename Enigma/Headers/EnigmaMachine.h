@@ -34,7 +34,11 @@ public:
 
     void encrypt_or_decrypt_arr(char* dest, char* src, int size);
 
+//    void encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size); // doesn't call convert_char(c)
+
     void encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size); // doesn't call convert_char(c)
+
+    void encrypt_or_decrypt_arr_direct(char *dest, const char* src);
 
     bool encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name); // true if success, false otherwise
 

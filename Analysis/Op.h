@@ -16,6 +16,7 @@ namespace Op{
     inline void format_input_file(const std::string& filename);
     inline std::string format_text(const std::string& str);
     inline char* load_from_file(const std::string& filename, int* size_ptr); // allocates, but DOES NOT deallocate memory
+    inline char* load_from_file(const std::string& filename); // allocates, but DOES NOT deallocate memory
     inline int ctoi(char c);
     inline char itoc(int i);
 
@@ -93,6 +94,11 @@ char* Op::load_from_file(const std::string& filename, int* size_ptr){
 
     return buf;
 }
+
+char* Op::load_from_file(const std::string &filename){
+    return load_from_file(filename, nullptr);
+}
+
 #endif // OP_IMPLEMENT
 
 #endif //ENIGMA_OP_H

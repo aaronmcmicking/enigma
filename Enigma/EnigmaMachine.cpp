@@ -65,12 +65,30 @@ void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src, int size) {
     }
 }
 
-void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size) {
+//void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src, int size) {
+//    int i {}, c1;
+//    while(i < size && src[i] != '\0'){
+//        c1 = plugboard.convert_char(src[i]);
+//        c1 = rotor_box.convert_int(c1);
+//        dest[i++] = static_cast<char>(plugboard.convert_int(c1) + 'a' - 1);
+//    }
+//}
+
+void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src, int size) {
     int i {}, c1;
-    while(i < size && src[i] != '\0'){
-        c1 = plugboard.convert_char(src[i]);
+    while(i < size){
+        c1 = plugboard.convert_char(*(src++));
         c1 = rotor_box.convert_int(c1);
         dest[i++] = static_cast<char>(plugboard.convert_int(c1) + 'a' - 1);
+    }
+}
+
+void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src) {
+    int c1;
+    while(*src != '\0'){
+        c1 = plugboard.convert_char(*(src++));
+        c1 = rotor_box.convert_int(c1);
+        *(dest++) = static_cast<char>(plugboard.convert_int(c1) + 'a' - 1);
     }
 }
 

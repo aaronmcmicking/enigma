@@ -403,7 +403,6 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 
     auto start_time {std::chrono::high_resolution_clock ::now()};
 
-//    find_rotors(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     find_rotors(INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
     print_rotor_decrypt_info_list(best_rotors);
@@ -411,7 +410,6 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 
     std::list<RingDecryptInfo> best_rings {};
 
-//    find_rings(em, INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     find_rings(INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     print_ring_decrypt_info_list(best_rings);
     std::cout << std::endl;

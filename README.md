@@ -22,9 +22,3 @@ All reflector configurations (A - C) and Rotors 1-5 are modelled accurately (to 
 the turnover position of a rotor (also known as the "ring setting") is included, but is not emphasized.
 
 ## Usage
-I/O reads and writes to text files during encryption/decryption. In EnigmaMachine, encrypt_or_decrypt_arr(string, string)
-reads plaintext from an input file and writes its encrypted form into an output file. Decryption uses the identical
-mechanism (since encryption and decryption processes are identical) to write plaintext into the output file.
-
-Enigma Machine configurations can be set using an EnigmaConfig struct (defined in EnigmaMachine.h). To decrypt an
-encrypted message, the machine must have config settings identical to those used to encrypt the plaintext.
