@@ -6,7 +6,6 @@
 #include "KnownPlaintextSimple.h"
 
 int KnownPlaintextSimple::calculate(const char *decrypted_text, long d_size, const char* plaintext, long p_size, int offset) {
-
     int fitness {};
     long final_read_position {offset + p_size};
 
@@ -15,10 +14,7 @@ int KnownPlaintextSimple::calculate(const char *decrypted_text, long d_size, con
         return -1;
     }
 
-//    std::cout << "known plaintext: ";
     for(int w {offset}; w < final_read_position; w++) std::cout << plaintext[w-offset];
-//    std::cout << std::endl;
-//    std::cout << "decrypted text: ";
     for(int j {offset}; j < final_read_position; j++) std::cout << decrypted_text[j];
     std::cout << std::endl;
 
@@ -29,8 +25,6 @@ int KnownPlaintextSimple::calculate(const char *decrypted_text, long d_size, con
             fitness--;
         }
     }
-
-//    std::cout << "fitness = " << fitness << std::endl;
 
     return fitness;
 }

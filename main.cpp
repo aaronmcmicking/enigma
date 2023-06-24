@@ -126,9 +126,9 @@ std::string get_path(){
 #ifdef USING_MAINCPP
 int main(){
 
-    EMFunctionTesting::main();
+//    EMFunctionTesting::main();
 
-//    BlindDecrypt::main();
+    BlindDecrypt::main();
 //
 //    KnownPlaintextStack::main();
 

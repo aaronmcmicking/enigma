@@ -10,9 +10,6 @@
 #include <cmath>
 #include <iomanip>
 #include <chrono>
-
-#include "Op.h"
-
 /**
  * Defines weak ordering for lists of BlindDecrypt::RotorDecryptInfo structs. An item should come first in a list if
  * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
@@ -37,30 +34,32 @@ bool ring_decrypt_info_sort_order(const BlindDecrypt::RingDecryptInfo& first, co
 
 void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& info) {
     using namespace std;
+    using namespace Op;
     cout << "ROTOR SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "     ";
     cout << "REF" << "          " << "FITNESS" << endl;
 //    cout << endl;
     for(auto& r: info){
-        cout << left << setw(3) << BlindDecrypt::itor(r.rotors[0]) << "  " << left << setw(2) << r.rotor_pos[0] << "  |  "
-                  << left << setw(3) << BlindDecrypt::itor(r.rotors[1]) << "  " << left << setw(2) << r.rotor_pos[1] << "  |  "
-                  << left << setw(3) << BlindDecrypt::itor(r.rotors[2]) << "  " << left << setw(2) << r.rotor_pos[2] << "  |  "
-                  << "REF: " << static_cast<char>(toupper(r.reflector)) << "  "
-                  << " ->  " << r.fitness << endl;
+        cout << left << setw(3) << itor(r.rotors[0]) << "  " << left << setw(2) << r.rotor_pos[0] << "  |  "
+             << left << setw(3) << itor(r.rotors[1]) << "  " << left << setw(2) << r.rotor_pos[1] << "  |  "
+             << left << setw(3) << itor(r.rotors[2]) << "  " << left << setw(2) << r.rotor_pos[2] << "  |  "
+             << "REF: " << static_cast<char>(toupper(r.reflector)) << "  "
+             << " ->  " << r.fitness << endl;
     }
 }
 
 void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo> &info) {
     using namespace std;
+    using namespace Op;
     cout << "RING SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
     cout << "REF" << "          " << "FITNESS" << endl;
     for(auto & r: info) {
-        cout << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.ring_pos[0] << " |  "
-             << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.ring_pos[1] << " |  "
-             << left << setw(3) << BlindDecrypt::itor(r.rotor_info.rotors[2]) << "  " << setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << r.ring_pos[2] << " |  "
+        cout << left << setw(3) << itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.ring_pos[0] << " |  "
+             << left << setw(3) << itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.ring_pos[1] << " |  "
+             << left << setw(3) << itor(r.rotor_info.rotors[2]) << "  " << setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << r.ring_pos[2] << " |  "
                   << "REF: " << static_cast<char>(toupper(r.rotor_info.reflector)) << "  "
                   << " ->  " << r.fitness << endl;
     }
@@ -68,13 +67,14 @@ void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo>
 
 void BlindDecrypt::print_plugboard_decrypt_info(const PlugboardDecryptInfo& info) {
     using namespace std;
+    using namespace Op;
     cout << "FINAL SETTINGS:" << endl;
     for(int i {}; i < 3; i++)
         cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
     cout << "REF" << "          " << "FITNESS" << endl;
-        cout << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[0]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << info.ring_info.ring_pos[0] << " |  "
-             << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[1]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << info.ring_info.ring_pos[1] << " |  "
-             << left << setw(3) << BlindDecrypt::itor(info.ring_info.rotor_info.rotors[2]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << info.ring_info.ring_pos[2] << " |  "
+        cout << left << setw(3) << itor(info.ring_info.rotor_info.rotors[0]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << info.ring_info.ring_pos[0] << " |  "
+             << left << setw(3) << itor(info.ring_info.rotor_info.rotors[1]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << info.ring_info.ring_pos[1] << " |  "
+             << left << setw(3) << itor(info.ring_info.rotor_info.rotors[2]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << info.ring_info.ring_pos[2] << " |  "
              << "REF: " << static_cast<char>(toupper(info.ring_info.rotor_info.reflector)) << "  "
              << " ->  " << info.fitness << endl;
         cout << "WITH PLUGBOARD: " << info.plugboard << endl;
@@ -118,14 +118,6 @@ void BlindDecrypt::generate_plugboard_pair_permutations(std::vector<char*> &perm
     permutations.push_back(n);
 }
 
-std::string BlindDecrypt::itor(int i){
-    if(!EMOps::is_in_range(i, 1, 8)){
-        return "INVALID NUMERAL";
-    }
-    std::string str[] {"I", "II", "III", "IV", "V", "VI", "VII", "VIII"};
-    return str[i-1];
-}
-
 void BlindDecrypt::find_rotors(BlindDecrypt::Method method, const char* e_text, long text_size,
                                std::list<RotorDecryptInfo>& best_rotors) {
     std::vector<std::vector<int>> rotor_positions {};
@@ -160,9 +152,10 @@ void BlindDecrypt::find_rotors(BlindDecrypt::Method method, const char* e_text, 
                     for(char ref {'a'}; ref <= 'c'; ref++){
                         // print the current rotor configuration
                         if(r1_p == 1 && r2_p == 1 && r3_p == 1 && ref == 'a') {
-                                std::cout   << std::left << std::setw(4) << itor(cur_rotors[0]) << " "
-                                            << std::left << std::setw(4) << itor(cur_rotors[1]) << " "
-                                            << std::left << std::setw(4) << itor(cur_rotors[2]) << std::endl;
+                            using namespace std;
+                            cout << left << setw(4) << Op::itor(cur_rotors[0]) << " "
+                                 << left << setw(4) << Op::itor(cur_rotors[1]) << " "
+                                 << left << setw(4) << Op::itor(cur_rotors[2]) << endl;
                         }
 
                         // set new rotor settings
@@ -458,14 +451,15 @@ int BlindDecrypt::main(){
 //            .ring_pos{9, 22, 17},
 //            .ring_pos{7, 19, 3},
 //            .ring_pos{26, 26, 26},
-            .ring_pos{5, 5, 5},
+//            .ring_pos{5, 5, 5},
+            .ring_pos{0, 0, 0},
             .reflector = 'B',
 //            .plugboard {"JM HO PQ LD UG ZF KS AN BX YW"}
 //            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
 //            .plugboard {"QU IN VB LE"}
 //            .plugboard {"IK BH RG NA PF"}
-            .plugboard {"AF"},
-//            .plugboard {""}
+//            .plugboard {"AF"},
+            .plugboard {""}
     };
 
     EnigmaMachine em {encrypt_config};

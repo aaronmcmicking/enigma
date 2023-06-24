@@ -14,8 +14,8 @@
  * with other rotors, controls whether the next rotor in the sequence should turn.
  *
  * Rotor mappings are the same as used in genuine Enigma machines, sourced from https://en.wikipedia.org/wiki/Enigma_rotor_details.
- * There are five rotors fully implemented: I, II, III, IV, V, and three partially implemented: VI, VII, VIII. The real-
- * life counterparts of the three partially implemented rotors were later additions to the Enigma Machine and had two
+ * There are five rotors fully implemented: I, II, III, IV, V, and three partially implemented: VI, VII, VIII. The
+ * real-life counterparts of the three partially implemented rotors were later additions to the Enigma Machine and had two
  * ring positions that could rotate a following rotor. These second notch positions have not been implemented and the rotors
  * are treated to have one notch.
  *
@@ -75,7 +75,7 @@ public:
     // resets turnover_flag to false
     void reset_turnover_flag();
 
-    // pop_turnover_flag returns and resets the turnover flag (wrapper collapses multiple function calls)
+    // returns and resets the turnover flag (wrapper collapses multiple function calls)
     [[nodiscard]] bool pop_turnover_flag();
 
     // prints the current mapping for this rotor

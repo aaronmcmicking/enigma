@@ -6,11 +6,6 @@
 #include <iostream>
 #include <chrono>
 #include "IndexOfCoincidence.h"
-#include "..\Op.h"
-
-long double IndexOfCoincidence::abs(long double val) {
-    return val >= 0 ? val : -val;
-}
 
 long double IndexOfCoincidence::calculate_f(const std::string &filename) {
     Op::format_input_file(filename);
@@ -44,6 +39,6 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
 //    auto duration = duration_cast<std::chrono::nanoseconds>(end_time - start_time);
 //    std::cout << std::endl << "IOC took " << duration.count() << " nanoseconds" << std::endl;
 
-    return 1 - abs(ENGLISH_EXPECTED_IOC - measured_ioc);
+    return 1 - Op::abs(ENGLISH_EXPECTED_IOC - measured_ioc);
 //    return measured_ioc;
 }

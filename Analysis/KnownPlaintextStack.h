@@ -10,6 +10,11 @@
 #include <vector>
 #include "../Enigma/Headers/EnigmaMachine.h"
 
+/*
+ * Poorly implemented known-plaintext attack.
+ *
+ * Extrememly slow and will likely be deleted (hence barren documentation)
+ */
 class KnownPlaintextStack {
 public:
     static int main();
@@ -19,10 +24,7 @@ public:
 private:
 //    static std::stack<EnigmaConfig> config_stack;
 
-
-    static std::string itor(int i);
-
-    static bool strneq(const char* str1, const char* str2, int size);
+    static bool strneq(const char* str1, const char* str2, int n); // returns true if str1==str2 for first n chars
 
     static void generate_plugboard_pair_permutations(std::vector<char*> &permutations);
 

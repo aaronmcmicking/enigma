@@ -33,16 +33,8 @@ void KnownPlaintextStack::generate_plugboard_pair_permutations(std::vector<char*
     permutations.push_back(n);
 }
 
-std::string KnownPlaintextStack::itor(int i){
-    if(!EMOps::is_in_range(i, 1, 8)){
-        return "INVALID NUMERAL";
-    }
-    std::string str[] {"I", "II", "III", "IV", "V", "VI", "VII", "VIII"};
-    return str[i-1];
-}
-
-bool KnownPlaintextStack::strneq(const char *str1, const char *str2, int size) {
-    for(int i {}; i < size; i++){
+bool KnownPlaintextStack::strneq(const char *str1, const char *str2, int n) {
+    for(int i {}; i < n; i++){
         if(str1[i] != str2[i]){
             return false;
         }
@@ -94,6 +86,7 @@ void KnownPlaintextStack::decrypt(const char *text, long size, const char* plain
                 for (int r1_p{1}; r1_p <= 26; r1_p++) {
                     for (char ref{'a'}; ref <= 'c'; ref++) {
                         if (r1_p == 1 && r2_p == 1 && r3_p == 1 && ref == 'a') {
+                            using namespace Op;
                             std::cout << std::left << std::setw(4) << itor(cur_rotors[0]) << " "
                             << std::left << std::setw(4) << itor(cur_rotors[1]) << " "
                             << std::left << std::setw(4) << itor(cur_rotors[2]) << std::endl;

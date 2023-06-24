@@ -5,12 +5,16 @@
 #ifndef ENIGMA_CHARACTERFREQUENCY_H
 #define ENIGMA_CHARACTERFREQUENCY_H
 
-/*
- * Stores and outputs percentages
- */
+#include "../Op.h"
 
+/*
+ * Character Frequency is a cryptographic fitness function that quantifies how similar a block of text is to actual
+ * language text. For more information see https://en.wikipedia.org/wiki/frequency_analysis and
+ * https://en.wikipedia.org/wiki/letter_frequency.
+ */
 class CharacterFrequency {
 public:
+    // the expected frequency for all letters A-Z
     // english letter frequencies sourced from https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html
     constexpr static const double expected[27] {0.00,
                                                 0.084966,
@@ -41,13 +45,11 @@ public:
                                                 0.002722
                                                 };
 
-    // returns the (1 - sum of differences between expected percentages and measured percentages)
-    // -> returns values >0 and <1
-    // ie, the decrypter aims to maximize this
+    /*
+     * Calculates 1 - the sum of the differences between the measured and expected frequency of each letter
+     * (ie. higher fitness == better fitness)
+     */
     static double calculate(const char* text, int size);
-
-private:
-    static double abs(double val);
 };
 
 
