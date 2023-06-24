@@ -22,9 +22,6 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
 }
 
 [[nodiscard]] bool Plugboard::validate_plugboard_string(const std::string& str){
-//    std::cout << "plugboard validation received {" << str << "}" << " with length " << str.length() << std::endl;
-
-
     const uint MAX_PLUGBOARD_STRING_LENGTH {20};
 
     if(str.length() > MAX_PLUGBOARD_STRING_LENGTH){
@@ -43,10 +40,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
             if(str.at(i) == c) {
                 count++;
             }
-//            else if(!isalpha(str.at(i)) && !isspace(str.at(i)) ){
-//                std::cout << "Invalid plugboard character '" << str.at(i) << "' in: " << std::endl << "   {" << str << "}" << std::endl;
-//            }
-        } // for all chars in string
+        }
         if(!(count == 0 || count == 1)){
             std::cout << "Invalid plugboard setting for '" << c << "' in: " << std::endl << "   {" << str << "}" << std::endl;
 
@@ -60,7 +54,6 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
 void Plugboard::set_pairs(const std::string &new_pairs) {
     std::string str_copy {};
 
-//    std::cout << "new_pairs.len = " << new_pairs.length() << std::endl;
     uint i;
     // send all chars to lowercase
     for (i = 0; i < new_pairs.length(); i++){
@@ -69,16 +62,13 @@ void Plugboard::set_pairs(const std::string &new_pairs) {
         }
     }
 
-//    if(new_pairs.length() > 0) std::cout << "1.2.1" << std::endl;
     // validate string
     if(!validate_plugboard_string(str_copy)){
         throw std::exception {};
     }
-//    if(new_pairs.length() > 0) std::cout << "1.2.2" << std::endl;
 
     // parse and set
     parse_and_set_pairs(str_copy);
-//    if(new_pairs.length() > 0) std::cout << "1.2.3" << std::endl;
 }
 
 void Plugboard::parse_and_set_pairs(std::string &str) {
@@ -87,22 +77,17 @@ void Plugboard::parse_and_set_pairs(std::string &str) {
         pairs[w] = w;
     }
 
-//    if(str.length() > 0)
-//        std::cout << "parse_and_set_pairs: str = {" << str << "} with length = " << str.length() << std::endl;
-
     uint i {};
     while(i < str.length()){
         int index;
         index = EMOps::ctoi(str.at(i++));
-//        i++;
         int val {EMOps::ctoi(str.at(i++))};
         pairs[index] = val;
         pairs[val] = index;
-//        i += 2;
     }
 }
 
-// i must already have correct indexing format
+// `i` must already have correct indexing format (`i` is ith character in alphabet)
 int Plugboard::convert_int(int i) {
     if(i >= CONVERSION_MAP_ARRAY_SIZE){
         std::cout << "Plugboard cannot convert invalid value (" << i << ")";
@@ -111,13 +96,12 @@ int Plugboard::convert_int(int i) {
     return pairs[i];
 }
 
-// wrapper for convert_int(int c)
 int Plugboard::convert_char(char c){
     return pairs[c - 'a' + 1];
 }
 
 void Plugboard::print(bool show_default_connections) {
-    int* copy = without_dupes();
+    int* copy = without_dupes(); // format
     // print
     for(int index {0}; index < 27; index++) {
         if(copy[index] && (show_default_connections || copy[index] != index)) {
@@ -131,7 +115,7 @@ void Plugboard::print(bool show_default_connections) {
     for(int index {0}; index < 27; index++) {
         if(pairs[index] && pairs[index] != index) count++;
     }
-    return count/2;
+    return count/2; // each pair has 2 elements
 }
 
 // assumes it is a valid plugboard string
@@ -142,7 +126,7 @@ int Plugboard::num_pairs(const std::string &pair_str) {
             count++;
         }
     }
-    return count / 2;
+    return count / 2; // each pair has 2 elements
 }
 
 int* Plugboard::without_dupes(){
@@ -170,16 +154,17 @@ std::string Plugboard::get_pairs() {
             str += ' ';
         }
     }
-    str.pop_back(); // removes unwanted space at end of string
+    str.pop_back(); // removes hanging space at end of string
     return str;
 }
 
 bool Plugboard::can_add(const std::string& new_pair, const int* pairs) {
-    return pairs[EMOps::ctoi(new_pair[0])] == EMOps::ctoi(new_pair[0]);
+    bool first {pairs[EMOps::ctoi(new_pair[0])] == EMOps::ctoi(new_pair[0]) };
+    bool second {pairs[EMOps::ctoi(new_pair[1])] == EMOps::ctoi(new_pair[1]) };
+    return first && second;
 }
 
 bool Plugboard::can_add(const std::string &new_pair, const std::string &pairs) {
-    if(num_pairs(pairs) >= 10) return false;
     for(char c: pairs){
         if(isspace(c)) continue;
         int c_lower {tolower(c)};
@@ -187,5 +172,13 @@ bool Plugboard::can_add(const std::string &new_pair, const std::string &pairs) {
             return false;
         }
     }
+    if(num_pairs(pairs) >= 10) return false;
     return true;
+}
+
+bool Plugboard::can_add(const std::string &new_pair){
+    // omits calls to EMOps::coti() for speed since this function is called extremely often during some decryption attacks
+    bool first {pairs[ (tolower(new_pair[0]) - 'a' + 1) ] == (tolower(new_pair[0]) - 'a' + 1 )};
+    bool second {pairs[ (tolower(new_pair[1]) - 'a' + 1) ] == (tolower(new_pair[1]) - 'a' + 1 )};
+    return first && second;
 }

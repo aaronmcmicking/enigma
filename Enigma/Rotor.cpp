@@ -17,10 +17,6 @@ Rotor::Rotor(): position {min_position}, ring_position {max_position}, forward_m
     fill_default_mappings();
 }
 
-Rotor::Rotor(int initial_position, int ring_pos): position {initial_position}, ring_position {ring_pos}, forward_mapping {}, reverse_mapping {} {
-    fill_default_mappings();
-}
-
 Rotor::Rotor(int initial_position, int ring_pos, const int map[CONVERSION_MAP_ARRAY_SIZE])
         : position {initial_position}, ring_position {ring_pos}, forward_mapping {}, reverse_mapping {}
 {
@@ -66,6 +62,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
         }
     }
 
+    // gets the alphabetical input on this rotor from the normalized input
     int relative_input = position + normalized_input - 1;
     if(relative_input % max_position != 0){
         relative_input %= max_position;
@@ -73,12 +70,14 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
         relative_input = max_position;
     }
 
+    // convert the input
     int output_relative_to_current_pos;
     if(forward){
         output_relative_to_current_pos = forward_mapping[relative_input];
     }else{ // when coming back from reflector
         output_relative_to_current_pos = reverse_mapping[relative_input];
     }
+
     // calculate_f the normalized output value (ie. the number of steps from the 'start' position that the letter output at
     if(EMOps::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
         return max_position - position + output_relative_to_current_pos + 1;

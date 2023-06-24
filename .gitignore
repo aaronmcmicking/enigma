@@ -4,6 +4,8 @@
 # cmake build
 cmake-build-debug/
 
+# misc
+todo.txt
 
 # github c++ template
 

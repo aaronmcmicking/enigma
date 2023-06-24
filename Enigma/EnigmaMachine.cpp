@@ -26,27 +26,26 @@ EnigmaMachine::EnigmaMachine(EnigmaConfig config) {
     rotor_box.set_rotor_ring_pos(config.ring_pos);
 }
 
-bool EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_name, const std::string& out_file_name){
+void EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_path, const std::string& out_file_path){
+    // read input
     char in_buf[MAX_INPUT_STRING_LENGTH] {};
-    std::ifstream in_file {};
-    in_file.open(in_file_name);
+    std::ifstream in_file {in_file_path};
     in_file.get(in_buf, MAX_INPUT_STRING_LENGTH);
     in_file.close();
     std::string in_str = EMOps::strip_text(in_buf);
 
+    // convert
     std::string buffer {};
     for(char c: in_str){
 //        std::cout << static_cast<char>(toupper(c1));
         buffer += EMOps::itoc(convert_char(c));
     }
 
-//    std::cout << std::endl;
-
+    // write output
     std::ofstream out_file {};
-    out_file.open(out_file_name);
+    out_file.open(out_file_path);
     out_file << buffer;
     out_file.close();
-    return true;
 }
 
 std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
@@ -57,7 +56,7 @@ std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
     return out;
 }
 
-void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, char *src, int size) {
+void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, const char *src, int size) {
     int i {};
     while(i < size && src[i] != '\0'){
         dest[i] = EMOps::itoc(convert_char(src[i]));
@@ -95,7 +94,7 @@ void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src) {
 int EnigmaMachine::convert_char(char c) {
     int c1 = plugboard.convert_char(c);
     c1 = rotor_box.convert_int(c1);
-    if(c1 == -1){
+    if(c1 == -1){ // -1 is signal value that RotorBox::convert_int(int) may return
         throw std::exception {};
     }
     c1 = plugboard.convert_int(c1);
@@ -143,9 +142,9 @@ void EnigmaMachine::print_config_object(const EnigmaConfig& config){
     std::cout << "plugboard = " << config.plugboard << std::endl;
 }
 
-void EnigmaMachine::print_config(){
-    rotor_box.set_reflector(rotor_box.get_reflector()); // removes static warning message
-    std::cout << "IMPLEMENT ME" << std::endl;
+[[maybe_unused]] void EnigmaMachine::print_config(){
+    (void) rotor_box; // removes "can be made static" msg
+    std::cout << "EnigmaMachine::print_config: IMPLEMENT ME" << std::endl;
 }
 
 void EnigmaMachine::copy_config(EnigmaConfig &dest, EnigmaConfig &src) {

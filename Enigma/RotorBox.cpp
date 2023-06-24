@@ -7,9 +7,11 @@
 #include "Headers/RotorMappingBuilder.h"
 
 #include <chrono>
+#include <list>
 
 RotorBox::RotorBox(): reflector {Reflector()} {
-    RotorMappingBuilder::set_init(false);
+//    RotorMappingBuilder::set_init(false);
+    RotorMappingBuilder::init = false;
     RotorMappingBuilder::nullify_mappings();
 
     // all below have size Rotor::CONVERSION_MAP_ARRAY_SIZE and are 1-indexed
@@ -49,13 +51,17 @@ RotorBox::RotorBox(): reflector {Reflector()} {
 }
 
 Rotor RotorBox::get_individual_rotor(int rotor_number){
-    if(rotor_number < 1 || rotor_number > 7) std::cout << "rotor_number = " << rotor_number << std::endl;
+    if(rotor_number < 1 || rotor_number > 7){
+        std::cout << "rotor_number = " << rotor_number << std::endl;
+    }
     Rotor rotors[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI,RotorVII, RotorVIII};
     return rotors[rotor_number-1];
 }
 
-Rotor* RotorBox::get_all_rotors(){
-    return new Rotor[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI, RotorVII, RotorVIII};
+// UNTESTED
+std::list<Rotor> RotorBox::get_all_rotors(){
+    return *(new std::list<Rotor>{RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI, RotorVII, RotorVIII}); // havent test this yet
+//    return new Rotor[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI, RotorVII, RotorVIII};
 }
 
 void RotorBox::set_rotor(int rotor_number, int position){

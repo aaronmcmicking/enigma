@@ -21,9 +21,9 @@ int* RotorMappingBuilder::get_rotor_mapping(int rotor_number){
     return rotor_mappings[rotor_number - 1];
 }
 
-void RotorMappingBuilder::set_init(bool state){
-    init = state;
-}
+//void RotorMappingBuilder::set_init(bool state){
+//    init = state;
+//}
 
 // sets the rotor_mappings to null
 void RotorMappingBuilder::nullify_mappings(){
