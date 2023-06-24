@@ -51,6 +51,13 @@ namespace Op{
     inline void rep_arr3(T* dest, const T* src);
     template<typename T>
     inline void rep_arr3(T* dest, T a, T b, T c);
+
+    // used to specify which statistical method should be used during a given decryption process
+    enum Method{
+        INDEX_OF_COINCIDENCE,
+        CHARACTER_FREQUENCY,
+        KNOWN_PLAINTEXT_SIMPLE
+    };
 }
 
 #ifndef OP_IMPLEMENT

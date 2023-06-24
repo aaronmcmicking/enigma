@@ -128,7 +128,55 @@ int main(){
 
 //    EMFunctionTesting::main();
 
-    BlindDecrypt::main();
+    /*
+    RotorDecryptInfo info {
+        new int[]{5, 4, 3},
+        new int[]{11, 12, 13},
+        'c',
+        Op::KNOWN_PLAINTEXT_SIMPLE,
+        0.0l
+    };
+
+    RotorDecryptInfo new_info = info;
+
+    BlindDecrypt::print_rotor_decrypt_info_list(*new std::list<RotorDecryptInfo>{new_info});
+
+    Op::rep_arr3(info.rotors, 1, 1, 1);
+    Op::rep_arr3(info.rotor_pos, 9, 9, 9);
+    info.fitness = 555;
+
+    BlindDecrypt::print_rotor_decrypt_info_list(*new std::list<RotorDecryptInfo>{new_info});
+
+    new_info = info;
+
+    info.rotors = nullptr;
+    info.rotor_pos = nullptr;
+    info.fitness = -1000;
+
+    BlindDecrypt::print_rotor_decrypt_info_list(*new std::list<RotorDecryptInfo>{new_info});
+
+
+    RingDecryptInfo ringinfo{
+        new_info,
+        new int[3]{8, 8, 8},
+        Op::INDEX_OF_COINCIDENCE,
+        8.34
+    };
+
+    BlindDecrypt::print_ring_decrypt_info_list(*new std::list<RingDecryptInfo>{ringinfo});
+
+    PlugboardDecryptInfo pluginfo{
+        ringinfo,
+        "AB JN SD IU",
+        Op::CHARACTER_FREQUENCY,
+        7.77
+    };
+
+    BlindDecrypt::print_plugboard_decrypt_info(pluginfo);
+
+    */
+
+        BlindDecrypt::main();
 //
 //    KnownPlaintextStack::main();
 
