@@ -7,6 +7,8 @@
 
 
 #include "RingDecryptInfo.h"
+#include <iostream>
+#include <iomanip>
 
 // Stores results from plugboard decryption as well as the ring position decryption information used to attain this info
 class PlugboardDecryptInfo{
@@ -16,15 +18,27 @@ public:
     Op::Method method;
     long double fitness;
 
+    /*   Semantics    */
+    // default constructor
     PlugboardDecryptInfo();
 
+    // fielded constructor
     PlugboardDecryptInfo(const RingDecryptInfo& rinfo, std::string  new_plugboard, Op::Method new_method, long double new_fitness);
 
+    // copy constructor
     PlugboardDecryptInfo(const PlugboardDecryptInfo& other);
 
+    // destructor
+    ~PlugboardDecryptInfo(); // default
+
+    // assignment operator
     PlugboardDecryptInfo& operator=(const PlugboardDecryptInfo& other);
 
-    ~PlugboardDecryptInfo(); // default
+
+    /* Functional */
+    // prints the formatted contents of this instance
+    void print(bool header) const;
+    void print() const; // wrapper for print(false)
 };
 
 

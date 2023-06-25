@@ -32,5 +32,27 @@ PlugboardDecryptInfo& PlugboardDecryptInfo::operator=(const PlugboardDecryptInfo
     return *this;
 }
 
-
 PlugboardDecryptInfo::~PlugboardDecryptInfo() = default;
+
+void PlugboardDecryptInfo::print(bool header) const {
+    using namespace std;
+    using namespace Op;
+
+    if(header){
+        for(int i{}; i < 3; i++){
+            cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
+        }
+        cout << "REF" << "          " << "FITNESS" << endl;
+    }
+
+    cout << left << setw(3) << itor(ring_info.rotor_info.rotors[0]) << "  " << setw(2) << ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << ring_info.ring_pos[0] << " |  "
+         << left << setw(3) << itor(ring_info.rotor_info.rotors[1]) << "  " << setw(2) << ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << ring_info.ring_pos[1] << " |  "
+         << left << setw(3) << itor(ring_info.rotor_info.rotors[2]) << "  " << setw(2) << ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << ring_info.ring_pos[2] << " |  "
+         << "REF: " << static_cast<char>(toupper(ring_info.rotor_info.reflector)) << "  "
+         << " ->  " << fitness << endl;
+    cout << "WITH PLUGBOARD: " << plugboard << endl;
+}
+
+void PlugboardDecryptInfo::print() const{
+    print(false);
+}

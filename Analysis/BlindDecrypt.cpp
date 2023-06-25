@@ -32,52 +32,20 @@ bool ring_decrypt_info_sort_order(const RingDecryptInfo& first, const RingDecryp
     return first.fitness >= second.fitness;
 }
 
-void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& info) {
-    using namespace std;
-    using namespace Op;
-    cout << "ROTOR SETTINGS:" << endl;
-    for(int i {}; i < 3; i++)
-        cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "     ";
-    cout << "REF" << "          " << "FITNESS" << endl;
-//    cout << endl;
-    for(auto& r: info){
-        cout << left << setw(3) << itor(r.rotors[0]) << "  " << left << setw(2) << r.rotor_pos[0] << "  |  "
-             << left << setw(3) << itor(r.rotors[1]) << "  " << left << setw(2) << r.rotor_pos[1] << "  |  "
-             << left << setw(3) << itor(r.rotors[2]) << "  " << left << setw(2) << r.rotor_pos[2] << "  |  "
-             << "REF: " << static_cast<char>(toupper(r.reflector)) << "  "
-             << " ->  " << r.fitness << endl;
+void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& list) {
+    bool first {true};
+    for(const auto& r_info: list){
+        r_info.print( first );
+        first = false;
     }
 }
 
-void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo> &info) {
-    using namespace std;
-    using namespace Op;
-    cout << "RING SETTINGS:" << endl;
-    for(int i {}; i < 3; i++)
-        cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-    cout << "REF" << "          " << "FITNESS" << endl;
-    for(auto & r: info) {
-        cout << left << setw(3) << itor(r.rotor_info.rotors[0]) << "  " << setw(2) << r.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << r.ring_pos[0] << " |  "
-             << left << setw(3) << itor(r.rotor_info.rotors[1]) << "  " << setw(2) << r.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << r.ring_pos[1] << " |  "
-             << left << setw(3) << itor(r.rotor_info.rotors[2]) << "  " << setw(2) << r.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << r.ring_pos[2] << " |  "
-                  << "REF: " << static_cast<char>(toupper(r.rotor_info.reflector)) << "  "
-                  << " ->  " << r.fitness << endl;
+void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo>& list) {
+    bool first {true};
+    for(const auto& r_info: list){
+        r_info.print( first );
+        first = false;
     }
-}
-
-void BlindDecrypt::print_plugboard_decrypt_info(const PlugboardDecryptInfo& info) {
-    using namespace std;
-    using namespace Op;
-    cout << "FINAL SETTINGS:" << endl;
-    for(int i {}; i < 3; i++)
-        cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-    cout << "REF" << "          " << "FITNESS" << endl;
-        cout << left << setw(3) << itor(info.ring_info.rotor_info.rotors[0]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[0] << "  ring: " << setw(2) << info.ring_info.ring_pos[0] << " |  "
-             << left << setw(3) << itor(info.ring_info.rotor_info.rotors[1]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[1] << "  ring: " << setw(2) << info.ring_info.ring_pos[1] << " |  "
-             << left << setw(3) << itor(info.ring_info.rotor_info.rotors[2]) << "  " << setw(2) << info.ring_info.rotor_info.rotor_pos[2] << "  ring: " << setw(2) << info.ring_info.ring_pos[2] << " |  "
-             << "REF: " << static_cast<char>(toupper(info.ring_info.rotor_info.reflector)) << "  "
-             << " ->  " << info.fitness << endl;
-        cout << "WITH PLUGBOARD: " << info.plugboard << endl;
 }
 
 double BlindDecrypt::calculate_fitness(Op::Method method, char *text, int text_size,
@@ -374,7 +342,8 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 //    auto pst{std::chrono::high_resolution_clock::now()};
     PlugboardDecryptInfo best_plugboard{};
     find_plugs(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
-    print_plugboard_decrypt_info(best_plugboard);
+    std::cout << "FINAL SETTINGS:" << std::endl;
+    best_plugboard.print(true);
 //    auto pet{std::chrono::high_resolution_clock::now()};
 //    auto dur{duration_cast<std::chrono::milliseconds>(pet - pst)};
 //    std::cout << "plugs took " << dur.count() << " milliseconds" << std::endl;

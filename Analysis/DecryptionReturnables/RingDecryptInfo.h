@@ -15,15 +15,26 @@ public:
     Op::Method method;
     long double fitness;
 
+    // default constructor
     RingDecryptInfo();
 
+    // fielded constructor
     RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, Op::Method new_method, long double new_fitness);
 
+    // copy constructor
     RingDecryptInfo(const RingDecryptInfo& other);
 
+    // destructor
+    ~RingDecryptInfo();
+
+    // assignment operator
     RingDecryptInfo& operator=(const RingDecryptInfo& other);
 
-    ~RingDecryptInfo();
+
+    /* Functional */
+
+    void print(bool header) const;
+    void print() const;
 };
 
 

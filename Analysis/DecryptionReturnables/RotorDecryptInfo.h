@@ -31,6 +31,12 @@ public:
 
     // copy assignment operator
     RotorDecryptInfo& operator=(const RotorDecryptInfo& other);
+
+
+    /* Functional */
+
+    void print(bool header) const;
+    void print() const;
 };
 
 
