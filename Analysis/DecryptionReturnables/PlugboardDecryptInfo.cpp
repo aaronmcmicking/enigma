@@ -55,11 +55,3 @@ void PlugboardDecryptInfo::print(bool header) const {
 void PlugboardDecryptInfo::print() const{
     print(false);
 }
-
-bool PlugboardDecryptInfo::compare(const PlugboardDecryptInfo &other) const{
-    return fitness >= other.fitness;
-}
-
-[[nodiscard]] bool PlugboardDecryptInfo::strict_weak_ordering(const RingDecryptInfo& first, const RingDecryptInfo& second){
-    return first.fitness >= second.fitness;
-}

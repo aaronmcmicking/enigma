@@ -24,10 +24,6 @@ public:
 
     static void decrypt(const std::string& input_filepath, const std::string& output_filepath);
 
-    static void print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& list);
-
-    static void print_ring_decrypt_info_list(const std::list<RingDecryptInfo>& list);
-
     template<class DecryptInfo>
     static void print_decrypt_info_list(const std::list<DecryptInfo>& list);
 

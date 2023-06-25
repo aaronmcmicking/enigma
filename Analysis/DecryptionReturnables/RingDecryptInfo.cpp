@@ -58,11 +58,3 @@ void RingDecryptInfo::print(bool header) const{
 void RingDecryptInfo::print() const{
     print(false);
 }
-
-[[nodiscard]] bool RingDecryptInfo::compare(const RingDecryptInfo &other) const{
-    return fitness >= other.fitness;
-}
-
-[[nodiscard]] bool RingDecryptInfo::strict_weak_ordering(const RingDecryptInfo& first, const RingDecryptInfo& second){
-    return first.fitness >= second.fitness;
-}
