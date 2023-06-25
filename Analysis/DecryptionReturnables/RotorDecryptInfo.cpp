@@ -7,24 +7,23 @@
 #include "RotorDecryptInfo.h"
 
 // default constructor
-RotorDecryptInfo::RotorDecryptInfo(): reflector {}, method {}, fitness {}{
+RotorDecryptInfo::RotorDecryptInfo(): DecryptInfo(), reflector {}, method {}{
     rotors = new int[3]{};
     rotor_pos = new int[3]{};
 }
 
 RotorDecryptInfo::RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, Op::Method new_method, long double new_fitness):
-        rotors {new_rotors}, rotor_pos {new_rotor_pos}, reflector {ref}, method {new_method}, fitness {new_fitness}
+        DecryptInfo(new_fitness), rotors {new_rotors}, rotor_pos {new_rotor_pos}, reflector {ref}, method {new_method}
 { }
 
 // copy constructor
-RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other){
+RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other): DecryptInfo(other.fitness){
     rotors = new int[3]{};
     rotor_pos = new int[3]{};
     Op::rep_arr(rotors, other.rotors, 3);
     Op::rep_arr(rotor_pos, other.rotor_pos, 3);
     reflector = other.reflector;
     method = other.method;
-    fitness = other.fitness;
 }
 
 // copy assignment operator

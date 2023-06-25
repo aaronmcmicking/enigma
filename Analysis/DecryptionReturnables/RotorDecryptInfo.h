@@ -6,15 +6,16 @@
 #define ENIGMA_ROTORDECRYPTINFO_H
 
 #include "../Op.h"
+#include "DecryptInfo.h"
 
 // Stores result from rotor decryption
-class RotorDecryptInfo{
+class RotorDecryptInfo: public DecryptInfo{
 public:
     int* rotors;
     int* rotor_pos;
     char reflector;
     Op::Method method;
-    long double fitness;
+//    long double fitness;
 
     /* Semantic */
     // default constructor
@@ -24,19 +25,20 @@ public:
     RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, Op::Method new_method, long double new_fitness);
 
     // copy constructor
-    RotorDecryptInfo(const RotorDecryptInfo& other);
+    RotorDecryptInfo(const RotorDecryptInfo &other);
 
     // destructor
     ~RotorDecryptInfo();
 
     // copy assignment operator
-    RotorDecryptInfo& operator=(const RotorDecryptInfo& other);
+    RotorDecryptInfo &operator=(const RotorDecryptInfo &other);
 
 
     /* Functional */
     // prints the formatted contents of this instance
-    void print(bool header) const;
-    void print() const;
+    void print() const override; // wraps print(bool)
+
+    void print(bool header) const override;
 
     /**
      * Defines weak ordering for lists of RotorDecryptInfo objects. An object should come first in a list if

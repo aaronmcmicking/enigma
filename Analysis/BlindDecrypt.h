@@ -28,6 +28,9 @@ public:
 
     static void print_ring_decrypt_info_list(const std::list<RingDecryptInfo>& list);
 
+    template<class DecryptInfo>
+    static void print_decrypt_info_list(const std::list<DecryptInfo>& list);
+
     static void find_rotors(Op::Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
 
     static void find_rings(Op::Method method, const char *e_text, long text_size,

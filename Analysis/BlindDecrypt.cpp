@@ -27,6 +27,15 @@ void BlindDecrypt::print_ring_decrypt_info_list(const std::list<RingDecryptInfo>
     }
 }
 
+template<class DecryptInfo>
+void BlindDecrypt::print_decrypt_info_list(const std::list<DecryptInfo>& list){
+    bool first {true};
+    for(const auto& info: list){
+        info.print(first);
+        first = false;
+    }
+}
+
 double BlindDecrypt::calculate_fitness(Op::Method method, char *text, int text_size,
                                      const std::string& current_target) {
     using namespace Op;
@@ -295,17 +304,17 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
     int e_size {};
     char* e_text = Op::load_from_file(input_filepath, &e_size);
 
-    std::list<RotorDecryptInfo> best_rotors {};
 
     auto start_time {std::chrono::high_resolution_clock ::now()};
 
+    std::list<RotorDecryptInfo> best_rotors {};
     find_rotors(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
-    print_rotor_decrypt_info_list(best_rotors);
+//    print_rotor_decrypt_info_list(best_rotors);
+    print_decrypt_info_list(best_rotors);
     std::cout << std::endl;
 
     std::list<RingDecryptInfo> best_rings {};
-
     find_rings(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     print_ring_decrypt_info_list(best_rings);
     std::cout << std::endl;
