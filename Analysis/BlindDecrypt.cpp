@@ -316,7 +316,8 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 
     std::list<RingDecryptInfo> best_rings {};
     find_rings(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
-    print_ring_decrypt_info_list(best_rings);
+//    print_ring_decrypt_info_list(best_rings);
+    print_decrypt_info_list(best_rings);
     std::cout << std::endl;
 
 //    auto pst{std::chrono::high_resolution_clock::now()};

@@ -6,21 +6,20 @@
 
 #include <utility>
 
-PlugboardDecryptInfo::PlugboardDecryptInfo(): plugboard {}, method {}, fitness {0}{
+PlugboardDecryptInfo::PlugboardDecryptInfo(): DecryptInfo(), plugboard {}, method {}{
     ring_info = *new RingDecryptInfo{};
 }
 
 PlugboardDecryptInfo::PlugboardDecryptInfo(const RingDecryptInfo& rinfo, std::string new_plugboard,
                                            Op::Method new_method, long double new_fitness):
-                                                ring_info {rinfo}, plugboard {std::move(new_plugboard)},
-                                                method {new_method}, fitness {new_fitness}
+                                                DecryptInfo(new_fitness), ring_info {rinfo},
+                                                plugboard {std::move(new_plugboard)}, method {new_method}
 { }
 
-PlugboardDecryptInfo::PlugboardDecryptInfo(const PlugboardDecryptInfo& other){
+PlugboardDecryptInfo::PlugboardDecryptInfo(const PlugboardDecryptInfo& other): DecryptInfo(other.fitness){
     ring_info = other.ring_info;
     plugboard = other.plugboard;
     method = other.method;
-    fitness = other.fitness;
 }
 
 PlugboardDecryptInfo& PlugboardDecryptInfo::operator=(const PlugboardDecryptInfo& other){

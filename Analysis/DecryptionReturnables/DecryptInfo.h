@@ -11,6 +11,8 @@ public:
 
     constexpr DecryptInfo(): fitness {} { }
 
+    virtual ~DecryptInfo() = default;
+
     explicit DecryptInfo(long double new_fitness): fitness {new_fitness} { }
 
     virtual void print(bool header) const = 0;

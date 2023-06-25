@@ -8,12 +8,12 @@
 #include "RotorDecryptInfo.h"
 
 // Stores results from ring position decrypt as well as the rotor decryption information used to attain this info
-class RingDecryptInfo{
+class RingDecryptInfo: public DecryptInfo{
 public:
     RotorDecryptInfo rotor_info {};
     int* ring_pos;
     Op::Method method;
-    long double fitness;
+//    long double fitness;
 
     /* Semantic */
     // default constructor
@@ -26,7 +26,7 @@ public:
     RingDecryptInfo(const RingDecryptInfo& other);
 
     // destructor
-    ~RingDecryptInfo();
+    ~RingDecryptInfo() override;
 
     // assignment operator
     RingDecryptInfo& operator=(const RingDecryptInfo& other);
@@ -34,8 +34,8 @@ public:
 
     /* Functional */
     // prints the formatted contents of this instance
-    void print(bool header) const;
-    void print() const;
+    void print(bool header) const override;
+    void print() const override;
 
     /**
      * Defines weak ordering for lists of RingDecryptInfo objects. An object should come first in a list if

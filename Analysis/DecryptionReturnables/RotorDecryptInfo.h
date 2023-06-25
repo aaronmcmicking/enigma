@@ -28,7 +28,7 @@ public:
     RotorDecryptInfo(const RotorDecryptInfo &other);
 
     // destructor
-    ~RotorDecryptInfo();
+    ~RotorDecryptInfo() override;
 
     // copy assignment operator
     RotorDecryptInfo &operator=(const RotorDecryptInfo &other);

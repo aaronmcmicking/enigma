@@ -11,12 +11,12 @@
 #include <iomanip>
 
 // Stores results from plugboard decryption as well as the ring position decryption information used to attain this info
-class PlugboardDecryptInfo{
+class PlugboardDecryptInfo: public DecryptInfo{
 public:
     RingDecryptInfo ring_info;
     std::string plugboard;
     Op::Method method;
-    long double fitness;
+//    long double fitness;
 
     /*   Semantics    */
     // default constructor
@@ -29,7 +29,7 @@ public:
     PlugboardDecryptInfo(const PlugboardDecryptInfo& other);
 
     // destructor
-    ~PlugboardDecryptInfo(); // default
+    ~PlugboardDecryptInfo() override; // default
 
     // assignment operator
     PlugboardDecryptInfo& operator=(const PlugboardDecryptInfo& other);
@@ -37,8 +37,8 @@ public:
 
     /* Functional */
     // prints the formatted contents of this instance
-    void print(bool header) const;
-    void print() const; // wrapper for print(false)
+    void print(bool header) const override;
+    void print() const override; // wrapper for print(false)
 
     /**
      * Defines weak ordering for lists of PlugboardDecryptInfo objects. An object should come first in a list if

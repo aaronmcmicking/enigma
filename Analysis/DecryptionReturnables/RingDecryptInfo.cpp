@@ -6,21 +6,21 @@
 #include <iomanip>
 #include "RingDecryptInfo.h"
 
-RingDecryptInfo::RingDecryptInfo(): method {}, fitness {0}{
+RingDecryptInfo::RingDecryptInfo(): DecryptInfo(), method {}{
     rotor_info = *new RotorDecryptInfo {};
     ring_pos = new int[3]{};
 }
 
 RingDecryptInfo::RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, Op::Method new_method,
                                  long double new_fitness):
-                                 rotor_info {rinfo}, method {new_method}, fitness {new_fitness}
+                                 DecryptInfo {new_fitness}, rotor_info {rinfo}, method {new_method}
 {
     ring_pos = new int[3]{};
     Op::rep_arr(ring_pos, new_ring_pos, 3);
 }
 
 RingDecryptInfo::RingDecryptInfo(const RingDecryptInfo &other):
-            rotor_info {other.rotor_info}, method {other.method}, fitness {other.fitness}
+            DecryptInfo {other.fitness}, rotor_info {other.rotor_info}, method {other.method}
 {
     ring_pos = new int[3]{};
     Op::rep_arr(ring_pos, other.ring_pos, 3);
