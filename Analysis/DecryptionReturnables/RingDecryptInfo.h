@@ -15,6 +15,7 @@ public:
     Op::Method method;
     long double fitness;
 
+    /* Semantic */
     // default constructor
     RingDecryptInfo();
 
@@ -32,9 +33,26 @@ public:
 
 
     /* Functional */
-
+    // prints the formatted contents of this instance
     void print(bool header) const;
     void print() const;
+
+    /**
+     * Defines weak ordering for lists of RingDecryptInfo objects. An object should come first in a list if
+     * it's `fitness` field is higher. If both items have the same fitness, `this` is ordered before `other`.
+     * @param other The object to strict_weak_ordering this object to.
+     * @return True if this object should be ordered before `other`, false otherwise.
+     */
+    [[nodiscard]] bool compare(const RingDecryptInfo& other) const;
+
+    /**
+    * Defines weak ordering for lists of RingDecryptInfo objects. An item should come first in a list if
+    * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
+    * @param first The first item to strict_weak_ordering.
+    * @param second The second item to strict_weak_ordering.
+    * @return True if `first` is ordered before `second`, false otherwise.
+    */
+    [[nodiscard]] static bool strict_weak_ordering(const RingDecryptInfo& first, const RingDecryptInfo& second);
 };
 
 

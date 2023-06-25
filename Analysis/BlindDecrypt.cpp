@@ -10,27 +10,6 @@
 #include <cmath>
 #include <iomanip>
 #include <chrono>
-/**
- * Defines weak ordering for lists of BlindDecrypt::RotorDecryptInfo structs. An item should come first in a list if
- * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
- * @param first The first item to compare.
- * @param second The second item to compare.
- * @return True if `first` is ordered before `second`, false otherwise.
- */
-bool rotor_decrypt_info_sort_order(const RotorDecryptInfo& first, const RotorDecryptInfo& second){
-    return first.fitness >= second.fitness;
-}
-
-/**
- * Defines weak ordering for lists of BlindDecrypt::RingDecryptInfo structs. An item should come first in a list if
- * it's `fitness` field is higher. If both items have the same fitness, `first` is ordered before `second`.
- * @param first The first item to compare.
- * @param second The second item to compare.
- * @return True if `first` is ordered before `second`, false otherwise.
- */
-bool ring_decrypt_info_sort_order(const RingDecryptInfo& first, const RingDecryptInfo& second){
-    return first.fitness >= second.fitness;
-}
 
 void BlindDecrypt::print_rotor_decrypt_info_list(const std::list<RotorDecryptInfo>& list) {
     bool first {true};
@@ -151,7 +130,8 @@ void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_
 
                             if(best_rotors.size() >= 10) best_rotors.pop_back();
                             best_rotors.push_back(ninfo);
-                            best_rotors.sort(rotor_decrypt_info_sort_order);
+//                            best_rotors.sort(rotor_decrypt_info_sort_order);
+                            best_rotors.sort(RotorDecryptInfo::strict_weak_ordering);
 
                             // if this is the best rotor configuration so far, write it's associated decryption to disk
                             if(cur_fitness > best_fitness) {
@@ -220,7 +200,7 @@ void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_s
 
                         if(best_rings.size() >= 5) best_rings.pop_back();
                         best_rings.push_back(ninfo);
-                        best_rings.sort(ring_decrypt_info_sort_order);
+                        best_rings.sort(RingDecryptInfo::strict_weak_ordering);
 
                         // if this is the best rotor configuration so far, write it's associated decryption to disk
                         if(cur_fitness > best_fitness || best_rings.empty()) {
@@ -307,17 +287,8 @@ void BlindDecrypt::find_plugs(Op::Method method, const char *e_text, long text_s
         final_fitness
     });
 
-//    std::cout << "fixed = " << fixed << std::endl;
-//    std::cout << "config.plugboard = " << config.plugboard << std::endl;
-//    std::cout << "e_text = " << e_text << std::endl;
-//    std::cout << std::endl << "actual plugboard: " << std::endl;
-//    em.get_plugboard().print(false);
-//    std::cout << std::endl;
-//    EnigmaMachine::print_config_object(config);
-
     delete[] d_text;
 }
-
 
 
 void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string &output_filepath) {

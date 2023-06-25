@@ -64,3 +64,11 @@ void RotorDecryptInfo::print(bool header) const{
 void RotorDecryptInfo::print() const{
     print(false);
 }
+
+bool RotorDecryptInfo::compare(const RotorDecryptInfo &other) const{
+    return fitness >= other.fitness;
+}
+
+[[nodiscard]] bool RotorDecryptInfo::strict_weak_ordering(const RotorDecryptInfo& first, const RotorDecryptInfo& second) {
+    return first.fitness >= second.fitness;
+}
