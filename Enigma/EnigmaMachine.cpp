@@ -18,7 +18,7 @@ EnigmaMachine::EnigmaMachine(int rotors[3], int* rotor_pos, int* ring_pos, char 
     rotor_box.set_reflector(reflector);
 }
 
-EnigmaMachine::EnigmaMachine(EnigmaConfig config) {
+EnigmaMachine::EnigmaMachine(const EnigmaConfig& config) {
     rotor_box = RotorBox();
     plugboard = Plugboard(config.plugboard);
     rotor_box.set_rotors(config.rotors, config.rotor_pos);

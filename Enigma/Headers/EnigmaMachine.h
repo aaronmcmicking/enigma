@@ -8,18 +8,8 @@
 
 #include "RotorBox.h"
 #include "Plugboard.h"
+#include "EnigmaConfig.h"
 
-/*
- * EnigmaConfig stores a set of settings for an EnigmaMachine. Can be used to store config info and set it in a given
- * EnigmaMachine at any given time.
- */
-typedef struct{
-    int rotors[3];
-    int rotor_pos[3];
-    int ring_pos[3];
-    char reflector;
-    std::string plugboard;
-}EnigmaConfig;
 
 /*
  * An EnigmaMachine contains a RotorBox and a Plugboard and models the functionality of its real-life counterpart
@@ -41,7 +31,7 @@ public:
     EnigmaMachine(int rotors[3], int rotor_pos[3], int ring_pos[3], char reflector, const std::string& plugboard);
 
     // `config` should be fully instantiated with values
-    explicit EnigmaMachine(EnigmaConfig config);
+    explicit EnigmaMachine(const EnigmaConfig& config);
 
     // Encrypts the contents of `in`
     // Returns the encrypted data

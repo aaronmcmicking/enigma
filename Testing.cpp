@@ -11,12 +11,15 @@ namespace EMFunctionTesting{
 
     inline int main(){
 
+        int init_rotor[] {2, 5, 3};
+        int init_r_pos[] {21, 19, 6};
+        int init_ring_pos[] {9, 22, 17};
         EnigmaConfig encrypt_config {
-            .rotors {2, 5, 3},
-            .rotor_pos{21, 19, 6},
-            .ring_pos{9, 22, 17},
-            .reflector = 'B',
-            .plugboard {"JM HO PQ LD UG ZF KS AN BX YW"}
+            init_rotor,
+            init_r_pos,
+            init_ring_pos,
+            'B',
+            "JM HO PQ LD UG ZF KS AN BX YW"
         };
 
         EnigmaMachine em {encrypt_config};

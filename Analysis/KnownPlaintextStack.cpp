@@ -55,13 +55,15 @@ void KnownPlaintextStack::decrypt(const char *text, long size, const char* plain
     std::cout << "plaintext size = " << plaintext_size << std::endl;
 
 
-    EnigmaConfig config{
-            .rotors {1, 2, 3},
-            .rotor_pos{1, 1, 1},
-            .ring_pos{0, 0, 0},
-            .reflector = 'a',
-            .plugboard {""}
-    };
+//    EnigmaConfig config{
+//            .rotors {1, 2, 3},
+//            .rotor_pos{1, 1, 1},
+//            .ring_pos{0, 0, 0},
+//            .reflector = 'a',
+//            .plugboard {""}
+//    };
+
+    EnigmaConfig config {};
 
     EnigmaMachine em{config};
 
@@ -177,20 +179,20 @@ int strlength(const char* str){
 
 int KnownPlaintextStack::main() {
 
+    int init_rotors[]{2, 5, 3};
+    int init_rotor_pos[]{21, 19, 6};
+    int init_rings[]{0, 0, 0};
     EnigmaConfig encrypt_config {
-            .rotors {2, 5, 3},
-            .rotor_pos{21, 19, 6},
-//            .ring_pos{9, 22, 17},
-//            .ring_pos{7, 19, 3},
-//            .ring_pos{26, 26, 26},
-            .ring_pos{0, 0, 0},
-            .reflector = 'B',
-//            .plugboard {"JM HO PQ LD UG ZF KS AN BX YW"}
-//            .plugboard {"QU IN VB LE CO KR WP ZH AS TY"}
-//            .plugboard {"QU IN VB LE"}
-//            .plugboard {"IK BH RG NA PF"}
-//            .plugboard {"AF"},
-            .plugboard {""}
+        init_rotors,
+        init_rotor_pos,
+        init_rings,
+        'B',
+//            "JM HO PQ LD UG ZF KS AN BX YW"
+//            "QU IN VB LE CO KR WP ZH AS TY"
+//            "QU IN VB LE"
+//            "IK BH RG NA PF"
+//            "AF",
+        ""
     };
 
     EnigmaMachine em {encrypt_config};

@@ -13,8 +13,14 @@ RotorDecryptInfo::RotorDecryptInfo(): DecryptInfo(), reflector {}, method {}{
 }
 
 RotorDecryptInfo::RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, Op::Method new_method, long double new_fitness):
-        DecryptInfo(new_fitness), rotors {new_rotors}, rotor_pos {new_rotor_pos}, reflector {ref}, method {new_method}
-{ }
+        DecryptInfo(new_fitness), reflector {ref}, method {new_method}
+{
+    rotors = new int[3]{};
+    Op::rep_arr(rotors, new_rotors, 3);
+
+    rotor_pos = new int[3];
+    Op::rep_arr(rotor_pos, new_rotor_pos, 3);
+}
 
 // copy constructor
 RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other): DecryptInfo(other.fitness){
