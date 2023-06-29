@@ -5,6 +5,8 @@
 #ifndef ENIGMA_DECRYPTINFO_H
 #define ENIGMA_DECRYPTINFO_H
 
+#include "../../Enigma/Headers/EnigmaConfig.h"
+
 class DecryptInfo{
 public:
     long double fitness;
@@ -17,6 +19,9 @@ public:
 
     virtual void print(bool header) const = 0;
     virtual void print() const = 0; // usually wraps print(false)
+
+    [[nodiscard]] virtual EnigmaConfig to_config() = 0;
+    virtual void to_config(EnigmaConfig& config) = 0;
 
     /**
      * Defines weak ordering for lists of DecryptInfo objects. An object should come first in a list if

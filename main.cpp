@@ -126,7 +126,28 @@ std::string get_path(){
 #ifdef USING_MAINCPP
 int main(){
 
-    BlindDecrypt::main();
+    RotorDecryptInfo rotor_info {new int[]{1, 2, 3}, new int[]{4, 5, 6}, 'C', Op::INDEX_OF_COINCIDENCE, 10.0};
+
+    EnigmaConfig config;
+    rotor_info.to_config(config);
+    EnigmaMachine::print_config_object(config);
+    EnigmaMachine::print_config_object(rotor_info.to_config());
+    std::cout << std::endl << std::endl;
+
+    RingDecryptInfo ring_info {rotor_info, new int[3]{7, 8, 9}, Op::CHARACTER_FREQUENCY, 5.5};
+
+    ring_info.to_config(config);
+    EnigmaMachine::print_config_object(config);
+    EnigmaMachine::print_config_object(ring_info.to_config());
+    std::cout << std::endl << std::endl;
+
+    PlugboardDecryptInfo plug_info {ring_info, "AH FD NJ", Op::KNOWN_PLAINTEXT_SIMPLE, 7.77};
+
+    plug_info.to_config(config);
+    EnigmaMachine::print_config_object(config);
+    EnigmaMachine::print_config_object(plug_info.to_config());
+    std::cout << std::endl << std::endl;
+//    BlindDecrypt::main();
 //
 //    KnownPlaintextStack::main();
 

@@ -39,6 +39,9 @@ public:
     // prints the formatted contents of this instance
     void print(bool header) const override;
     void print() const override; // wraps print(false)
+
+    EnigmaConfig to_config() override;
+    void to_config(EnigmaConfig& config) override;
 };
 
 

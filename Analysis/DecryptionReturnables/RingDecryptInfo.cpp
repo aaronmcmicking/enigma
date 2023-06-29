@@ -58,3 +58,17 @@ void RingDecryptInfo::print(bool header) const{
 void RingDecryptInfo::print() const{
     print(false);
 }
+
+EnigmaConfig RingDecryptInfo::to_config(){
+    return {rotor_info.rotors,
+            rotor_info.rotor_pos,
+            ring_pos,
+            rotor_info.reflector,
+            ""
+            };
+}
+
+
+void RingDecryptInfo::to_config(EnigmaConfig& config){
+    config = to_config();
+}

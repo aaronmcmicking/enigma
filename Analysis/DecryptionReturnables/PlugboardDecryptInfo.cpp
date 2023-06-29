@@ -55,3 +55,17 @@ void PlugboardDecryptInfo::print(bool header) const {
 void PlugboardDecryptInfo::print() const{
     print(false);
 }
+
+EnigmaConfig PlugboardDecryptInfo::to_config(){
+    return {ring_info.rotor_info.rotors,
+            ring_info.rotor_info.rotor_pos,
+            ring_info.ring_pos,
+            ring_info.rotor_info.reflector,
+            plugboard
+            };
+}
+
+
+void PlugboardDecryptInfo::to_config(EnigmaConfig& config){
+    config = to_config();
+}

@@ -138,6 +138,10 @@ void EnigmaMachine::print_config_object(const EnigmaConfig& config){
     for(int i{}; i < 3; i++) {
         std::cout << config.rotor_pos[i] << " ";
     }
+    std::cout << std::endl << "rings = ";
+    for(int i{}; i < 3; i++) {
+        std::cout << config.ring_pos[i] << " ";
+    }
     std::cout << std::endl << "ref = " << config.reflector << std::endl;
     std::cout << "plugboard = " << config.plugboard << std::endl;
 }

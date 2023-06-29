@@ -69,3 +69,18 @@ void RotorDecryptInfo::print(bool header) const{
 void RotorDecryptInfo::print() const{
     print(false);
 }
+
+EnigmaConfig RotorDecryptInfo::to_config(){
+    int rings[3] {0, 0, 0};
+    return {rotors,
+            rotor_pos,
+            rings,
+            reflector,
+            ""
+            };
+}
+
+
+void RotorDecryptInfo::to_config(EnigmaConfig& config){
+    config = to_config();
+}
