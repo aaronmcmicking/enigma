@@ -12,7 +12,7 @@
 #define MAX_INPUT_STRING_LENGTH (40*1000)
 #endif
 
-namespace Op{
+namespace Op{ // "Operations"
     // contract for templates to be an arithmetic type
     template<typename T>
     concept arithmetic_type = std::integral<T> or std::floating_point<T>;
@@ -37,20 +37,21 @@ namespace Op{
     inline std::string itor(int i); // Converts a number ( 1<= and <=9 ) to Roman Numerals.
 
     template<typename T> requires arithmetic_type<T>
-    inline static T abs(T val);
+    inline static T abs(T val); // absolute value
 
-    inline bool is_in_range(int num, int min, int max);
+    inline bool is_in_range(int num, int min, int max); // INCLUSIVE: returns true if num is greater than or equal to min AND less than or equal to max
+
     /*
      * All functions below copy provided elements into `dest`
      */
     template<typename T>
-    inline void rep_arr(T* dest, const T* src, int size);
+    inline void arrncpy(T* dest, const T* src, int size);
     template<class T>
-    inline void rep_arr(T* dest, std::initializer_list<T> elements); // allows variadic arguments as long as all elements have the same type
+    inline void arrcpy(T* dest, std::initializer_list<T> elements); // allows variadic arguments as long as all elements have the same type
     template<typename T>
-    inline void rep_arr3(T* dest, const T* src);
+    inline void arrcpy3(T* dest, const T* src);
     template<typename T>
-    inline void rep_arr3(T* dest, T a, T b, T c);
+    inline void arrcpy3(T* dest, T a, T b, T c);
 
     // used to specify which statistical method should be used during a given decryption process
     enum Method{
@@ -65,23 +66,23 @@ namespace Op{
 #endif
 #ifdef OP_IMPLEMENT
 template <typename T>
-void Op::rep_arr3(T* dest, const T *src) {
+void Op::arrcpy3(T* dest, const T *src) {
     for (int i{0}; i < 3; i++){ dest[i] = src[i]; }
 }
 
 template <typename T>
-void Op::rep_arr3(T* dest, T a, T b, T c) {
+void Op::arrcpy3(T* dest, T a, T b, T c) {
     int src[]{a, b, c};
     for(int i {0}; i < 3; i++){ dest[i] = src[i]; }
 }
 
 template <typename T>
-void Op::rep_arr(T *dest, const T *src, int size) {
+void Op::arrncpy(T *dest, const T *src, int size) {
     for (int i{0}; i < size; i++){ dest[i] = src[i]; }
 }
 
 template<class T>
-void Op::rep_arr(T* dest, std::initializer_list<T> elements){
+void Op::arrcpy(T* dest, std::initializer_list<T> elements){
     for(uint64_t i {}; i < elements.size(); i++){
         dest[i] = elements[i];
     }

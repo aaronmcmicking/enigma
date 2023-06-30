@@ -16,20 +16,20 @@ RingDecryptInfo::RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_po
                                  DecryptInfo {new_fitness}, rotor_info {rinfo}, method {new_method}
 {
     ring_pos = new int[3]{};
-    Op::rep_arr(ring_pos, new_ring_pos, 3);
+    Op::arrncpy(ring_pos, new_ring_pos, 3);
 }
 
 RingDecryptInfo::RingDecryptInfo(const RingDecryptInfo &other):
             DecryptInfo {other.fitness}, rotor_info {other.rotor_info}, method {other.method}
 {
     ring_pos = new int[3]{};
-    Op::rep_arr(ring_pos, other.ring_pos, 3);
+    Op::arrncpy(ring_pos, other.ring_pos, 3);
 }
 
 RingDecryptInfo& RingDecryptInfo::operator=(const RingDecryptInfo& other){
     if(this == &other){ return *this; } // self assignment guard
     rotor_info = other.rotor_info;
-    Op::rep_arr(ring_pos, other.ring_pos, 3);
+    Op::arrncpy(ring_pos, other.ring_pos, 3);
     method = other.method;
     fitness= other.fitness;
     return *this;

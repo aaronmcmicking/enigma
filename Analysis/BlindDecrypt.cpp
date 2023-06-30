@@ -83,7 +83,7 @@ void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_
 
     for(std::vector<int> cur_rotors: rotor_positions){
         for(int r3_p {1}; r3_p <= 26; r3_p++){
-            Op::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
+            Op::arrcpy3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
             for(int r2_p {1}; r2_p <= 26; r2_p++){
                 for(int r1_p {1}; r1_p <= 26; r1_p++){
                     for(char ref {'a'}; ref <= 'c'; ref++){
@@ -96,7 +96,7 @@ void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_
                         }
 
                         // set new rotor settings
-                        Op::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
+                        Op::arrcpy3(config.rotor_pos, r1_p, r2_p, r3_p);
                         config.reflector = ref;
 
                         em.set_config(config);
@@ -165,12 +165,12 @@ void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_s
         auto cur_rotor_info {rotor_it};
         rotor_it++;
         config = cur_rotor_info->to_config();
-//        Op::rep_arr3(config.rotors, cur_rotor_info->rotors);
-//        Op::rep_arr3(config.rotor_pos, cur_rotor_info->rotor_pos);
+//        Op::arrcpy3(config.rotors, cur_rotor_info->rotors);
+//        Op::arrcpy3(config.rotor_pos, cur_rotor_info->rotor_pos);
 //        config.reflector = cur_rotor_info->reflector;
         for (int r1{1}; r1 <= 26; r1++) {
             for (int r2{1}; r2 <= 26; r2++) {
-                    Op::rep_arr3(config.ring_pos, r1, r2, 1);
+                Op::arrcpy3(config.ring_pos, r1, r2, 1);
 
                     em.set_config(config);
 
@@ -250,7 +250,7 @@ void BlindDecrypt::find_plugs(Op::Method method, const char *e_text, long text_s
 
             if (cur_fitness > best_fitness_on_cycle) {
                 best_fitness_on_cycle = cur_fitness;
-                Op::rep_arr(best_pair_on_cycle, cur, 3);
+                Op::arrncpy(best_pair_on_cycle, cur, 3);
             }
 
             if(possible_pairs.back()[0] == pair[0] && possible_pairs.back()[1] == pair[1]){

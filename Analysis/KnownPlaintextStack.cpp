@@ -83,7 +83,7 @@ void KnownPlaintextStack::decrypt(const char *text, long size, const char* plain
 
     for (std::vector<int> cur_rotors: rotor_perms) {
         for (int r3_p{1}; r3_p <= 26; r3_p++) {
-            Op::rep_arr3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
+            Op::arrcpy3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
             for (int r2_p{1}; r2_p <= 26; r2_p++) {
                 for (int r1_p{1}; r1_p <= 26; r1_p++) {
                     for (char ref{'a'}; ref <= 'c'; ref++) {
@@ -103,8 +103,8 @@ void KnownPlaintextStack::decrypt(const char *text, long size, const char* plain
                             std::string cur_plug {plug_pair[0], plug_pair[1]};
 
                             config.plugboard = fixed_plugs + " " + cur_plug;
-                            Op::rep_arr3(config.rotor_pos, r1_p, r2_p, r3_p);
-//                                    Op::rep_arr3(config.ring_pos, ring1, ring2, 1);
+                            Op::arrcpy3(config.rotor_pos, r1_p, r2_p, r3_p);
+//                                    Op::arrcpy3(config.ring_pos, ring1, ring2, 1);
                             config.reflector = ref;
 
                             em.set_config(config);

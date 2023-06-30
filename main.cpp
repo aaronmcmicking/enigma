@@ -184,22 +184,22 @@ int main(){
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
 //    print_status(status);
 //
-//    Op::rep_arr3(config.rotor_pos, 12, 26, 8);
-//    Op::rep_arr3(config.rotors, 3, 5, 1);
+//    Op::arrcpy3(config.rotor_pos, 12, 26, 8);
+//    Op::arrcpy3(config.rotors, 3, 5, 1);
 //    config.reflector = 'c';
 //    config.plugboard = "LA MD JC NE ZU QO";
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
 //    print_status(status);
 //
-//    Op::rep_arr3(config.rotor_pos, 26, 26, 26);
-//    Op::rep_arr3(config.rotors, 5, 5, 5);
+//    Op::arrcpy3(config.rotor_pos, 26, 26, 26);
+//    Op::arrcpy3(config.rotors, 5, 5, 5);
 //    config.reflector = 'a';
 //    config.plugboard = "";
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
 //    print_status(status);
 //
-//    Op::rep_arr3(config.rotor_pos, 1, 26, 26);
-//    Op::rep_arr3(config.rotors, 5, 4, 3);
+//    Op::arrcpy3(config.rotor_pos, 1, 26, 26);
+//    Op::arrcpy3(config.rotors, 5, 4, 3);
 //    config.reflector = 'b';
 //    config.plugboard = "";
 //    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
