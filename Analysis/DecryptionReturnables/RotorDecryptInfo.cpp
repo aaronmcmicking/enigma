@@ -70,7 +70,7 @@ void RotorDecryptInfo::print() const{
     print(false);
 }
 
-EnigmaConfig RotorDecryptInfo::to_config(){
+[[nodiscard]] EnigmaConfig RotorDecryptInfo::to_config() const{
     int rings[3] {0, 0, 0};
     return {rotors,
             rotor_pos,
@@ -81,6 +81,6 @@ EnigmaConfig RotorDecryptInfo::to_config(){
 }
 
 
-void RotorDecryptInfo::to_config(EnigmaConfig& config){
+void RotorDecryptInfo::to_config(EnigmaConfig& config) const{
     config = to_config();
 }

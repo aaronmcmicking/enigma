@@ -59,7 +59,7 @@ void RingDecryptInfo::print() const{
     print(false);
 }
 
-EnigmaConfig RingDecryptInfo::to_config(){
+[[nodiscard]] EnigmaConfig RingDecryptInfo::to_config() const{
     return {rotor_info.rotors,
             rotor_info.rotor_pos,
             ring_pos,
@@ -69,6 +69,6 @@ EnigmaConfig RingDecryptInfo::to_config(){
 }
 
 
-void RingDecryptInfo::to_config(EnigmaConfig& config){
+void RingDecryptInfo::to_config(EnigmaConfig& config) const{
     config = to_config();
 }

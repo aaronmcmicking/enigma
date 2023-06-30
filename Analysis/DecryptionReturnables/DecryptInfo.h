@@ -20,8 +20,8 @@ public:
     virtual void print(bool header) const = 0;
     virtual void print() const = 0; // usually wraps print(false)
 
-    [[nodiscard]] virtual EnigmaConfig to_config() = 0;
-    virtual void to_config(EnigmaConfig& config) = 0;
+    [[nodiscard]] virtual EnigmaConfig to_config() const = 0;
+    virtual void to_config(EnigmaConfig& config) const = 0;
 
     /**
      * Defines weak ordering for lists of DecryptInfo objects. An object should come first in a list if

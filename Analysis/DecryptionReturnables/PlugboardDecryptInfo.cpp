@@ -56,7 +56,7 @@ void PlugboardDecryptInfo::print() const{
     print(false);
 }
 
-EnigmaConfig PlugboardDecryptInfo::to_config(){
+[[nodiscard]] EnigmaConfig PlugboardDecryptInfo::to_config() const{
     return {ring_info.rotor_info.rotors,
             ring_info.rotor_info.rotor_pos,
             ring_info.ring_pos,
@@ -66,6 +66,6 @@ EnigmaConfig PlugboardDecryptInfo::to_config(){
 }
 
 
-void PlugboardDecryptInfo::to_config(EnigmaConfig& config){
+void PlugboardDecryptInfo::to_config(EnigmaConfig& config) const{
     config = to_config();
 }

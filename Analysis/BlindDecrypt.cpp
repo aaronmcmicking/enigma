@@ -28,6 +28,9 @@ double BlindDecrypt::calculate_fitness(Op::Method method, char *text, int text_s
             return static_cast<double>(IndexOfCoincidence::calculate(text, text_size));
         case CHARACTER_FREQUENCY:
             return CharacterFrequency::calculate(text, text_size);
+        case KNOWN_PLAINTEXT_SIMPLE:
+            std::cout << "KNOWN_PLAINTEXT_SIMPLE fitness calculation not currently supported by DecryptInfo.cpp" << std::endl;
+            return -1.0;
         default:
             std::cout << "no decryption method selected for " << current_target << std::endl;
             return -1.0;
@@ -64,11 +67,10 @@ void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_
     std::vector<std::vector<int>> rotor_positions {};
     generate_rotor_permutations(rotor_positions);
 
-    EnigmaMachine em {new int[3] {1, 2, 3}, new int[3] {1, 1, 1}, new int[3] {0, 0, 0}, 'a', ""};
+//    EnigmaMachine em {new int[3] {1, 2, 3}, new int[3] {1, 1, 1}, new int[3] {0, 0, 0}, 'a', ""};
 
     EnigmaConfig config {};
-
-//    EnigmaConfig best_config {};
+    EnigmaMachine em {config};
 
     if(!best_rotors.empty()){
         best_rotors.clear();
@@ -160,11 +162,12 @@ void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_s
 
     auto rotor_it {best_rotors.cbegin()};
     for(int i {0}; i < 5; i++){
-        auto rinfo {rotor_it};
+        auto cur_rotor_info {rotor_it};
         rotor_it++;
-        Op::rep_arr3(config.rotors, rinfo->rotors);
-        Op::rep_arr3(config.rotor_pos, rinfo->rotor_pos);
-        config.reflector = rinfo->reflector;
+        config = cur_rotor_info->to_config();
+//        Op::rep_arr3(config.rotors, cur_rotor_info->rotors);
+//        Op::rep_arr3(config.rotor_pos, cur_rotor_info->rotor_pos);
+//        config.reflector = cur_rotor_info->reflector;
         for (int r1{1}; r1 <= 26; r1++) {
             for (int r2{1}; r2 <= 26; r2++) {
                     Op::rep_arr3(config.ring_pos, r1, r2, 1);
@@ -176,9 +179,8 @@ void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_s
                     cur_fitness = calculate_fitness(method, d_text, text_size, "ring settings");
 
                     if(best_rings.empty() || cur_fitness >= best_rings.back().fitness){
-
                         RingDecryptInfo ninfo{
-                            *rinfo,
+                            *cur_rotor_info,
                             new int[3]{r1, r2, 1},
                             method,
                             cur_fitness
@@ -209,13 +211,15 @@ void BlindDecrypt::find_plugs(Op::Method method, const char *e_text, long text_s
                               const RingDecryptInfo& best_ring, PlugboardDecryptInfo& best_plugboard) {
 
 
-    EnigmaConfig config {
-        best_ring.rotor_info.rotors,
-        best_ring.rotor_info.rotor_pos,
-        best_ring.ring_pos,
-        best_ring.rotor_info.reflector,
-        ""
-    };
+//    EnigmaConfig config {
+//        best_ring.rotor_info.rotors,
+//        best_ring.rotor_info.rotor_pos,
+//        best_ring.ring_pos,
+//        best_ring.rotor_info.reflector,
+//        ""
+//    };
+
+    EnigmaConfig config {best_ring.to_config()};
 
     EnigmaMachine em {config};
 
@@ -312,16 +316,9 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
         std::cout << "decryption took " << duration.count() << " milliseconds" << std::endl;
     }
 
-    EnigmaConfig decrypt_config {
-            best_plugboard.ring_info.rotor_info.rotors,
-            best_plugboard.ring_info.rotor_info.rotor_pos,
-            best_plugboard.ring_info.ring_pos,
-            best_plugboard.ring_info.rotor_info.reflector,
-            best_plugboard.plugboard
-    };
+//    EnigmaConfig decrypt_config {best_plugboard.to_config()};
 
-//    em.set_config(decrypt_config);
-    EnigmaMachine em {decrypt_config};
+    EnigmaMachine em {best_plugboard.to_config()};
     em.encrypt_or_decrypt_file(input_filepath, output_filepath);
 
     delete e_text;
@@ -333,7 +330,7 @@ int BlindDecrypt::main(){
 
     int init_rotors[]{2, 5, 3};
     int init_rotor_pos[]{21, 19, 6};
-    int init_rings[]{17, 19, 1};
+    int init_rings[]{0, 0, 0};
     EnigmaConfig encrypt_config {
             init_rotors,
             init_rotor_pos,
@@ -341,10 +338,10 @@ int BlindDecrypt::main(){
             'B',
 //            "JM HO PQ LD UG ZF KS AN BX YW"
 //            "QU IN VB LE CO KR WP ZH AS TY"
-            "QU IN VB LE"
+//            "QU IN VB LE"
 //            "IK BH RG NA PF"
 //            "AF",
-//            ""
+            ""
     };
 
     EnigmaMachine em {encrypt_config};

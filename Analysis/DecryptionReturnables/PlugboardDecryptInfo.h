@@ -40,8 +40,8 @@ public:
     void print(bool header) const override;
     void print() const override; // wraps print(false)
 
-    EnigmaConfig to_config() override;
-    void to_config(EnigmaConfig& config) override;
+    [[nodiscard]] EnigmaConfig to_config() const override;
+    void to_config(EnigmaConfig& config) const override;
 };
 
 

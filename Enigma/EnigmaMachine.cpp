@@ -129,21 +129,11 @@ void EnigmaMachine::set_config(const EnigmaConfig& config){
     set_plugboard_settings(config.plugboard);
 }
 
+/**
+ * DEPRECATED. USE EnigmaConfig.print().
+ */
 void EnigmaMachine::print_config_object(const EnigmaConfig& config){
-    std::cout << "rotors = ";
-    for(int i{}; i < 3; i++) {
-        std::cout << config.rotors[i] << " ";
-    }
-    std::cout << std::endl << "pos = ";
-    for(int i{}; i < 3; i++) {
-        std::cout << config.rotor_pos[i] << " ";
-    }
-    std::cout << std::endl << "rings = ";
-    for(int i{}; i < 3; i++) {
-        std::cout << config.ring_pos[i] << " ";
-    }
-    std::cout << std::endl << "ref = " << config.reflector << std::endl;
-    std::cout << "plugboard = " << config.plugboard << std::endl;
+    config.print();
 }
 
 [[maybe_unused]] void EnigmaMachine::print_config(){
@@ -151,6 +141,9 @@ void EnigmaMachine::print_config_object(const EnigmaConfig& config){
     std::cout << "EnigmaMachine::print_config: IMPLEMENT ME" << std::endl;
 }
 
+/**
+ * DEPRECATED. USE EnigmaConfig operator=.
+ */
 void EnigmaMachine::copy_config(EnigmaConfig &dest, EnigmaConfig &src) {
     EMOps::rep_arr3(dest.rotors, src.rotors);
     EMOps::rep_arr3(dest.rotor_pos, src.rotor_pos);
