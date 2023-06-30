@@ -42,17 +42,23 @@ RingDecryptInfo::~RingDecryptInfo(){
 void RingDecryptInfo::print(bool header) const{
     using namespace std;
     using namespace Op;
+
     if(header){
-        cout << "RING SETTINGS:" << endl;
-        for(int i{}; i < 3; i++)
-            cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "  " << "RING" << "        ";
-        cout << "REF" << "          " << "FITNESS" << endl;
+        cout << "ROTORS:           POSITIONS:        RING POS:        REFLECTOR:       FITNESS:" << endl;
     }
-    cout << left << setw(3) << itor( rotor_info.rotors[0]) << "  " << setw(2) <<  rotor_info.rotor_pos[0] << "  ring: " << setw(2) <<  ring_pos[0] << " |  "
-        << left << setw(3) << itor( rotor_info.rotors[1]) << "  " << setw(2) <<  rotor_info.rotor_pos[1] << "  ring: " << setw(2) <<  ring_pos[1] << " |  "
-        << left << setw(3) << itor( rotor_info.rotors[2]) << "  " << setw(2) <<  rotor_info.rotor_pos[2] << "  ring: " << setw(2) <<  ring_pos[2] << " |  "
-        << "REF: " << static_cast<char>(toupper( rotor_info.reflector)) << "  "
-        << " ->  " <<  fitness << endl;
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << itor(rotor_info.rotors[i]);
+    }
+    cout << "  |   ";
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << rotor_info.rotor_pos[i];
+    }
+    cout << "  |   ";
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << ring_pos[i];
+    }
+    cout << " |   ";
+    cout << static_cast<char>(toupper(rotor_info.reflector)) << "          |     "  << fitness << endl;
 }
 
 void RingDecryptInfo::print() const{

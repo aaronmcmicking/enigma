@@ -126,6 +126,18 @@ std::string get_path(){
 #ifdef USING_MAINCPP
 int main(){
 
+    int irot[3]{1, 2, 3};
+    int irotp[]{4, 5, 6};
+    RotorDecryptInfo rotor_info {
+        irot,
+        irotp,
+        'A',
+        Op::INDEX_OF_COINCIDENCE,
+        7.77
+    };
+
+    rotor_info.print(true);
+
     /*
     RotorDecryptInfo rotor_info {new int[]{1, 2, 3}, new int[]{4, 5, 6}, 'C', Op::INDEX_OF_COINCIDENCE, 10.0};
 

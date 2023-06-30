@@ -52,18 +52,19 @@ RotorDecryptInfo::~RotorDecryptInfo(){
 void RotorDecryptInfo::print(bool header) const{
     using namespace std;
     using namespace Op;
+
     if(header){
-        cout << "ROTOR SETTINGS:" << endl;
-        for(int i{}; i < 3; i++){
-            cout << left << setw(3) << "R" << "  " << setw(2) << "P" << "     ";
-        }
-        cout << "REF" << "          " << "FITNESS" << endl;
+        cout << "ROTORS:           POSITIONS:       REFLECTOR:       FITNESS:" << endl;
     }
-    cout << left << setw(3) << itor(rotors[0]) << "  " << left << setw(2) << rotor_pos[0] << "  |  "
-         << left << setw(3) << itor(rotors[1]) << "  " << left << setw(2) << rotor_pos[1] << "  |  "
-         << left << setw(3) << itor(rotors[2]) << "  " << left << setw(2) << rotor_pos[2] << "  |  "
-         << "REF: " << static_cast<char>(toupper(reflector)) << "  "
-         << " ->  " << fitness << endl;
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << itor(rotors[i]);
+    }
+    cout << "  |   ";
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << rotor_pos[i];
+    }
+    cout << " |   ";
+    cout << static_cast<char>(toupper(reflector)) << "          |     "  << fitness << endl;
 }
 
 void RotorDecryptInfo::print() const{
