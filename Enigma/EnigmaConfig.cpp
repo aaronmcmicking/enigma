@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "Headers/EnigmaConfig.h"
-#include "./Headers/EMOps.h"
+#include "./Headers/stdeo.h"
 
 EnigmaConfig::EnigmaConfig(): reflector {'A'}, plugboard {}{
     rotors = new int[3]{1, 2, 3};
@@ -15,9 +15,9 @@ EnigmaConfig::EnigmaConfig(): reflector {'A'}, plugboard {}{
 
 EnigmaConfig::EnigmaConfig(int* n_rotors, int* n_rotor_pos, int* n_ring_pos, char n_reflector, std::string n_plugboard)
                             : EnigmaConfig(){
-    EMOps::rep_arr3(rotors, n_rotors);
-    EMOps::rep_arr3(rotor_pos, n_rotor_pos);
-    EMOps::rep_arr3(ring_pos, n_ring_pos);
+    stdeo::arrcpy3(rotors, n_rotors);
+    stdeo::arrcpy3(rotor_pos, n_rotor_pos);
+    stdeo::arrcpy3(ring_pos, n_ring_pos);
     reflector = n_reflector;
     plugboard = std::move(n_plugboard);
 }
@@ -40,9 +40,9 @@ EnigmaConfig &EnigmaConfig::operator=(const EnigmaConfig &other){
     if(this == &other){
         return *this;
     }
-    EMOps::rep_arr3(rotors, other.rotors);
-    EMOps::rep_arr3(rotor_pos, other.rotor_pos);
-    EMOps::rep_arr3(ring_pos, other.ring_pos);
+    stdeo::arrcpy3(rotors, other.rotors);
+    stdeo::arrcpy3(rotor_pos, other.rotor_pos);
+    stdeo::arrcpy3(ring_pos, other.ring_pos);
     reflector = other.reflector;
     plugboard = other.plugboard;
     return *this;

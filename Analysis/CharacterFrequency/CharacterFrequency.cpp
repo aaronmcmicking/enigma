@@ -19,7 +19,7 @@ double CharacterFrequency::calculate(const char* text, int size){
 
     double sum {0.0};
     for(int i {1}; i <= 26; i++){
-        sum += Op::abs(m_freq[i] - expected[i]);
+        sum += stdo::abs(m_freq[i] - expected[i]);
     }
 
     return 1 - sum;

@@ -25,27 +25,27 @@ RotorBox::RotorBox(): reflector {Reflector()} {
     int* mapVIII = RotorMappingBuilder::get_rotor_mapping(8);
 
     RotorI.set_mappings(mapI);
-    RotorI.set_ring_position(EMOps::ctoi('r'));
+    RotorI.set_ring_position(stdeo::ctoi('r'));
 
     RotorII.set_mappings(mapII);
-    RotorI.set_ring_position(EMOps::ctoi('f'));
+    RotorI.set_ring_position(stdeo::ctoi('f'));
 
     RotorIII.set_mappings(mapIII);
-    RotorIII.set_ring_position(EMOps::ctoi('w'));
+    RotorIII.set_ring_position(stdeo::ctoi('w'));
 
     RotorIV.set_mappings(mapIV);
-    RotorIV.set_ring_position(EMOps::ctoi('k'));
+    RotorIV.set_ring_position(stdeo::ctoi('k'));
 
     RotorV.set_mappings(mapV);
-    RotorV.set_ring_position(EMOps::ctoi('a'));
+    RotorV.set_ring_position(stdeo::ctoi('a'));
 
     // these rotors should have 2 turnovers each (at 'a' and 'n'), but this is not currently supported
     RotorVI.set_mappings(mapVI);
     RotorVII.set_mappings(mapVII);
     RotorVIII.set_mappings(mapVIII);
-    RotorVI.set_ring_position(EMOps::ctoi('a'));
-    RotorVII.set_ring_position(EMOps::ctoi('a'));
-    RotorVIII.set_ring_position(EMOps::ctoi('a'));
+    RotorVI.set_ring_position(stdeo::ctoi('a'));
+    RotorVII.set_ring_position(stdeo::ctoi('a'));
+    RotorVIII.set_ring_position(stdeo::ctoi('a'));
 
     rotors_in_place = new Rotor[]{RotorI, RotorII, RotorIII};
 }

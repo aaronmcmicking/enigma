@@ -46,7 +46,7 @@ int* Reflector::get_mapping(char which) {
     }
 
     for(int i {Rotor::min_position}; i <= Rotor::max_position; i++){
-        map[i] = EMOps::ctoi(static_cast<char>(tolower(reflection.at(i - 1))));
+        map[i] = stdeo::ctoi(static_cast<char>(tolower(reflection.at(i - 1))));
     }
 
     return map;

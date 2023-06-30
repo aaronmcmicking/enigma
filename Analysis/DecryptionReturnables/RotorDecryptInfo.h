@@ -5,7 +5,7 @@
 #ifndef ENIGMA_ROTORDECRYPTINFO_H
 #define ENIGMA_ROTORDECRYPTINFO_H
 
-#include "../Op.h"
+#include "../stdo.h"
 #include "DecryptInfo.h"
 
 // Stores result from rotor decryption
@@ -14,7 +14,7 @@ public:
     int* rotors;
     int* rotor_pos;
     char reflector;
-    Op::Method method;
+    stdo::Method method;
 //    long double fitness;
 
     /* Semantic */
@@ -22,7 +22,7 @@ public:
     RotorDecryptInfo();
 
     // fielded constructor
-    RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, Op::Method new_method, long double new_fitness);
+    RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, stdo::Method new_method, long double new_fitness);
 
     // copy constructor
     RotorDecryptInfo(const RotorDecryptInfo &other);

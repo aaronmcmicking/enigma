@@ -20,9 +20,9 @@ void BlindDecrypt::print_decrypt_info_list(const std::list<DecryptInfo>& list){
     }
 }
 
-double BlindDecrypt::calculate_fitness(Op::Method method, char *text, int text_size,
-                                     const std::string& current_target) {
-    using namespace Op;
+double BlindDecrypt::calculate_fitness(stdo::Method method, char *text, int text_size,
+                                       const std::string& current_target) {
+    using namespace stdo;
     switch(method){
         case INDEX_OF_COINCIDENCE:
             return static_cast<double>(IndexOfCoincidence::calculate(text, text_size));
@@ -62,7 +62,7 @@ void BlindDecrypt::generate_plugboard_pair_permutations(std::vector<char*> &perm
     permutations.push_back(n);
 }
 
-void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_size,
+void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long text_size,
                                std::list<RotorDecryptInfo>& best_rotors) {
     std::vector<std::vector<int>> rotor_positions {};
     generate_rotor_permutations(rotor_positions);
@@ -83,20 +83,20 @@ void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_
 
     for(std::vector<int> cur_rotors: rotor_positions){
         for(int r3_p {1}; r3_p <= 26; r3_p++){
-            Op::arrcpy3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
+            stdo::arrcpy3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
             for(int r2_p {1}; r2_p <= 26; r2_p++){
                 for(int r1_p {1}; r1_p <= 26; r1_p++){
                     for(char ref {'a'}; ref <= 'c'; ref++){
                         // print the current rotor configuration
                         if(r1_p == 1 && r2_p == 1 && r3_p == 1 && ref == 'a') {
                             using namespace std;
-                            cout << left << setw(4) << Op::itor(cur_rotors[0]) << " "
-                                 << left << setw(4) << Op::itor(cur_rotors[1]) << " "
-                                 << left << setw(4) << Op::itor(cur_rotors[2]) << endl;
+                            cout << left << setw(4) << stdo::itor(cur_rotors[0]) << " "
+                                 << left << setw(4) << stdo::itor(cur_rotors[1]) << " "
+                                 << left << setw(4) << stdo::itor(cur_rotors[2]) << endl;
                         }
 
                         // set new rotor settings
-                        Op::arrcpy3(config.rotor_pos, r1_p, r2_p, r3_p);
+                        stdo::arrcpy3(config.rotor_pos, r1_p, r2_p, r3_p);
                         config.reflector = ref;
 
                         em.set_config(config);
@@ -140,7 +140,7 @@ void BlindDecrypt::find_rotors(Op::Method method, const char* e_text, long text_
     delete[] d_text;
 }
 
-void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_size,
+void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text_size,
                               const std::list<RotorDecryptInfo>& best_rotors, std::list<RingDecryptInfo>& best_rings){
 
     EnigmaMachine em {new int[3] {1, 2, 3}, new int[3] {1, 1, 1}, new int[3] {0, 0, 0}, 'a', ""};
@@ -165,12 +165,12 @@ void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_s
         auto cur_rotor_info {rotor_it};
         rotor_it++;
         config = cur_rotor_info->to_config();
-//        Op::arrcpy3(config.rotors, cur_rotor_info->rotors);
-//        Op::arrcpy3(config.rotor_pos, cur_rotor_info->rotor_pos);
+//        stdo::arrcpy3(config.rotors, cur_rotor_info->rotors);
+//        stdo::arrcpy3(config.rotor_pos, cur_rotor_info->rotor_pos);
 //        config.reflector = cur_rotor_info->reflector;
         for (int r1{1}; r1 <= 26; r1++) {
             for (int r2{1}; r2 <= 26; r2++) {
-                Op::arrcpy3(config.ring_pos, r1, r2, 1);
+                stdo::arrcpy3(config.ring_pos, r1, r2, 1);
 
                     em.set_config(config);
 
@@ -207,7 +207,7 @@ void BlindDecrypt::find_rings(Op::Method method, const char *e_text, long text_s
     delete[] d_text;
 }
 
-void BlindDecrypt::find_plugs(Op::Method method, const char *e_text, long text_size,
+void BlindDecrypt::find_plugs(stdo::Method method, const char *e_text, long text_size,
                               const RingDecryptInfo& best_ring, PlugboardDecryptInfo& best_plugboard) {
 
 
@@ -250,7 +250,7 @@ void BlindDecrypt::find_plugs(Op::Method method, const char *e_text, long text_s
 
             if (cur_fitness > best_fitness_on_cycle) {
                 best_fitness_on_cycle = cur_fitness;
-                Op::arrncpy(best_pair_on_cycle, cur, 3);
+                stdo::arrncpy(best_pair_on_cycle, cur, 3);
             }
 
             if(possible_pairs.back()[0] == pair[0] && possible_pairs.back()[1] == pair[1]){
@@ -283,25 +283,25 @@ void BlindDecrypt::find_plugs(Op::Method method, const char *e_text, long text_s
 
 void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string &output_filepath) {
     int e_size {};
-    char* e_text = Op::load_from_file(input_filepath, &e_size);
+    char* e_text = stdo::load_from_file(input_filepath, &e_size);
 
 
     auto start_time {std::chrono::high_resolution_clock ::now()};
 
     std::list<RotorDecryptInfo> best_rotors {};
-    find_rotors(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+    find_rotors(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
     std::cout << std::endl;
     print_decrypt_info_list(best_rotors);
     std::cout << std::endl;
 
     std::list<RingDecryptInfo> best_rings {};
-    find_rings(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
+    find_rings(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
     print_decrypt_info_list(best_rings);
     std::cout << std::endl;
 
 //    auto pst{std::chrono::high_resolution_clock::now()};
     PlugboardDecryptInfo best_plugboard{};
-    find_plugs(Op::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
+    find_plugs(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
     std::cout << "FINAL SETTINGS:" << std::endl;
     best_plugboard.print(true);
 //    auto pet{std::chrono::high_resolution_clock::now()};
@@ -325,7 +325,7 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 }
 
 int BlindDecrypt::main(){
-//    Op::format_input_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)");
+//    stdo::format_input_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)");
 //    return 0;
 
     int init_rotors[]{2, 5, 3};

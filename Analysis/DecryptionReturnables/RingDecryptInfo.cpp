@@ -11,25 +11,25 @@ RingDecryptInfo::RingDecryptInfo(): DecryptInfo(), method {}{
     ring_pos = new int[3]{};
 }
 
-RingDecryptInfo::RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, Op::Method new_method,
+RingDecryptInfo::RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, stdo::Method new_method,
                                  long double new_fitness):
                                  DecryptInfo {new_fitness}, rotor_info {rinfo}, method {new_method}
 {
     ring_pos = new int[3]{};
-    Op::arrncpy(ring_pos, new_ring_pos, 3);
+    stdo::arrncpy(ring_pos, new_ring_pos, 3);
 }
 
 RingDecryptInfo::RingDecryptInfo(const RingDecryptInfo &other):
             DecryptInfo {other.fitness}, rotor_info {other.rotor_info}, method {other.method}
 {
     ring_pos = new int[3]{};
-    Op::arrncpy(ring_pos, other.ring_pos, 3);
+    stdo::arrncpy(ring_pos, other.ring_pos, 3);
 }
 
 RingDecryptInfo& RingDecryptInfo::operator=(const RingDecryptInfo& other){
     if(this == &other){ return *this; } // self assignment guard
     rotor_info = other.rotor_info;
-    Op::arrncpy(ring_pos, other.ring_pos, 3);
+    stdo::arrncpy(ring_pos, other.ring_pos, 3);
     method = other.method;
     fitness= other.fitness;
     return *this;
@@ -41,7 +41,7 @@ RingDecryptInfo::~RingDecryptInfo(){
 
 void RingDecryptInfo::print(bool header) const{
     using namespace std;
-    using namespace Op;
+    using namespace stdo;
 
     if(header){
         cout << "ROTORS:           POSITIONS:        RING POS:        REFLECTOR:       FITNESS:" << endl;

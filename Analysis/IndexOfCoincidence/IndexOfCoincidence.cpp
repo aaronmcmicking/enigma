@@ -8,7 +8,7 @@
 #include "IndexOfCoincidence.h"
 
 long double IndexOfCoincidence::calculate_f(const std::string &filename) {
-    Op::format_input_file(filename);
+    stdo::format_input_file(filename);
 
     char buf[MAX_INPUT_STRING_LENGTH] {0};
     std::ifstream file {filename};
@@ -39,6 +39,6 @@ long double IndexOfCoincidence::calculate(const char* text, int size){
 //    auto duration = duration_cast<std::chrono::nanoseconds>(end_time - start_time);
 //    std::cout << std::endl << "IOC took " << duration.count() << " nanoseconds" << std::endl;
 
-    return 1 - Op::abs(ENGLISH_EXPECTED_IOC - measured_ioc);
+    return 1 - stdo::abs(ENGLISH_EXPECTED_IOC - measured_ioc);
 //    return measured_ioc;
 }

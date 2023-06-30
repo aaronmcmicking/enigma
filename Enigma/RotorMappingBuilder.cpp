@@ -6,7 +6,7 @@
 #include <cctype>
 #include <string>
 #include "Headers/RotorMappingBuilder.h"
-#include "Headers/EMOps.h"
+#include "Headers/stdeo.h"
 
 bool RotorMappingBuilder::init {false};
 int** RotorMappingBuilder::rotor_mappings {nullptr};
@@ -32,7 +32,7 @@ void RotorMappingBuilder::nullify_mappings(){
 
 void RotorMappingBuilder::map_fill(int* map, std::string values){
     for(int i {Rotor::min_position}; i <= Rotor::max_position; i++){
-        map[i] = EMOps::ctoi(static_cast<char>(tolower(values.at(i - 1))));
+        map[i] = stdeo::ctoi(static_cast<char>(tolower(values.at(i - 1))));
     }
 }
 

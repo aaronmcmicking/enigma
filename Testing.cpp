@@ -5,7 +5,7 @@
 #include <iostream>
 #include <chrono>
 #include "Enigma/Headers/EnigmaMachine.h"
-#include "Analysis/Op.h"
+#include "Analysis/stdo.h"
 
 namespace EMFunctionTesting{
 
@@ -45,7 +45,7 @@ namespace EMFunctionTesting{
 
 
 //        int size {};
-//        char* e_text {Op::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)", &size)};
+//        char* e_text {stdo::load_from_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)", &size)};
 //        char* d_text {new char[size+1]};
 //
 //

@@ -32,13 +32,13 @@ void EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_path, con
     std::ifstream in_file {in_file_path};
     in_file.get(in_buf, MAX_INPUT_STRING_LENGTH);
     in_file.close();
-    std::string in_str = EMOps::strip_text(in_buf);
+    std::string in_str = stdeo::strip_text(in_buf);
 
     // convert
     std::string buffer {};
     for(char c: in_str){
 //        std::cout << static_cast<char>(toupper(c1));
-        buffer += EMOps::itoc(convert_char(c));
+        buffer += stdeo::itoc(convert_char(c));
     }
 
     // write output
@@ -51,7 +51,7 @@ void EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_path, con
 std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
     std::string out {};
     for(char c: in){
-        out += EMOps::itoc(convert_char(c));
+        out += stdeo::itoc(convert_char(c));
     }
     return out;
 }
@@ -59,7 +59,7 @@ std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
 void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, const char *src, int size) {
     int i {};
     while(i < size && src[i] != '\0'){
-        dest[i] = EMOps::itoc(convert_char(src[i]));
+        dest[i] = stdeo::itoc(convert_char(src[i]));
         i++;
     }
 }
@@ -145,9 +145,9 @@ void EnigmaMachine::print_config_object(const EnigmaConfig& config){
  * DEPRECATED. USE EnigmaConfig operator=.
  */
 void EnigmaMachine::copy_config(EnigmaConfig &dest, EnigmaConfig &src) {
-    EMOps::rep_arr3(dest.rotors, src.rotors);
-    EMOps::rep_arr3(dest.rotor_pos, src.rotor_pos);
-    EMOps::rep_arr3(dest.ring_pos, src.ring_pos);
+    stdeo::arrcpy3(dest.rotors, src.rotors);
+    stdeo::arrcpy3(dest.rotor_pos, src.rotor_pos);
+    stdeo::arrcpy3(dest.ring_pos, src.ring_pos);
     dest.reflector = src.reflector;
     dest.plugboard = src.plugboard;
 }

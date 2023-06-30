@@ -12,22 +12,22 @@ RotorDecryptInfo::RotorDecryptInfo(): DecryptInfo(), reflector {}, method {}{
     rotor_pos = new int[3]{};
 }
 
-RotorDecryptInfo::RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, Op::Method new_method, long double new_fitness):
+RotorDecryptInfo::RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, stdo::Method new_method, long double new_fitness):
         DecryptInfo(new_fitness), reflector {ref}, method {new_method}
 {
     rotors = new int[3]{};
-    Op::arrncpy(rotors, new_rotors, 3);
+    stdo::arrncpy(rotors, new_rotors, 3);
 
     rotor_pos = new int[3];
-    Op::arrncpy(rotor_pos, new_rotor_pos, 3);
+    stdo::arrncpy(rotor_pos, new_rotor_pos, 3);
 }
 
 // copy constructor
 RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other): DecryptInfo(other.fitness){
     rotors = new int[3]{};
     rotor_pos = new int[3]{};
-    Op::arrncpy(rotors, other.rotors, 3);
-    Op::arrncpy(rotor_pos, other.rotor_pos, 3);
+    stdo::arrncpy(rotors, other.rotors, 3);
+    stdo::arrncpy(rotor_pos, other.rotor_pos, 3);
     reflector = other.reflector;
     method = other.method;
 }
@@ -35,8 +35,8 @@ RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other): DecryptInfo(o
 // copy assignment operator
 RotorDecryptInfo& RotorDecryptInfo::operator=(const RotorDecryptInfo& other){
     if(this == &other){ return *this; } // self assignment guard
-    Op::arrncpy(rotors, other.rotors, 3);
-    Op::arrncpy(rotor_pos, other.rotor_pos, 3);
+    stdo::arrncpy(rotors, other.rotors, 3);
+    stdo::arrncpy(rotor_pos, other.rotor_pos, 3);
     reflector = other.reflector;
     method = other.method;
     fitness = other.fitness;
@@ -51,7 +51,7 @@ RotorDecryptInfo::~RotorDecryptInfo(){
 
 void RotorDecryptInfo::print(bool header) const{
     using namespace std;
-    using namespace Op;
+    using namespace stdo;
 
     if(header){
         cout << "ROTORS:           POSITIONS:       REFLECTOR:       FITNESS:" << endl;

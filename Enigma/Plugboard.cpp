@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Headers/Plugboard.h"
-#include "Headers/EMOps.h"
+#include "Headers/stdeo.h"
 #include "Headers/Rotor.h"
 #include <chrono>
 
@@ -22,7 +22,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
 }
 
 [[nodiscard]] bool Plugboard::validate_plugboard_string(const std::string& str){
-    const uint MAX_PLUGBOARD_STRING_LENGTH {20};
+    const uint32_t MAX_PLUGBOARD_STRING_LENGTH {20};
 
     if(str.length() > MAX_PLUGBOARD_STRING_LENGTH){
         std::cout << str.length() << " exceeds max plugboard string length of "<< MAX_PLUGBOARD_STRING_LENGTH << " (were there more than 10 pairs included?)" << std::endl;
@@ -36,7 +36,7 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
     int count;
     for(char c {'a'}; c <= 'z'; c++){
         count = 0;
-        for(uint i {0}; i < str.length(); i++){
+        for(uint32_t i {0}; i < str.length(); i++){
             if(str.at(i) == c) {
                 count++;
             }
@@ -54,9 +54,8 @@ Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MA
 void Plugboard::set_pairs(const std::string &new_pairs) {
     std::string str_copy {};
 
-    uint i;
     // send all chars to lowercase
-    for (i = 0; i < new_pairs.length(); i++){
+    for(uint32_t i {}; i < new_pairs.length(); i++){
         if(isalpha(new_pairs.at(i))) {
             str_copy += static_cast<char>(tolower(new_pairs.at(i)));
         }
@@ -77,11 +76,11 @@ void Plugboard::parse_and_set_pairs(std::string &str) {
         pairs[w] = w;
     }
 
-    uint i {};
+    uint32_t i {};
     while(i < str.length()){
         int index;
-        index = EMOps::ctoi(str.at(i++));
-        int val {EMOps::ctoi(str.at(i++))};
+        index = stdeo::ctoi(str.at(i++));
+        int val {stdeo::ctoi(str.at(i++))};
         pairs[index] = val;
         pairs[val] = index;
     }
@@ -105,7 +104,7 @@ void Plugboard::print(bool show_default_connections) {
     // print
     for(int index {0}; index < 27; index++) {
         if(copy[index] && (show_default_connections || copy[index] != index)) {
-            std::cout << EMOps::itoc(index) << " <-> " << EMOps::itoc(copy[index]) << std::endl;
+            std::cout << stdeo::itoc(index) << " <-> " << stdeo::itoc(copy[index]) << std::endl;
         }
     }
 }
@@ -149,8 +148,8 @@ std::string Plugboard::get_pairs() {
     int* copy = without_dupes();
     for(int i {}; i < CONVERSION_MAP_ARRAY_SIZE; i++){
         if(copy[i]){
-            str += static_cast<char>(toupper(EMOps::itoc(i)));
-            str += static_cast<char>(toupper(EMOps::itoc(copy[i])));
+            str += static_cast<char>(toupper(stdeo::itoc(i)));
+            str += static_cast<char>(toupper(stdeo::itoc(copy[i])));
             str += ' ';
         }
     }
@@ -159,8 +158,8 @@ std::string Plugboard::get_pairs() {
 }
 
 bool Plugboard::can_add(const std::string& new_pair, const int* pairs) {
-    bool first {pairs[EMOps::ctoi(new_pair[0])] == EMOps::ctoi(new_pair[0]) };
-    bool second {pairs[EMOps::ctoi(new_pair[1])] == EMOps::ctoi(new_pair[1]) };
+    bool first {pairs[stdeo::ctoi(new_pair[0])] == stdeo::ctoi(new_pair[0]) };
+    bool second {pairs[stdeo::ctoi(new_pair[1])] == stdeo::ctoi(new_pair[1]) };
     return first && second;
 }
 
@@ -177,7 +176,7 @@ bool Plugboard::can_add(const std::string &new_pair, const std::string &pairs) {
 }
 
 bool Plugboard::can_add(const std::string &new_pair){
-    // omits calls to EMOps::coti() for speed since this function is called extremely often during some decryption attacks
+    // omits calls to stdeo::coti() for speed since this function is called extremely often during some decryption attacks
     bool first {pairs[ (tolower(new_pair[0]) - 'a' + 1) ] == (tolower(new_pair[0]) - 'a' + 1 )};
     bool second {pairs[ (tolower(new_pair[1]) - 'a' + 1) ] == (tolower(new_pair[1]) - 'a' + 1 )};
     return first && second;

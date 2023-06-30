@@ -12,7 +12,7 @@ class RingDecryptInfo: public DecryptInfo{
 public:
     RotorDecryptInfo rotor_info {};
     int* ring_pos;
-    Op::Method method;
+    stdo::Method method;
 //    long double fitness;
 
     /* Semantic */
@@ -20,7 +20,7 @@ public:
     RingDecryptInfo();
 
     // fielded constructor
-    RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, Op::Method new_method, long double new_fitness);
+    RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, stdo::Method new_method, long double new_fitness);
 
     // copy constructor
     RingDecryptInfo(const RingDecryptInfo& other);

@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Headers/Rotor.h"
-#include "Headers/EMOps.h"
+#include "Headers/stdeo.h"
 
 void Rotor::fill_default_mappings(){
     for(int i {min_position}; i <= max_position; i++){
@@ -32,7 +32,7 @@ Rotor::Rotor(int initial_position, int ring_pos, const int map[CONVERSION_MAP_AR
 }
 
 void Rotor::set_ring_position(int new_ring_position){
-    if(EMOps::is_in_range(new_ring_position, 1, 26)) { ring_position = new_ring_position; }
+    if(stdeo::is_in_range(new_ring_position, 1, 26)) { ring_position = new_ring_position; }
 }
 
 void Rotor::set_position(int new_pos){
@@ -79,7 +79,7 @@ int Rotor::next(int normalized_input, bool forward, bool should_rotate){
     }
 
     // calculate_f the normalized output value (ie. the number of steps from the 'start' position that the letter output at
-    if(EMOps::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
+    if(stdeo::is_in_range(max_position - position + output_relative_to_current_pos + 1, min_position, max_position)){
         return max_position - position + output_relative_to_current_pos + 1;
     }else{
         return output_relative_to_current_pos - position + 1;

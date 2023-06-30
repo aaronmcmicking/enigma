@@ -10,7 +10,7 @@
 #endif
 
 #include <string>
-#include "../Op.h"
+#include "../stdo.h"
 
 /*
  * Index of Coincidence is a cryptographic fitness function that quantifies how similar a block of text is to actual

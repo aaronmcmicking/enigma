@@ -15,7 +15,7 @@ class PlugboardDecryptInfo: public DecryptInfo{
 public:
     RingDecryptInfo ring_info;
     std::string plugboard;
-    Op::Method method;
+    stdo::Method method;
 //    long double fitness;
 
     /*   Semantics    */
@@ -23,7 +23,7 @@ public:
     PlugboardDecryptInfo();
 
     // fielded constructor
-    PlugboardDecryptInfo(const RingDecryptInfo& rinfo, std::string  new_plugboard, Op::Method new_method, long double new_fitness);
+    PlugboardDecryptInfo(const RingDecryptInfo& rinfo, std::string  new_plugboard, stdo::Method new_method, long double new_fitness);
 
     // copy constructor
     PlugboardDecryptInfo(const PlugboardDecryptInfo& other);

@@ -11,7 +11,7 @@ PlugboardDecryptInfo::PlugboardDecryptInfo(): DecryptInfo(), plugboard {}, metho
 }
 
 PlugboardDecryptInfo::PlugboardDecryptInfo(const RingDecryptInfo& rinfo, std::string new_plugboard,
-                                           Op::Method new_method, long double new_fitness):
+                                           stdo::Method new_method, long double new_fitness):
                                                 DecryptInfo(new_fitness), ring_info {rinfo},
                                                 plugboard {std::move(new_plugboard)}, method {new_method}
 { }
@@ -35,9 +35,9 @@ PlugboardDecryptInfo::~PlugboardDecryptInfo() = default;
 
 void PlugboardDecryptInfo::print(bool header) const {
     using namespace std;
-    using namespace Op;
+    using namespace stdo;
 
-    ring_info.print(true);
+    ring_info.print(header);
     cout << "WITH PLUGBOARD: " << plugboard << endl;
 }
 

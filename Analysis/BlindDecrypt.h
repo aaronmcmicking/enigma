@@ -13,7 +13,7 @@
 #include <queue>
 #include <utility>
 #include "../Enigma/Headers/EnigmaMachine.h"
-#include "Op.h"
+#include "stdo.h"
 
 /*
  * BlindDecrypt employs statistical methods to brute force the Enigma Machine settings used to encrypt given ciphertext.
@@ -27,12 +27,12 @@ public:
     template<class DecryptInfo>
     static void print_decrypt_info_list(const std::list<DecryptInfo>& list);
 
-    static void find_rotors(Op::Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
+    static void find_rotors(stdo::Method method, const char* e_text, long text_size, std::list<RotorDecryptInfo>& best_rotors);
 
-    static void find_rings(Op::Method method, const char *e_text, long text_size,
+    static void find_rings(stdo::Method method, const char *e_text, long text_size,
                            const std::list<RotorDecryptInfo>& best_rotors, std::list<RingDecryptInfo>& best_rings);
 
-    static void find_plugs(Op::Method method, const char* e_text, long text_size,
+    static void find_plugs(stdo::Method method, const char* e_text, long text_size,
                            const RingDecryptInfo& best_ring, PlugboardDecryptInfo& best_plugboard);
 
     static void generate_rotor_permutations(std::vector<std::vector<int>>& permutations);
@@ -40,7 +40,7 @@ public:
     static void generate_plugboard_pair_permutations(std::vector<char*>& permutations);
 
 private:
-    static double calculate_fitness(Op::Method method, char* text, int text_size, const std::string& current_target);
+    static double calculate_fitness(stdo::Method method, char* text, int text_size, const std::string& current_target);
 };
 
 

@@ -5,7 +5,7 @@
 #ifndef ENIGMA_CHARACTERFREQUENCY_H
 #define ENIGMA_CHARACTERFREQUENCY_H
 
-#include "../Op.h"
+#include "../stdo.h"
 
 /*
  * Character Frequency is a cryptographic fitness function that quantifies how similar a block of text is to actual
