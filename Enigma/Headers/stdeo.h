@@ -16,7 +16,6 @@
  * Contains common operations throughout EnigmaMachine for convenience.
  */
 namespace stdeo { // "stdeo" = Standard Enigma Operations
-    // contract for templates to be an arithmetic type
     template<typename T>
     concept arithmetic_type = std::integral<T> or std::floating_point<T>;
 
@@ -44,10 +43,6 @@ namespace stdeo { // "stdeo" = Standard Enigma Operations
     inline void arrcpy3(T dest[3], T a, T b, T c);
 }
 
-#ifndef STDEO_IMPLEMENT
-#define STDEO_IMPLEMENT
-#endif
-#ifdef STDEO_IMPLEMENT
 int stdeo::ctoi(char c) {
     return (tolower(c) - 'a' + 1);
 }
@@ -90,6 +85,5 @@ void stdeo::arrcpy3(T dest[3], T a, T b, T c){
     arrcpy3(dest, src);
 }
 
-#endif // STDEO_IMPLEMENT
 
 #endif //ENIGMA_STDEO_H

@@ -23,7 +23,7 @@ private:
     Plugboard plugboard; // The plugboard
 
     // An EnigmaMachine may not be instantiated without proper fields.
-    EnigmaMachine(); // may not be instantiated without proper fields
+    EnigmaMachine(); 
 
     // converts a character through the plugboard and rotor box
     int convert_char(char c);
@@ -33,27 +33,25 @@ public:
     // `config` should be fully instantiated with values
     explicit EnigmaMachine(const EnigmaConfig& config);
 
-    // Encrypts the contents of `in`
-    // Returns the encrypted data
+    // Incrypts the contents of `in` and returns the result
     std::string encrypt_or_decrypt_str(const std::string& in);
 
     // Encrypts `n` characters from `src` and stores it `dest`
     void encrypt_or_decrypt_arr(char* dest, const char* src, int size);
 
-//    void encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size); // doesn't call convert_char(c)
-
     /*
     * Encrypts or decrypts  'n' characters from `src` and stores them in `dest`. `src` need not be a c-style string.
-    * Removes some function calls by removing some safety
-    * checks and performing logic itself at risk of becoming outdated when some methods are updated (done to increase
-    * performance).
+    * Removes calls to common functions to improve performance, thereby becoming
+    * unsafe since assumptions about the behaviour of the common functions may
+    * become outdated.
     */
     void encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size); // doesn't call convert_char(c)
 
     /* Encrypts or decrypts  characters from `src` and stores them in `dest` until a null terminator is encountered in `src`. Therefore,
     * `src` MUST be a c-style string.
-    * Improves performance by removing some safety checks and performing logic itself to remove function calls at risk
-     * of processing bad data or becoming outdated when some methods are updated.
+    * Removes calls to common functions to improve performance, thereby becoming
+    * unsafe since assumptions about the behaviour of the common functions may
+    * become outdated.
     */
     void encrypt_or_decrypt_arr_direct(char *dest, const char* src);
 
@@ -62,25 +60,19 @@ public:
      */
     void encrypt_or_decrypt_file(const std::string& in_file_path, const std::string& out_file_path); // true if success, false otherwise
 
-    // Sets the rotors installed in the rotor box in the order they appear in `rotors`. `rotors` must have length 3.
     void set_rotors(const int* rotors);
 
-    // Sets the rotor positions installed in the rotor box in the order they appear in `pos`. `pos` must have length 3.
     void set_rotor_pos(const int* pos);
 
-    // Sets the rotor ring positions installed in the rotor box in the order they appear in `ring`. `ring` must have length 3.
     void set_ring_pos(const int* ring_pos);
 
-    // Sets the reflector installed in the rotor box.
     void set_reflector(char c);
 
-    // Sets the plugboard installed in the rotor box. See Plugboard.h for more information of plugboard formatting.
+    // See Plugboard.h for more information of plugboard formatting.
     void set_plugboard_settings(const std::string& settings);
 
-    // Returns the current plugboard
     Plugboard& get_plugboard();
 
-    // Sets the current configuration using an EngimaConfig object.
     void set_config(const EnigmaConfig& config);
 
     // [[ CURRENTLY UNIMPLEMENTED ]]
@@ -88,10 +80,12 @@ public:
     [[maybe_unused]] void print_config();
 
     // Prints the configuration stored in an EnigmaConfig object
+    // OBSOLETE: USE EnigmaConfig::print
     static void print_config_object(const EnigmaConfig& config);
 
     // Copies all the data from `src` into `dest`. Allocates new memory for `dest` such that `src` and `dest` will not
     // share state
+    // OBSOLETE: USE EnigmaConfig::operator=
     static void copy_config(EnigmaConfig& dest, EnigmaConfig& src);
 };
 

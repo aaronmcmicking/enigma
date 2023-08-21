@@ -5,8 +5,8 @@
 #ifndef ENIGMA_ROTORMAPPINGBUILDER_H
 #define ENIGMA_ROTORMAPPINGBUILDER_H
 
-
 #include "Rotor.h"
+#include <string>
 
 /*
  * Stores and provides hardcoded values for the conversion maps used in Rotors.

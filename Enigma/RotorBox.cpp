@@ -58,10 +58,8 @@ Rotor RotorBox::get_individual_rotor(int rotor_number){
     return rotors[rotor_number-1];
 }
 
-// UNTESTED
 std::list<Rotor> RotorBox::get_all_rotors(){
     return *(new std::list<Rotor>{RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI, RotorVII, RotorVIII}); // havent test this yet
-//    return new Rotor[] {RotorI, RotorII, RotorIII, RotorIV, RotorV, RotorVI, RotorVII, RotorVIII};
 }
 
 void RotorBox::set_rotor(int rotor_number, int position){

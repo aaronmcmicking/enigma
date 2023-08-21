@@ -10,6 +10,8 @@
 #include "Rotor.h"
 
 /*
+ * See https://en.wikipedia.org/wiki/Enigma_machine for more information.
+ *
  * The reflector is placed after the three rotors in the rotor box. It a) converts an input from the 3rd rotor according
  * to a hardcoded mapping, and b) sends its output as input to the rotors in their reverse order
  *
@@ -33,9 +35,7 @@ public:
     // Sets the current mapping for this reflector by replacing the current mapping with the one in `r`
     void set_reflector(Reflector r);
 
-    /*
-     * Converts and input to an output using the current map.
-     */
+    // Converts and input to an output using the current map.
     int reflect(int input);
 
 private:

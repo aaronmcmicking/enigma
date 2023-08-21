@@ -12,7 +12,7 @@
 #define MAX_INPUT_STRING_LENGTH (40*1000)
 #endif
 
-namespace stdo{ // "Operations"
+namespace stdo{ // "Standard Operations"
     // contract for templates to be an arithmetic type
     template<typename T>
     concept arithmetic_type = std::integral<T> or std::floating_point<T>;
@@ -62,10 +62,6 @@ namespace stdo{ // "Operations"
     };
 }
 
-#ifndef STDO_IMPLEMENT
-#define STDO_IMPLEMENT
-#endif
-#ifdef STDO_IMPLEMENT
 template <typename T>
 void stdo::arrcpy3(T* dest, const T *src) {
     for (int i{0}; i < 3; i++){ dest[i] = src[i]; }
@@ -157,6 +153,5 @@ bool stdo::is_in_range(T num, T min, T max){
     return (num >= min) && (num <= max);
 }
 
-#endif // STDO_IMPLEMENT
 
 #endif //ENIGMA_STDO_H

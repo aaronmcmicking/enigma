@@ -10,6 +10,8 @@
 #define CONVERSION_MAP_ARRAY_SIZE 27
 
 /*
+ * See https://en.wikipedia.org/wiki/Enigma_machine for more information.
+ *
  * A rotor consists of set of a hardcoded conversion map and a ring position which, when the rotor is placed in sequence
  * with other rotors, controls whether the next rotor in the sequence should turn.
  *
@@ -24,9 +26,9 @@
  */
 class Rotor {
 private:
-    int position; // current rotor position. Always" 1 <= position <= 26
+    int position; // current rotor position. Always 1 <= position <= 26
 
-    void fill_default_mappings(); // fills this rotor with mappings such that an output will be its input (no conversion)
+    void fill_default_mappings(); // fills such that an output will be its input (no conversion)
 
 public:
     static const int max_position {26};
@@ -39,23 +41,17 @@ public:
     // initializes to a rotor which simply "passes through" any input value (output = input)
     Rotor();
 
-    // builds a rotor with a specified initial position, ring position, and set of input-output connections
     // `map` is treated to contain the forward conversions and is reversed to create `reverse_mapping`
     Rotor(int initial_position, int ring_pos, const int map[CONVERSION_MAP_ARRAY_SIZE]);
 
-    // returns the current rotor position
     [[nodiscard]] int get_position() const;
 
-    // returns the current ring position
     [[nodiscard]] int get_ring_position() const;
 
-    // sets the current ring position
     void set_ring_position(int new_ring_position);
 
-    // sets the current rotor position
     void set_position(int new_pos);
 
-    // sets the current conversion map
     // `new_mapping` is treated to contain only the forward map and is reversed to generate `reverse_mapping`
     void set_mappings(const int new_mapping[CONVERSION_MAP_ARRAY_SIZE]);
 
@@ -78,7 +74,6 @@ public:
     // returns and resets the turnover flag (wrapper collapses multiple function calls)
     [[nodiscard]] bool pop_turnover_flag();
 
-    // prints the current mapping for this rotor
     void print_rotor_mappings() const;
 };
 

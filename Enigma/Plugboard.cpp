@@ -15,7 +15,7 @@ Plugboard::Plugboard(): pairs {new int[CONVERSION_MAP_ARRAY_SIZE]} {;
 }
 
 Plugboard::Plugboard(const std::string& pairs_str): pairs {new int[CONVERSION_MAP_ARRAY_SIZE]} {
-    // parse string:
+    // parse string
     for(int z {0}; z < CONVERSION_MAP_ARRAY_SIZE; z++) pairs[z] = 0;
 
     set_pairs(pairs_str);
