@@ -42,13 +42,12 @@ namespace stdeo { // "stdeo" = Standard Enigma Operations
     inline void arrcpy3(T dest[3], const T* src);
     template<typename T>
     inline void arrcpy3(T dest[3], T a, T b, T c);
-};
+}
 
-#ifndef EMOP_IMPLEMENT
-#define EMOP_IMPLEMENT
+#ifndef STDEO_IMPLEMENT
+#define STDEO_IMPLEMENT
 #endif
-#ifdef EMOP_IMPLEMENT
-
+#ifdef STDEO_IMPLEMENT
 int stdeo::ctoi(char c) {
     return (tolower(c) - 'a' + 1);
 }
@@ -91,6 +90,6 @@ void stdeo::arrcpy3(T dest[3], T a, T b, T c){
     arrcpy3(dest, src);
 }
 
-#endif // EMOP_IMPLEMENT
+#endif // STDEO_IMPLEMENT
 
 #endif //ENIGMA_STDEO_H

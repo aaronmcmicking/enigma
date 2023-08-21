@@ -72,16 +72,21 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
     EnigmaConfig config {};
     EnigmaMachine em {config};
 
+    em.set_ring_pos(new int[]{13, 13, 13});
+
     if(!best_rotors.empty()){
         best_rotors.clear();
     }
 
     char* d_text = new char[text_size+1]{0};
+//    char* e2_text = new char[text_size]{};
+//    stdo::arrncpy(e2_text, e_text, text_size);
 
     long double cur_fitness;
     long double best_fitness {};
 
     for(std::vector<int> cur_rotors: rotor_positions){
+//        auto start_time {std::chrono::high_resolution_clock::now()};
         for(int r3_p {1}; r3_p <= 26; r3_p++){
             stdo::arrcpy3(config.rotors, cur_rotors[0], cur_rotors[1], cur_rotors[2]);
             for(int r2_p {1}; r2_p <= 26; r2_p++){
@@ -103,6 +108,7 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
 
                         // decrypt
                         em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+//                        em.encrypt_or_decrypt_arr_direct(d_text, e2_text, text_size);
 
                         // analyze
                         cur_fitness = calculate_fitness(method, d_text, text_size, "rotor settings");
@@ -135,6 +141,8 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
                 } // r3_p
             } // r2_p
         } // r1_p
+//        auto dur {duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_time)};
+//        std::cout << "perm took " << dur.count() << "ms" << std::endl;
     } // rotor perms
 
     delete[] d_text;
@@ -330,7 +338,7 @@ int BlindDecrypt::main(){
 
     int init_rotors[]{2, 5, 3};
     int init_rotor_pos[]{21, 19, 6};
-    int init_rings[]{0, 0, 0};
+    int init_rings[]{17, 25, 1};
     EnigmaConfig encrypt_config {
             init_rotors,
             init_rotor_pos,
@@ -339,9 +347,9 @@ int BlindDecrypt::main(){
 //            "JM HO PQ LD UG ZF KS AN BX YW"
 //            "QU IN VB LE CO KR WP ZH AS TY"
 //            "QU IN VB LE"
-//            "IK BH RG NA PF"
+            "IK BH RG NA PF"
 //            "AF",
-            ""
+//            ""
     };
 
     EnigmaMachine em {encrypt_config};

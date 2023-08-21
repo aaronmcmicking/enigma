@@ -37,7 +37,22 @@ void PlugboardDecryptInfo::print(bool header) const {
     using namespace std;
     using namespace stdo;
 
-    ring_info.print(header);
+    if(header){
+        cout << "ROTORS:           POSITIONS:        RING POS:        REFLECTOR:       FITNESS:" << endl;
+    }
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << itor(ring_info.rotor_info.rotors[i]);
+    }
+    cout << "  |   ";
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << ring_info.rotor_info.rotor_pos[i];
+    }
+    cout << "  |   ";
+    for(int i {}; i < 3; i++){
+        cout << left << setw(4) << ring_info.ring_pos[i];
+    }
+    cout << " |   ";
+    cout << static_cast<char>(toupper(ring_info.rotor_info.reflector)) << "          |     "  << fitness << endl;
     cout << "WITH PLUGBOARD: " << plugboard << endl;
 }
 

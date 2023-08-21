@@ -62,10 +62,10 @@ namespace stdo{ // "Operations"
     };
 }
 
-#ifndef OP_IMPLEMENT
-#define OP_IMPLEMENT
+#ifndef STDO_IMPLEMENT
+#define STDO_IMPLEMENT
 #endif
-#ifdef OP_IMPLEMENT
+#ifdef STDO_IMPLEMENT
 template <typename T>
 void stdo::arrcpy3(T* dest, const T *src) {
     for (int i{0}; i < 3; i++){ dest[i] = src[i]; }
@@ -157,6 +157,6 @@ bool stdo::is_in_range(T num, T min, T max){
     return (num >= min) && (num <= max);
 }
 
-#endif // OP_IMPLEMENT
+#endif // STDO_IMPLEMENT
 
 #endif //ENIGMA_STDO_H
