@@ -1,11 +1,23 @@
 # IntelliJ
 .idea/
 
-# cmake build
+# cmake
 cmake-build-debug/
+.cmake/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+**/*.cmake
+
+# binary
+enigma
 
 # misc
 todo.txt
+textfiles/*.txt
+Testing.cpp
+Tests.cpp
+
 
 # github c++ template
 

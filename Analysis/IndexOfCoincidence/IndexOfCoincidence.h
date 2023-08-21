@@ -21,7 +21,7 @@
  */
 class IndexOfCoincidence {
 public:
-    constexpr static const long double ENGLISH_EXPECTED_IOC {1.73}; // the expected index of coincidence for English text
+    constexpr static long double ENGLISH_EXPECTED_IOC {1.73}; // the expected index of coincidence for English text
 
     // Normalizing coefficient is used to reformat an IOC in terms of the number of characters in an alphabet.
     // See https://en.wikipedia.org/wiki/Index_of_coincidence#calculation for more information.
@@ -36,9 +36,8 @@ public:
 
     /*
      * Calculates IOC of text in a given file.
-     * Return value is calculate using IndexOfCoincidence::calculate(const char*, int)
      */
-    static long double calculate_f(const std::string& filename);
+    static long double calculate_from_file(const std::string& filename);
 };
 
 

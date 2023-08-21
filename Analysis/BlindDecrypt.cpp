@@ -67,8 +67,6 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
     std::vector<std::vector<int>> rotor_positions {};
     generate_rotor_permutations(rotor_positions);
 
-//    EnigmaMachine em {new int[3] {1, 2, 3}, new int[3] {1, 1, 1}, new int[3] {0, 0, 0}, 'a', ""};
-
     EnigmaConfig config {};
     EnigmaMachine em {config};
 
@@ -79,8 +77,6 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
     }
 
     char* d_text = new char[text_size+1]{0};
-//    char* e2_text = new char[text_size]{};
-//    stdo::arrncpy(e2_text, e_text, text_size);
 
     long double cur_fitness;
     long double best_fitness {};
@@ -108,7 +104,6 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
 
                         // decrypt
                         em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
-//                        em.encrypt_or_decrypt_arr_direct(d_text, e2_text, text_size);
 
                         // analyze
                         cur_fitness = calculate_fitness(method, d_text, text_size, "rotor settings");
@@ -131,7 +126,7 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
                             if(cur_fitness > best_fitness) {
 //                                std::cout << "new best fitness: " << best_fitness << std::endl;
                                 best_fitness = cur_fitness;
-                                std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_rotors.txt)"};
+                                std::ofstream ofile{BlindDecrypt::textfiles_path + "decrypted_rotors.txt"};
                                 ofile << d_text;
                                 ofile.close();
                             }
@@ -153,14 +148,6 @@ void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text
 
     EnigmaMachine em {new int[3] {1, 2, 3}, new int[3] {1, 1, 1}, new int[3] {0, 0, 0}, 'a', ""};
 
-//    EnigmaConfig config {
-//            .rotors {1, 2, 3},
-//            .rotor_pos{1, 1, 1},
-//            .ring_pos{0, 0, 0},
-//            .reflector = 'a',
-//            .plugboard {""}
-//    };
-
     EnigmaConfig config {};
 
     char* d_text {new char[text_size+1]{0}};
@@ -173,9 +160,6 @@ void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text
         auto cur_rotor_info {rotor_it};
         rotor_it++;
         config = cur_rotor_info->to_config();
-//        stdo::arrcpy3(config.rotors, cur_rotor_info->rotors);
-//        stdo::arrcpy3(config.rotor_pos, cur_rotor_info->rotor_pos);
-//        config.reflector = cur_rotor_info->reflector;
         for (int r1{1}; r1 <= 26; r1++) {
             for (int r2{1}; r2 <= 26; r2++) {
                 stdo::arrcpy3(config.ring_pos, r1, r2, 1);
@@ -202,7 +186,7 @@ void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text
                         if(cur_fitness > best_fitness || best_rings.empty()) {
 //                            std::cout << "new best fitness: " << best_fitness << std::endl;
                             best_fitness = cur_fitness;
-                            std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_rings.txt)"};
+                            std::ofstream ofile{BlindDecrypt::textfiles_path + "decrypted_rings.txt"};
                             ofile << d_text;
                             ofile.close();
                         }
@@ -217,15 +201,6 @@ void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text
 
 void BlindDecrypt::find_plugs(stdo::Method method, const char *e_text, long text_size,
                               const RingDecryptInfo& best_ring, PlugboardDecryptInfo& best_plugboard) {
-
-
-//    EnigmaConfig config {
-//        best_ring.rotor_info.rotors,
-//        best_ring.rotor_info.rotor_pos,
-//        best_ring.ring_pos,
-//        best_ring.rotor_info.reflector,
-//        ""
-//    };
 
     EnigmaConfig config {best_ring.to_config()};
 
@@ -274,7 +249,7 @@ void BlindDecrypt::find_plugs(stdo::Method method, const char *e_text, long text
     em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
     double final_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
 
-    std::ofstream ofile{R"(J:\Programming\enigma\cmake-build-debug\in_out\decrypted_plugs.txt)"};
+    std::ofstream ofile{BlindDecrypt::textfiles_path + "decrypted_plugs.txt"};
     ofile << d_text;
     ofile.close();
 
@@ -294,7 +269,7 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
     char* e_text = stdo::load_from_file(input_filepath, &e_size);
 
 
-    auto start_time {std::chrono::high_resolution_clock ::now()};
+    auto start_time {std::chrono::high_resolution_clock::now()};
 
     std::list<RotorDecryptInfo> best_rotors {};
     find_rotors(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
@@ -307,14 +282,10 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
     print_decrypt_info_list(best_rings);
     std::cout << std::endl;
 
-//    auto pst{std::chrono::high_resolution_clock::now()};
     PlugboardDecryptInfo best_plugboard{};
     find_plugs(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
     std::cout << "FINAL SETTINGS:" << std::endl;
     best_plugboard.print(true);
-//    auto pet{std::chrono::high_resolution_clock::now()};
-//    auto dur{duration_cast<std::chrono::milliseconds>(pet - pst)};
-//    std::cout << "plugs took " << dur.count() << " milliseconds" << std::endl;
 
     auto end_time {std::chrono::high_resolution_clock::now()};
     auto duration {duration_cast<std::chrono::milliseconds>(end_time - start_time)};
@@ -324,8 +295,6 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
         std::cout << "decryption took " << duration.count() << " milliseconds" << std::endl;
     }
 
-//    EnigmaConfig decrypt_config {best_plugboard.to_config()};
-
     EnigmaMachine em {best_plugboard.to_config()};
     em.encrypt_or_decrypt_file(input_filepath, output_filepath);
 
@@ -333,8 +302,6 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
 }
 
 int BlindDecrypt::main(){
-//    stdo::format_input_file(R"(J:\Programming\enigma\cmake-build-debug\in_out\plaintext.txt)");
-//    return 0;
 
     int init_rotors[]{2, 5, 3};
     int init_rotor_pos[]{21, 19, 6};
@@ -354,9 +321,12 @@ int BlindDecrypt::main(){
 
     EnigmaMachine em {encrypt_config};
 
-    em.encrypt_or_decrypt_file(R"(.\in_out\plaintext.txt)", R"(.\in_out\encrypted.txt)");
+    const std::string plaintext_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
+    const std::string encrypted_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
+    const std::string decrypted_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
+    em.encrypt_or_decrypt_file(plaintext_path, encrypted_path);
 
-    decrypt(R"(./in_out/encrypted.txt)", R"(./in_out/decrypted.txt)");
+    decrypt(encrypted_path, decrypted_path);
 
     std::cout << std::endl << "Done" << std::endl;
     return 0;

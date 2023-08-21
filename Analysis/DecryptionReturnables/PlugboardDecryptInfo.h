@@ -5,7 +5,6 @@
 #ifndef ENIGMA_PLUGBOARDDECRYPTINFO_H
 #define ENIGMA_PLUGBOARDDECRYPTINFO_H
 
-
 #include "RingDecryptInfo.h"
 #include <iostream>
 #include <iomanip>
@@ -19,19 +18,14 @@ public:
 //    long double fitness;
 
     /*   Semantics    */
-    // default constructor
     PlugboardDecryptInfo();
 
-    // fielded constructor
     PlugboardDecryptInfo(const RingDecryptInfo& rinfo, std::string  new_plugboard, stdo::Method new_method, long double new_fitness);
 
-    // copy constructor
     PlugboardDecryptInfo(const PlugboardDecryptInfo& other);
 
-    // destructor
     ~PlugboardDecryptInfo() override; // default
 
-    // assignment operator
     PlugboardDecryptInfo& operator=(const PlugboardDecryptInfo& other);
 
 

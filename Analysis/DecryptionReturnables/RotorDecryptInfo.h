@@ -18,19 +18,14 @@ public:
 //    long double fitness;
 
     /* Semantic */
-    // default constructor
     RotorDecryptInfo();
 
-    // fielded constructor
     RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref, stdo::Method new_method, long double new_fitness);
 
-    // copy constructor
     RotorDecryptInfo(const RotorDecryptInfo &other);
 
-    // destructor
     ~RotorDecryptInfo() override;
 
-    // copy assignment operator
     RotorDecryptInfo &operator=(const RotorDecryptInfo &other);
 
 

@@ -20,7 +20,7 @@ public:
     virtual void print(bool header) const = 0;
     virtual void print() const = 0; // usually wraps print(false)
 
-    [[nodiscard]] virtual EnigmaConfig to_config() const = 0;
+    virtual EnigmaConfig to_config() const = 0;
     virtual void to_config(EnigmaConfig& config) const = 0;
 
     /**
@@ -30,7 +30,7 @@ public:
      * @return True if this object should be ordered before `other`, false otherwise.
      */
 
-    [[nodiscard]] virtual bool compare(const DecryptInfo& other) const{
+    virtual bool compare(const DecryptInfo& other) const{
         return fitness >= other.fitness;
     }
 
@@ -44,7 +44,7 @@ public:
     * @param second The second item to compare.
     * @return true if `first` is ordered before `second`, false otherwise.
     */
-    [[nodiscard]] __attribute__ ((pure)) static bool strict_weak_ordering(const DecryptInfo& first, const DecryptInfo& second){
+    static bool strict_weak_ordering(const DecryptInfo& first, const DecryptInfo& second){
         return first.fitness >= second.fitness;
     }
 };

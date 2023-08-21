@@ -16,19 +16,14 @@ public:
 //    long double fitness;
 
     /* Semantic */
-    // default constructor
     RingDecryptInfo();
 
-    // fielded constructor
     RingDecryptInfo(const RotorDecryptInfo& rinfo, int* new_ring_pos, stdo::Method new_method, long double new_fitness);
 
-    // copy constructor
     RingDecryptInfo(const RingDecryptInfo& other);
 
-    // destructor
     ~RingDecryptInfo() override;
 
-    // assignment operator
     RingDecryptInfo& operator=(const RingDecryptInfo& other);
 
 

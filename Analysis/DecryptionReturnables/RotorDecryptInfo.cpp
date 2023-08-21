@@ -6,7 +6,6 @@
 #include <iomanip>
 #include "RotorDecryptInfo.h"
 
-// default constructor
 RotorDecryptInfo::RotorDecryptInfo(): DecryptInfo(), reflector {}, method {}{
     rotors = new int[3]{};
     rotor_pos = new int[3]{};
@@ -22,7 +21,6 @@ RotorDecryptInfo::RotorDecryptInfo(int* new_rotors, int* new_rotor_pos, char ref
     stdo::arrncpy(rotor_pos, new_rotor_pos, 3);
 }
 
-// copy constructor
 RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other): DecryptInfo(other.fitness){
     rotors = new int[3]{};
     rotor_pos = new int[3]{};
@@ -32,7 +30,6 @@ RotorDecryptInfo::RotorDecryptInfo(const RotorDecryptInfo& other): DecryptInfo(o
     method = other.method;
 }
 
-// copy assignment operator
 RotorDecryptInfo& RotorDecryptInfo::operator=(const RotorDecryptInfo& other){
     if(this == &other){ return *this; } // self assignment guard
     stdo::arrncpy(rotors, other.rotors, 3);
@@ -43,7 +40,6 @@ RotorDecryptInfo& RotorDecryptInfo::operator=(const RotorDecryptInfo& other){
     return *this;
 }
 
-// destructor
 RotorDecryptInfo::~RotorDecryptInfo(){
     delete[] rotors;
     delete[] rotor_pos;

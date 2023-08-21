@@ -7,7 +7,7 @@
 #include <chrono>
 #include "IndexOfCoincidence.h"
 
-long double IndexOfCoincidence::calculate_f(const std::string &filename) {
+long double IndexOfCoincidence::calculate_from_file(const std::string &filename) {
     stdo::format_input_file(filename);
 
     char buf[MAX_INPUT_STRING_LENGTH] {0};

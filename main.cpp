@@ -3,7 +3,6 @@
 #include "Analysis/stdo.h"
 #include "Analysis/BlindDecrypt.h"
 #include "Analysis/KnownPlaintextStack.h"
-#include "Testing.cpp"
 #include <fstream>
 
 // return true if no dups found, false otherwise (true is desired generally)
@@ -125,92 +124,8 @@ std::string get_path(){
 #define USING_MAINCPP
 #ifdef USING_MAINCPP
 int main(){
-/*
-
-    int irot[3]{1, 2, 3};
-    int irotp[]{4, 5, 6};
-    RotorDecryptInfo rotor_info {
-            irot,
-            irotp,
-            'A',
-            stdo::INDEX_OF_COINCIDENCE,
-            7.77
-    };
-
-    rotor_info.print(true);
-*/
-
-    /*
-    RotorDecryptInfo rotor_info {new int[]{1, 2, 3}, new int[]{4, 5, 6}, 'C', stdo::INDEX_OF_COINCIDENCE, 10.0};
-
-    EnigmaConfig config;
-    rotor_info.to_config(config);
-    EnigmaMachine::print_config_object(config);
-    EnigmaMachine::print_config_object(rotor_info.to_config());
-    std::cout << std::endl << std::endl;
-
-    RingDecryptInfo ring_info {rotor_info, new int[3]{7, 8, 9}, stdo::CHARACTER_FREQUENCY, 5.5};
-
-    ring_info.to_config(config);
-    EnigmaMachine::print_config_object(config);
-    EnigmaMachine::print_config_object(ring_info.to_config());
-    std::cout << std::endl << std::endl;
-
-    PlugboardDecryptInfo plug_info {ring_info, "AH FD NJ", stdo::KNOWN_PLAINTEXT_SIMPLE, 7.77};
-
-    plug_info.to_config(config);
-    EnigmaMachine::print_config_object(config);
-    EnigmaMachine::print_config_object(plug_info.to_config());
-    std::cout << std::endl << std::endl;
-    */
-
 
     BlindDecrypt::main();
-//
-//    KnownPlaintextStack::main();
-
-//    bool status {};
-//
-//    std::string path {get_path()};
-//
-//    std::string file1_n {path + "plaintext.txt"};
-//    std::string file2_n {path + "encrypted.txt"};
-//    std::string file3_n {path + "decrypted.txt"};
-//
-//    stdo::format_input_file(file1_n);
-//
-//    EnigmaConfig config {.rotors {2, 1, 3}, .rotor_pos {3, 5, 7}, .reflector = 'A', .plugboard {"TG NJ AZ DF CV PO WM"}};
-//
-//    EnigmaMachine em {config};
-//
-//    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
-//    print_status(status);
-//
-//    stdo::arrcpy3(config.rotor_pos, 12, 26, 8);
-//    stdo::arrcpy3(config.rotors, 3, 5, 1);
-//    config.reflector = 'c';
-//    config.plugboard = "LA MD JC NE ZU QO";
-//    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
-//    print_status(status);
-//
-//    stdo::arrcpy3(config.rotor_pos, 26, 26, 26);
-//    stdo::arrcpy3(config.rotors, 5, 5, 5);
-//    config.reflector = 'a';
-//    config.plugboard = "";
-//    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
-//    print_status(status);
-//
-//    stdo::arrcpy3(config.rotor_pos, 1, 26, 26);
-//    stdo::arrcpy3(config.rotors, 5, 4, 3);
-//    config.reflector = 'b';
-//    config.plugboard = "";
-//    status = verification_cycle(em, file1_n, file2_n, file3_n, config);
-//    print_status(status);
-//
-//    print_config(config);
-
-
-
     return 0;
 }
 #endif

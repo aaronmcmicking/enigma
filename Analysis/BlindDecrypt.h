@@ -8,6 +8,7 @@
 #include "DecryptionReturnables/RotorDecryptInfo.h"
 #include "DecryptionReturnables/RingDecryptInfo.h"
 #include "DecryptionReturnables/PlugboardDecryptInfo.h"
+#include <string>
 #include <vector>
 #include <list>
 #include <queue>
@@ -20,6 +21,8 @@
  */
 class BlindDecrypt {
 public:
+    inline const static std::string textfiles_path = R"(./textfiles/)";
+
     static int main(); // mostly used for testing, sort of shadows main.cpp (also is called from main.cpp::main())
 
     static void decrypt(const std::string& input_filepath, const std::string& output_filepath);
