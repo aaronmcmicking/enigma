@@ -6,7 +6,7 @@
 #include "BlindDecrypt.h"
 #include "IndexOfCoincidence/IndexOfCoincidence.h"
 #include "CharacterFrequency/CharacterFrequency.h"
-#include "KnownPlaintextSimple//KnownPlaintextSimple.h"
+#include "stdo.h"
 #include <cmath>
 #include <iomanip>
 #include <chrono>
@@ -311,19 +311,21 @@ int BlindDecrypt::main(){
             init_rotor_pos,
             init_rings,
             'B',
-//            "JM HO PQ LD UG ZF KS AN BX YW"
+            "JM HO PQ LD UG ZF KS AN BX YW"
 //            "QU IN VB LE CO KR WP ZH AS TY"
 //            "QU IN VB LE"
-            "IK BH RG NA PF"
+//            "IK BH RG NA PF"
 //            "AF",
 //            ""
     };
 
     EnigmaMachine em {encrypt_config};
 
+
     const std::string plaintext_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
-    const std::string encrypted_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
-    const std::string decrypted_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
+    const std::string encrypted_path {BlindDecrypt::textfiles_path + "encrypted.txt"};
+    const std::string decrypted_path {BlindDecrypt::textfiles_path + "decrypted.txt"};
+    stdo::format_input_file(plaintext_path);
     em.encrypt_or_decrypt_file(plaintext_path, encrypted_path);
 
     decrypt(encrypted_path, decrypted_path);
