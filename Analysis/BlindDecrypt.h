@@ -21,7 +21,7 @@
  */
 class BlindDecrypt {
 public:
-    inline const static std::string textfiles_path = R"(./textfiles/)";
+    inline const static std::string textfiles_path = R"(../textfiles/)";
 
     static int main(); // mostly used for testing, sort of shadows main.cpp (also is called from main.cpp::main())
 

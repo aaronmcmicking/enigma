@@ -1,10 +1,11 @@
 # enigma
 
-This is a simulation the WWII-era German Enigma Machine used to encrypt communications that was famously decrypted 
-by British researchers, including Alan Turing.
+This is a simulation the WWII-era German Enigma Machine used to encrypt 
+communications that was famously decrypted by British researchers, including 
+Alan Turing.
 <br><br>
-This project exists because a) I thought it would be an interesting challenge to model Enigma and 
-b) I wanted to learn C++.
+This project exists because a) I thought it would be an interesting challenge 
+to model Enigma and b) I wanted to learn C++.
 
 ## Sources
 Details regarding Enigma, internal rotors and reflector layouts were sourced from: <br>
@@ -14,11 +15,26 @@ Details regarding Enigma, internal rotors and reflector layouts were sourced fro
 [Enigma rotor details (Wikipedia)](https://wikipedia.org/wiki/Enigma_rotor_details)<br>
 
 ## Modelling
-This simulation models rotor configurations from German M3 Army model Enigma machines, as recorded in 1938. 
-Rotors 6-8 (introduced in 1939) have their substitution maps included, but will not behave accurately to their 
-real-world counterparts as their designs different from earlier models.
+This simulation models rotor configurations from German M3 Army model Enigma 
+machines. 
 <br>
-All reflector configurations (A - C) and Rotors 1-5 are modelled accurately (to my knowledge). The ability to change
-the turnover position of a rotor (also known as the "ring setting") is included, but is not emphasized.
+All reflector configurations (A - C) and Rotors 1-5 are modelled accurately 
+(to my knowledge). The ability to change the turnover position of a rotor (also 
+known as the "ring setting") is included.
+
+# Build
+
+A CMake list has been included to build with CMake. This program was written for 
+C++20 and has no external dependancies.
+
+```console
+clone https://github.com/aaronmcmicking/enigma
+cd enigma
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ## Usage
+
