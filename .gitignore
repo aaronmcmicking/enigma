@@ -16,6 +16,7 @@ enigma
 # misc
 todo.txt
 textfiles/*.txt
+!textfiles/plaintext.txt
 Testing.cpp
 Tests.cpp
 

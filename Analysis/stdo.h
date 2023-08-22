@@ -58,7 +58,6 @@ namespace stdo{ // "Standard Operations"
     enum Method{
         INDEX_OF_COINCIDENCE,
         CHARACTER_FREQUENCY,
-        KNOWN_PLAINTEXT_SIMPLE
     };
 }
 

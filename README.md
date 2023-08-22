@@ -36,19 +36,20 @@ make
 
 ## Usage
 
-**A usage example is included in `main.cpp`.**
+**A usage example is included in `main.cpp`, and sample formatted plaintext is
+included in `/textfiles/plaintext.txt`.**
 
-An `EnigmaMachine` object must be instantiated with fields. For this, use the
-`EnigmaConfig` object. Both an `EnigmaMachine` and `EnigmaConfig` require five
-fields at instantiation: Rotors, Rotor Positions, Ring Settings, Reflector, and
+An `EnigmaMachine` object must be instantiated with fields, for which using an
+`EnigmaConfig` object is recommended. Both classes require five fields at 
+instantiation: Rotors, Rotor Positions, Ring Settings, Reflector, and
 Plugboard settings.
 
 There are five `Rotors`, and each can only be used once per configuration.
-Each `Rotor` can start at position including and between 1-26. As well, each `Rotor`
-can have it's ring setting (ie. the position where it rotates a sequential
-`Rotor`) set, again between and including 1-26. A `Reflector` may also be chosen.
-The `Reflector` options are `A`, `B`, and `C`. A `Plugboard` may be assigned
-using a formatted string with the desired plugboard pairs (ex. "AH KU YD WB")
+Each `Rotor` can start at position and its ring setting (ie. the position where 
+it rotates a sequential `Rotor`) set between and including 1-26. A `Reflector` 
+may also be chosen, for which the options are `A`, `B`, and `C`. A `Plugboard` 
+may be assigned using a formatted string with the desired plugboard pairs 
+(ex. "AH KU YD WB")
 
 After creating an `EnigmaConfig`, use it to construct an `EnigmaMachine`.
 
@@ -56,15 +57,15 @@ To encrypt or decrypt text using the machine, use `EnigmaMachine::encrypt_or_dec
 function is overloaded, see `Enigma/Headers/EnigmaMachine.h` for more information.
 
 To encrypt/decrypt from a file, filepaths must be specified. Defaults filepaths 
-are provided which assumes that the files are stored in "../textfiles" relative
-to the executable. They are `BlindDecrypt::default_plaintext_path()`, 
-`BlindDecrypt::default_encrypted_path()`, and `BlindDecrypt::default_decrypted_path()`.
+are provided which assumes that the files are stored in `../textfiles` relative
+to the executable. Within `BlindDecrypt`, they are `default_plaintext_path`, 
+`default_encrypted_path`, and `default_decrypted_path`.
 Place plaintext into `textfiles/plaintext.txt`. If the text needs to be formatted,
 call `stdo::format_input_file(text_path)`. 
 
 To decrypt come ciphertext, use `BlindDecrypt::decrypt(src_path, dest_path)`. 
 The results will be printed. Also specify the statistical method used for 
-decryption: either `BlindDecrypt::INDEX_OF_COINCIDENCE` or `BlindDecrypt::CHARACTER_FREQUENCY`
+decryption: either `stdo::INDEX_OF_COINCIDENCE` or `stdo::CHARACTER_FREQUENCY`
 (see [Decryption Methods](#decryption-methods) for more info).
 
 ## Decryption Methods
