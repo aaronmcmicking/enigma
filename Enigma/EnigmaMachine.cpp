@@ -26,7 +26,7 @@ EnigmaMachine::EnigmaMachine(const EnigmaConfig& config) {
     rotor_box.set_rotor_ring_pos(config.ring_pos);
 }
 
-void EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_path, const std::string& out_file_path){
+void EnigmaMachine::encrypt_or_decrypt(const std::string& in_file_path, const std::string& out_file_path){
     // read input
     char in_buf[MAX_INPUT_STRING_LENGTH] {};
     std::ifstream in_file {in_file_path};
@@ -48,7 +48,7 @@ void EnigmaMachine::encrypt_or_decrypt_file(const std::string& in_file_path, con
     out_file.close();
 }
 
-std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
+std::string EnigmaMachine::encrypt_or_decrypt(const std::string& in){
     std::string out {};
     for(char c: in){
         out += stdeo::itoc(convert_char(c));
@@ -56,7 +56,7 @@ std::string EnigmaMachine::encrypt_or_decrypt_str(const std::string& in){
     return out;
 }
 
-void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, const char *src, int size) {
+void EnigmaMachine::encrypt_or_decrypt(char *dest, const char *src, int size) {
     int i {};
     while(i < size && src[i] != '\0'){
         dest[i] = stdeo::itoc(convert_char(src[i]));
@@ -64,7 +64,7 @@ void EnigmaMachine::encrypt_or_decrypt_arr(char *dest, const char *src, int size
     }
 }
 
-void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src, int size) {
+void EnigmaMachine::encrypt_or_decrypt_fast(char *dest, const char* src, int size) {
     int i {}, c1;
     while(i < size){
         c1 = plugboard.convert_char(*(src++));
@@ -73,7 +73,7 @@ void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src, i
     }
 }
 
-void EnigmaMachine::encrypt_or_decrypt_arr_direct(char *dest, const char* src) {
+void EnigmaMachine::encrypt_or_decrypt_fast(char *dest, const char* src) {
     int c1;
     while(*src != '\0'){
         c1 = plugboard.convert_char(*(src++));

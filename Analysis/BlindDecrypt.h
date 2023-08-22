@@ -21,11 +21,14 @@
  */
 class BlindDecrypt {
 public:
-    inline const static std::string textfiles_path = R"(../textfiles/)";
+    inline const static std::string default_textfiles_path = R"(../textfiles/)";
+    inline const static std::string default_plaintext_path {default_textfiles_path + "plaintext.txt"};
+    inline const static std::string default_encrypted_path {default_textfiles_path + "encrypted.txt"};
+    inline const static std::string default_decrypted_path {default_textfiles_path + "decrypted.txt"};
 
     static int main(); // mostly used for testing, sort of shadows main.cpp (also is called from main.cpp::main())
 
-    static void decrypt(const std::string& input_filepath, const std::string& output_filepath);
+    static void decrypt(const std::string& input_filepath, const std::string& output_filepath, const stdo::Method method);
 
     template<class DecryptInfo>
     static void print_decrypt_info_list(const std::list<DecryptInfo>& list);

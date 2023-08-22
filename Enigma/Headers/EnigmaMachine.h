@@ -34,31 +34,29 @@ public:
     explicit EnigmaMachine(const EnigmaConfig& config);
 
     // Incrypts the contents of `in` and returns the result
-    std::string encrypt_or_decrypt_str(const std::string& in);
+    std::string encrypt_or_decrypt(const std::string& in);
 
     // Encrypts `n` characters from `src` and stores it `dest`
-    void encrypt_or_decrypt_arr(char* dest, const char* src, int size);
+    void encrypt_or_decrypt(char* dest, const char* src, int size);
+
+    // Encrypts or decrypts the contents of `in_file_path` and stores the result in `out_file_path`.
+    void encrypt_or_decrypt(const std::string& in_file_path, const std::string& out_file_path); 
 
     /*
-    * Encrypts or decrypts  'n' characters from `src` and stores them in `dest`. `src` need not be a c-style string.
+    * Encrypts or decrypts  'n' characters from `src` and stores them in `dest`. `src` need not be a C-style string.
     * Removes calls to common functions to improve performance, thereby becoming
     * unsafe since assumptions about the behaviour of the common functions may
     * become outdated.
     */
-    void encrypt_or_decrypt_arr_direct(char *dest, const char *src, int size); // doesn't call convert_char(c)
+    void encrypt_or_decrypt_fast(char *dest, const char *src, int size); // doesn't call convert_char(c)
 
-    /* Encrypts or decrypts  characters from `src` and stores them in `dest` until a null terminator is encountered in `src`. Therefore,
-    * `src` MUST be a c-style string.
-    * Removes calls to common functions to improve performance, thereby becoming
-    * unsafe since assumptions about the behaviour of the common functions may
-    * become outdated.
+    /* Encrypts or decrypts  characters from `src` and stores them in `dest` 
+    * until a null terminator is encountered in `src`. Therefore, `src` MUST be 
+    * a C-style string. Removes calls to common functions to improve performance, 
+    * thereby becoming unsafe since assumptions about the behaviour of the 
+    * common functions may become outdated.
     */
-    void encrypt_or_decrypt_arr_direct(char *dest, const char* src);
-
-    /*
-     * Encrypts or decrypts the contents of `in_file_path` and stores the result in `out_file_path`.
-     */
-    void encrypt_or_decrypt_file(const std::string& in_file_path, const std::string& out_file_path); // true if success, false otherwise
+    void encrypt_or_decrypt_fast(char *dest, const char* src);
 
     void set_rotors(const int* rotors);
 

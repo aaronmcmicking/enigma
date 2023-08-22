@@ -103,7 +103,7 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
                         em.set_config(config);
 
                         // decrypt
-                        em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+                        em.encrypt_or_decrypt_fast(d_text, e_text, text_size);
 
                         // analyze
                         cur_fitness = calculate_fitness(method, d_text, text_size, "rotor settings");
@@ -126,7 +126,7 @@ void BlindDecrypt::find_rotors(stdo::Method method, const char* e_text, long tex
                             if(cur_fitness > best_fitness) {
 //                                std::cout << "new best fitness: " << best_fitness << std::endl;
                                 best_fitness = cur_fitness;
-                                std::ofstream ofile{BlindDecrypt::textfiles_path + "decrypted_rotors.txt"};
+                                std::ofstream ofile{BlindDecrypt::default_textfiles_path + "decrypted_rotors.txt"};
                                 ofile << d_text;
                                 ofile.close();
                             }
@@ -166,7 +166,7 @@ void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text
 
                     em.set_config(config);
 
-                    em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+                    em.encrypt_or_decrypt_fast(d_text, e_text, text_size);
 
                     cur_fitness = calculate_fitness(method, d_text, text_size, "ring settings");
 
@@ -186,7 +186,7 @@ void BlindDecrypt::find_rings(stdo::Method method, const char *e_text, long text
                         if(cur_fitness > best_fitness || best_rings.empty()) {
 //                            std::cout << "new best fitness: " << best_fitness << std::endl;
                             best_fitness = cur_fitness;
-                            std::ofstream ofile{BlindDecrypt::textfiles_path + "decrypted_rings.txt"};
+                            std::ofstream ofile{BlindDecrypt::default_textfiles_path + "decrypted_rings.txt"};
                             ofile << d_text;
                             ofile.close();
                         }
@@ -227,7 +227,7 @@ void BlindDecrypt::find_plugs(stdo::Method method, const char *e_text, long text
             em.set_config(config);
             std::string set_str {fixed + " " + cur};
             em.set_plugboard_settings(set_str);
-            em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+            em.encrypt_or_decrypt_fast(d_text, e_text, text_size);
 
             cur_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
 
@@ -246,10 +246,10 @@ void BlindDecrypt::find_plugs(stdo::Method method, const char *e_text, long text
 
     config.plugboard = fixed;
     em.set_config(config);
-    em.encrypt_or_decrypt_arr_direct(d_text, e_text, text_size);
+    em.encrypt_or_decrypt_fast(d_text, e_text, text_size);
     double final_fitness = calculate_fitness(method, d_text, text_size, "plugboard");
 
-    std::ofstream ofile{BlindDecrypt::textfiles_path + "decrypted_plugs.txt"};
+    std::ofstream ofile{BlindDecrypt::default_textfiles_path + "decrypted_plugs.txt"};
     ofile << d_text;
     ofile.close();
 
@@ -264,7 +264,7 @@ void BlindDecrypt::find_plugs(stdo::Method method, const char *e_text, long text
 }
 
 
-void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string &output_filepath) {
+void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string &output_filepath, const stdo::Method method) {
     int e_size {};
     char* e_text = stdo::load_from_file(input_filepath, &e_size);
 
@@ -272,64 +272,40 @@ void BlindDecrypt::decrypt(const std::string &input_filepath, const std::string 
     auto start_time {std::chrono::high_resolution_clock::now()};
 
     std::list<RotorDecryptInfo> best_rotors {};
-    find_rotors(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors);
+    find_rotors(method, e_text, e_size, best_rotors);
     std::cout << std::endl;
     print_decrypt_info_list(best_rotors);
     std::cout << std::endl;
 
     std::list<RingDecryptInfo> best_rings {};
-    find_rings(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rotors, best_rings);
+    find_rings(method, e_text, e_size, best_rotors, best_rings);
     print_decrypt_info_list(best_rings);
     std::cout << std::endl;
 
     PlugboardDecryptInfo best_plugboard{};
-    find_plugs(stdo::INDEX_OF_COINCIDENCE, e_text, e_size, best_rings.front(), best_plugboard);
+    find_plugs(method, e_text, e_size, best_rings.front(), best_plugboard);
     std::cout << "FINAL SETTINGS:" << std::endl;
     best_plugboard.print(true);
 
     auto end_time {std::chrono::high_resolution_clock::now()};
     auto duration {duration_cast<std::chrono::milliseconds>(end_time - start_time)};
     if(duration.count() > 10000){
-        std::cout << "decryption took " << duration.count() / 1000 << " seconds" << std::endl;
+        std::cout << "Decryption took " << duration.count() / 1000 << " seconds" << std::endl;
     }else {
-        std::cout << "decryption took " << duration.count() << " milliseconds" << std::endl;
+        std::cout << "Decryption took " << duration.count() << " milliseconds" << std::endl;
     }
 
     EnigmaMachine em {best_plugboard.to_config()};
-    em.encrypt_or_decrypt_file(input_filepath, output_filepath);
+    em.encrypt_or_decrypt(input_filepath, output_filepath);
 
     delete e_text;
 }
 
 int BlindDecrypt::main(){
 
-    int init_rotors[]{2, 5, 3};
-    int init_rotor_pos[]{21, 19, 6};
-    int init_rings[]{17, 25, 1};
-    EnigmaConfig encrypt_config {
-            init_rotors,
-            init_rotor_pos,
-            init_rings,
-            'B',
-            "JM HO PQ LD UG ZF KS AN BX YW"
-//            "QU IN VB LE CO KR WP ZH AS TY"
-//            "QU IN VB LE"
-//            "IK BH RG NA PF"
-//            "AF",
-//            ""
-    };
+    /*
+     * This main is primarily used for testing purposes.
+     */
 
-    EnigmaMachine em {encrypt_config};
-
-
-    const std::string plaintext_path {BlindDecrypt::textfiles_path + "plaintext.txt"};
-    const std::string encrypted_path {BlindDecrypt::textfiles_path + "encrypted.txt"};
-    const std::string decrypted_path {BlindDecrypt::textfiles_path + "decrypted.txt"};
-    stdo::format_input_file(plaintext_path);
-    em.encrypt_or_decrypt_file(plaintext_path, encrypted_path);
-
-    decrypt(encrypted_path, decrypted_path);
-
-    std::cout << std::endl << "Done" << std::endl;
     return 0;
 }

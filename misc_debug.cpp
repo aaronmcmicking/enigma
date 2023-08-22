@@ -72,9 +72,9 @@ bool fcheck_identical(const std::string& file1_n, const std::string& file2_n){
 }
 
 void in_out_cycle(EnigmaMachine& em, const std::string& file1_n, const std::string& file2_n, const std::string& file3_n, int* rotor_pos){
-    em.encrypt_or_decrypt_file(file1_n, file2_n);
+    em.encrypt_or_decrypt(file1_n, file2_n);
     em.set_rotor_pos(rotor_pos);
-    em.encrypt_or_decrypt_file(file2_n, file3_n);
+    em.encrypt_or_decrypt(file2_n, file3_n);
 }
 
 
